@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "flowers-delivery-app",
+    "slug": "flowers-delivery-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "flowers-delivery-app"
+}

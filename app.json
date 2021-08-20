@@ -5,7 +5,13 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "flowers-delivery-app"
+    },
+    "android": {
+      "package": "com.hold_fast.flowersdeliveryapp"
+    }
   },
   "name": "flowers-delivery-app"
 }

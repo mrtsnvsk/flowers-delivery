@@ -13,15 +13,15 @@ const NewsSlider = () => {
   const [idx, setIdx] = useState(0);
 
   const carouselItems = [
-    // <TouchableOpacity style={styles.imgContainer}>
-    <Image source={{ uri: img }} style={styles.imgBg} alt='News' />,
-    // </TouchableOpacity>
-    // <TouchableOpacity style={styles.imgContainer}>
-    <Image style={styles.imgBg} source={{ uri: img }} alt='News' />,
-    // </TouchableOpacity>
-    // <TouchableOpacity style={styles.imgContainer}>
-    <Image source={{ uri: img }} style={styles.imgBg} alt='News' />,
-    // </TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.8}>
+      <Image source={{ uri: img }} style={styles.imgBg} alt='News' />
+    </TouchableOpacity>,
+    <TouchableOpacity activeOpacity={0.8}>
+      <Image source={{ uri: img }} style={styles.imgBg} alt='News' />
+    </TouchableOpacity>,
+    <TouchableOpacity activeOpacity={0.8}>
+      <Image source={{ uri: img }} style={styles.imgBg} alt='News' />
+    </TouchableOpacity>,
   ];
 
   const pagination = (
@@ -41,7 +41,7 @@ const NewsSlider = () => {
     <Center mt={'30px'}>
       <Carousel
         onSnapToItem={(index) => setIdx(index)}
-        layout='stack'
+        layout='default'
         data={carouselItems}
         sliderWidth={width - 40}
         itemWidth={width - 40}

@@ -4,9 +4,10 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box, Flex, Text } from 'native-base';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
+
 import BasketBottomLink from '../BasketBottomLink';
 
-const AddToBasketFooter = ({ price, actionFn }) => {
+const AddToBasketFooter = ({ price, actionFn, actionDeleteFn, matchItem }) => {
   return (
     <Flex
       direction='row'
@@ -24,14 +25,29 @@ const AddToBasketFooter = ({ price, actionFn }) => {
       <Box>
         <Text fontSize={20}>{price?.toFixed(2)} p.</Text>
       </Box>
-      <TouchableOpacity onPress={actionFn} style={styles.basketBtn}>
-        <Box>
-          <SimpleLineIcons name='basket' size={24} color={'#fff'} />
-        </Box>
-        <Box _text={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>
-          В корзину
-        </Box>
-      </TouchableOpacity>
+      {!matchItem ? (
+        <TouchableOpacity onPress={actionFn} style={styles.basketBtn}>
+          <Box mr={3}>
+            <SimpleLineIcons name='basket' size={24} color={'#fff'} />
+          </Box>
+          <Box _text={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>
+            В корзину
+          </Box>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={actionDeleteFn}
+          style={[styles.basketBtn, { backgroundColor: propStyles.redColor }]}
+        >
+          <Box mr={3}>
+            <SimpleLineIcons name='basket' size={24} color={'#fff'} />
+          </Box>
+          <Box _text={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>
+            Удалить из корзины
+          </Box>
+        </TouchableOpacity>
+      )}
+
       <BasketBottomLink bottom={74} />
     </Flex>
   );
@@ -43,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: 140,
+    paddingHorizontal: 16,
     height: 50,
     paddingHorizontal: 14,
     borderRadius: 50,

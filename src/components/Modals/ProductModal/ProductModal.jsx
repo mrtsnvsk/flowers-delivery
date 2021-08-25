@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import {
   Dimensions,
@@ -7,7 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Box, Flex, ScrollView, Image, Text, Slide } from 'native-base';
+import { Box, Flex, ScrollView, Image, Text } from 'native-base';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
 
@@ -15,6 +16,8 @@ import AddToBasketFooter from '../../Elements/AddToBasketFooter';
 import AddToBasketTopSlide from '../../Elements/AddToBasketTopSlide';
 
 const { width } = Dimensions.get('window');
+import { setOrderList, getOrderList } from '../../../store/actions/order';
+import { getOrderFromStorage } from '../../../resources/utils';
 
 const CircleIconWrapper = ({ icon, fn }) => {
   return (
@@ -24,9 +27,17 @@ const CircleIconWrapper = ({ icon, fn }) => {
   );
 };
 
-const ProductModal = ({ open, setOpen, product }) => {
+const ProductModal = ({
+  open,
+  setOpen,
+  product,
+  setOrderList,
+  orderList,
+  getOrderList,
+}) => {
   const [isProduct, setProduct] = useState({});
   const [isOpenSlide, setOpenSlide] = useState(false);
+  const [matchItem, setMatchItem] = useState(false);
 
   const otherImgs = [
     {
@@ -41,12 +52,39 @@ const ProductModal = ({ open, setOpen, product }) => {
   ];
 
   useEffect(() => {
+    getOrderList();
+  }, [getOrderList]);
+
+  useEffect(() => {
     setProduct(product);
   }, [product]);
+
+  useEffect(() => {
+    const check = orderList.filter((el) => el.name === isProduct.name);
+
+    check.length
+      ? (() => {
+          setMatchItem(true);
+        })()
+      : setMatchItem(false);
+  }, [orderList, isProduct]);
 
   const onOpenTopSlide = () => {
     setOpenSlide(true);
     setTimeout(() => setOpenSlide(false), 3000);
+  };
+
+  const addToBasket = async () => {
+    const prevList = await getOrderFromStorage(),
+      list = [...prevList, isProduct];
+    onOpenTopSlide();
+    setOrderList(list);
+  };
+
+  const deleteFromBasket = async () => {
+    const prevList = await getOrderFromStorage(),
+      list = prevList.filter((el) => el.name !== isProduct.name);
+    setOrderList(list);
   };
 
   return (
@@ -133,7 +171,12 @@ const ProductModal = ({ open, setOpen, product }) => {
             </Box>
           </ScrollView>
         </Box>
-        <AddToBasketFooter actionFn={onOpenTopSlide} price={isProduct?.price} />
+        <AddToBasketFooter
+          matchItem={matchItem}
+          actionDeleteFn={deleteFromBasket}
+          actionFn={addToBasket}
+          price={isProduct?.price}
+        />
         <AddToBasketTopSlide productName={isProduct?.name} open={isOpenSlide} />
       </>
     </Modal>
@@ -175,4 +218,17 @@ const styles = StyleSheet.create({
   productDescText: {},
 });
 
-export default ProductModal;
+const mapStateToProps = ({ order: { orderList } }) => {
+  return {
+    orderList,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setOrderList: (data) => dispatch(setOrderList(data)),
+    getOrderList: () => dispatch(getOrderList()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductModal);

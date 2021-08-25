@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 import { Box, ScrollView } from 'native-base';
 
@@ -6,7 +7,16 @@ import CatalogCategoriesCarousel from '../../components/CatalogPageComponents/Ca
 import ProductItems from '../../components/CatalogPageComponents/ProductItems';
 import BasketBottomLink from '../../components/Elements/BasketBottomLink';
 
-const CatalogPage = () => {
+const CatalogPage = ({ route }) => {
+  const { name, id } = route.params;
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (name) {
+      navigation.setOptions({ headerTitle: name });
+    }
+  }, [name]);
+
   return (
     <>
       <Box pb='60px'>

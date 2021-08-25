@@ -4,11 +4,19 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Flex, Box, Text } from 'native-base';
 import propStyles from '../../../resources/propStyles';
 
-const BasketCountBtns = ({ count }) => {
+const BasketCountBtns = ({ count, productId, setCount }) => {
+  const onChangeCount = (plus) => {
+    if (plus) {
+      setCount(count + 1, productId);
+    } else if (count >= 2) {
+      setCount(count - 1, productId);
+    }
+  };
+
   return (
     <Flex
-      width={74}
-      height={34}
+      width={60}
+      height={30}
       bg='#f1f1f1'
       direction='row'
       alignItems='center'
@@ -16,7 +24,8 @@ const BasketCountBtns = ({ count }) => {
       position='relative'
     >
       <TouchableOpacity
-        activeOpacity={0.8}
+        onPress={() => onChangeCount(false)}
+        activeOpacity={0.5}
         style={[styles.countBtn, { left: -15 }]}
       >
         <Text fontSize={24}>-</Text>
@@ -25,7 +34,8 @@ const BasketCountBtns = ({ count }) => {
         <Text fontWeight='500'>{count}</Text>
       </Box>
       <TouchableOpacity
-        activeOpacity={0.9}
+        onPress={() => onChangeCount(true)}
+        activeOpacity={0.5}
         style={[styles.countBtn, { right: -15 }]}
       >
         <Text fontSize={24}>+</Text>
@@ -40,8 +50,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 34,
-    height: 34,
+    width: 30,
+    height: 30,
     borderRadius: 50,
     backgroundColor: '#fff',
     ...propStyles.shadowDefault,

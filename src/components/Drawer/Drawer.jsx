@@ -5,9 +5,11 @@ import { Box, Image, Flex, ScrollView } from 'native-base';
 import propStyles from '../../resources/propStyles';
 import {
   Feather,
+  AntDesign,
   MaterialIcons,
   FontAwesome5,
   Ionicons,
+  MaterialCommunityIcons,
 } from '@expo/vector-icons';
 
 const Drawer = ({ navigation }) => {
@@ -20,14 +22,22 @@ const Drawer = ({ navigation }) => {
 
   const links = [
     {
-      link: 'Магазин',
+      link: 'Категории',
       icon: (
-        <MaterialIcons
-          name='add-shopping-cart'
+        <MaterialCommunityIcons
+          name='flower-tulip-outline'
           size={20}
           color={propStyles.mainRedColor}
         />
       ),
+      path: 'CategoriesPage',
+    },
+    {
+      link: 'Контакты',
+      icon: (
+        <AntDesign name='contacts' size={24} color={propStyles.mainRedColor} />
+      ),
+      path: 'ContactsPage',
     },
     {
       link: 'Условия доставки',
@@ -38,6 +48,7 @@ const Drawer = ({ navigation }) => {
           color={propStyles.mainRedColor}
         />
       ),
+      path: 'СonditionsDeliveryPage',
     },
     {
       path: 'ActivateAppPage',
@@ -101,7 +112,7 @@ const Drawer = ({ navigation }) => {
               {links.map((el, i) => (
                 <TouchableOpacity
                   key={i}
-                  onPress={() => navigation.navigate('ActivateAppPage')}
+                  onPress={() => navigation.navigate(el.path)}
                   style={{ marginBottom: '10%' }}
                 >
                   <Flex key={i} direction='row' alignItems='center'>

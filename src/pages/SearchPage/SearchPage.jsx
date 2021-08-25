@@ -13,21 +13,6 @@ const SearchPage = () => {
   const [showActionsheet, setShowActionSheet] = useState(false);
   const [termCategory, setTermCategory] = useState(null);
 
-  const tags = [
-    {
-      name: '#Акции',
-    },
-    {
-      name: '#Розы',
-    },
-    {
-      name: '#Цветы',
-    },
-    {
-      name: '#Вазы',
-    },
-  ];
-
   const menu = [
     {
       name: 'Акции',
@@ -81,8 +66,6 @@ const SearchPage = () => {
     },
   ];
 
-  console.log(termCategory);
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Box bg='#fff' flex={1}>
@@ -109,18 +92,14 @@ const SearchPage = () => {
           isOpen={showActionsheet}
           onClose={() => setShowActionSheet(false)}
         >
-          <Actionsheet.Content alignItems='flex-start' p={'20px'} pb={5}>
-            <SearchFilterActionSheet
-              setTermCategory={setTermCategory}
-              label={'Теги'}
-              items={tags}
-            />
+          <Actionsheet.Content alignItems='flex-start' px={'20px'} pb={'20px'}>
             <SearchFilterActionSheet
               setTermCategory={setTermCategory}
               label={'Меню'}
               items={menu}
             />
             <SearchFilterActionSheet
+              withFilters={true}
               setTermCategory={setTermCategory}
               label={'Характеристики'}
               items={characters}

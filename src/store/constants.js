@@ -1,3 +1,5 @@
 // search
 export const SET_SHOW_SEARCH_ICON = 'SET_SHOW_SEARCH_ICON';
 export const CLEAR_SEARCH_INPUT_TEXT = 'CLEAR_SEARCH_INPUT_TEXT';
+// orders
+export const SET_ORDER_LIST = 'SET_ORDER_LIST';

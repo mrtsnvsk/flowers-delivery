@@ -46,8 +46,8 @@ const CategoriesPage = () => {
     },
   ];
 
-  const onPushToLink = () => {
-    navigation.navigate('CatalogPage');
+  const onPushToLink = (el) => {
+    navigation.navigate('CatalogPage', { name: el.name, id: el.id });
   };
 
   return (
@@ -59,7 +59,7 @@ const CategoriesPage = () => {
         {categories.map((el) => (
           <TouchableOpacity
             key={el.name}
-            onPress={onPushToLink}
+            onPress={() => onPushToLink(el)}
             style={styles.categoryItem}
           >
             <Box _text={styles.categoryNameText}>{el.name}</Box>

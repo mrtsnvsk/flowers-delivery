@@ -5,6 +5,7 @@ const propStyles = {
   blueActiveColor: 'rgb(33, 150, 243)',
   grayColor: 'grey',
   redColor: '#FF0000',
+  basketBlocksColor: '#E6EFF0',
   shadowDefault: {
     shadowColor: '#000',
     shadowOffset: {

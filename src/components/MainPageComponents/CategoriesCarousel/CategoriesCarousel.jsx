@@ -10,15 +10,25 @@ import propStyles from '../../../resources/propStyles';
 const CategoriesCarousel = () => {
   const navigation = useNavigation();
 
-  const arr = ['Акции', 'Розы', 'Премиум', 'Цветы', 'Повод'];
+  const arr = [
+    { name: 'Акции', id: 0 },
+    { name: 'Розы', id: 1 },
+    { name: 'Премиум', id: 2 },
+    { name: 'Цветы', id: 3 },
+    { name: 'Повод', id: 4 },
+  ];
+
+  const onPushToLink = (el) => {
+    navigation.navigate('CatalogPage', { name: el.name, id: el.id });
+  };
 
   return (
     <Box>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {arr.map((el) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('CatalogPage')}
-            key={el}
+            onPress={() => onPushToLink(el)}
+            key={el.id}
             style={{
               marginRight: 16,
               justifyContent: 'center',
@@ -27,7 +37,6 @@ const CategoriesCarousel = () => {
           >
             <Flex
               mb={2}
-              key={el}
               alignItems='center'
               justifyContent='center'
               style={styles.categoryImg}
@@ -38,7 +47,7 @@ const CategoriesCarousel = () => {
                 color={propStyles.mainRedColor}
               />
             </Flex>
-            <Flex _text={{ fontSize: 12 }}>{el}</Flex>
+            <Flex _text={{ fontSize: 12 }}>{el.name}</Flex>
           </TouchableOpacity>
         ))}
       </ScrollView>

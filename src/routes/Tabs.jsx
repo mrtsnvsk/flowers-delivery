@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'native-base';
 import {
   Feather,
@@ -17,9 +18,15 @@ import CategoriesPage from '../pages/CategoriesPage';
 import BasketPage from '../pages/BasketPage';
 import ProfilePage from '../pages/ProfilePage';
 
+import { setOrderList, getOrderList } from '../store/actions/order';
+
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const Tabs = ({ setOrderList, orderListCount, getOrderList }) => {
+  useEffect(() => {
+    getOrderList();
+  }, [getOrderList]);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -36,7 +43,7 @@ const Tabs = () => {
         name='MainPage'
         component={MainPage}
         options={{
-          tabBarLabel: 'Акции',
+          tabBarLabel: 'Главная',
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Feather name='home' size={24} color={color} />
@@ -63,11 +70,16 @@ const Tabs = () => {
         name='BasketPage'
         component={BasketPage}
         options={{
+          tabBarBadge: orderListCount > 0 ? orderListCount : null,
+          tabBarBadgeStyle: styles.basketBadge,
           tabBarLabel: 'Корзина',
           headerTitle: 'Корзина',
           headerTitleAlign: 'left',
           headerRight: () => (
-            <TouchableOpacity style={{ paddingRight: 20 }}>
+            <TouchableOpacity
+              onPress={() => setOrderList([])}
+              style={{ paddingRight: 20 }}
+            >
               <Text fontSize={14} color={propStyles.blueActiveColor}>
                 Очистить корзину
               </Text>
@@ -93,4 +105,35 @@ const Tabs = () => {
   );
 };
 
-export default Tabs;
+const styles = StyleSheet.create({
+  basketBadge: {
+    backgroundColor: '#FEA800',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 12,
+    minWidth: 18,
+    width: 18,
+    maxHeight: 18,
+    height: 18,
+    paddingLeft: 4,
+    paddingRight: 4,
+    alignSelf: 'center',
+    left: 8,
+    top: 0,
+  },
+});
+
+const mapStateToProps = ({ order: { orderListCount } }) => {
+  return {
+    orderListCount,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setOrderList: (data) => dispatch(setOrderList(data)),
+    getOrderList: () => dispatch(getOrderList()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tabs);

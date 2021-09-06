@@ -51,7 +51,7 @@ const CategoriesPage = () => {
   };
 
   return (
-    <Box p='20px' pb={0} safeAreaTop>
+    <Box flex={1} p='20px' pb={0} safeAreaTop>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Box mb={3} _text={styles.headerText}>
           Каталог

@@ -13,46 +13,9 @@ import ProductModal from '../../Modals/ProductModal';
 
 const { width } = Dimensions.get('window');
 
-const ProductItems = () => {
+const ProductItems = ({ data }) => {
   const [isShowModal, setShowModal] = useState(false);
   const [isProduct, setProduct] = useState({});
-
-  const img = 'https://tea-rose.com.ua/img/products/1598341880_70427.JPG';
-  let idx = 0;
-  const arr = [
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 25 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 25 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 2400,
-      promo: 36,
-    },
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 11 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 11 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 1200,
-      promo: 19,
-    },
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 101 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 101 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 5000,
-      promo: 5,
-    },
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 13 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 13 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 1300,
-      promo: null,
-    },
-  ];
 
   const onOpenProductModal = (el) => {
     setProduct(el);
@@ -62,8 +25,8 @@ const ProductItems = () => {
   return (
     <>
       <Flex direction='row' justify='space-between' wrap='wrap' p='20px'>
-        {arr?.length &&
-          arr.map((el) => (
+        {data?.length &&
+          data.map((el) => (
             <TouchableOpacity
               key={el.id}
               activeOpacity={0.6}
@@ -71,7 +34,7 @@ const ProductItems = () => {
               style={styles.productItemWrap}
             >
               <ImageBackground
-                source={{ uri: img }}
+                source={{ uri: el.img }}
                 style={styles.productImg}
                 imageStyle={{ borderRadius: 14 }}
               >

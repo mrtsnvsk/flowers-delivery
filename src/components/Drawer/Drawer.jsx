@@ -4,18 +4,16 @@ import { StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Box, Image, Flex, ScrollView } from 'native-base';
 import propStyles from '../../resources/propStyles';
 import {
-  Feather,
   AntDesign,
   MaterialIcons,
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
+import CallPhoneBlock from '../Elements/CallPhoneBlock';
 
 const Drawer = ({ navigation }) => {
   const [isOpenMenu, setOpenMenu] = useState(false);
-
-  const phone = '+7 (812) 445-12-13';
 
   const shopLogo =
     'https://florcat.ru/upload/delight.webpconverter/local/templates/florcat/images/logo.png.webp?162728356719376';
@@ -85,29 +83,7 @@ const Drawer = ({ navigation }) => {
             pt={'10%'}
             pb={3}
           >
-            <TouchableOpacity onPress={() => Linking.openURL(`tel:${phone}`)}>
-              <Flex direction='row' alignItems='center'>
-                <Flex
-                  mr={4}
-                  p={2}
-                  bgColor={propStyles.mainRedColor}
-                  borderRadius={50}
-                  alignItems='center'
-                  justify='center'
-                >
-                  <Feather name='phone' size={28} color={'#fff'} />
-                </Flex>
-                <Box>
-                  <Box _text={{ fontWeight: '500' }}>{phone}</Box>
-                  <Box
-                    mt={1}
-                    _text={{ color: propStyles.blueActiveColor, fontSize: 14 }}
-                  >
-                    Позвонить
-                  </Box>
-                </Box>
-              </Flex>
-            </TouchableOpacity>
+            <CallPhoneBlock />
             <Box mt={'10%'}>
               {links.map((el, i) => (
                 <TouchableOpacity

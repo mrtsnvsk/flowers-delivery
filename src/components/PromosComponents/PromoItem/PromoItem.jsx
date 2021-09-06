@@ -38,7 +38,11 @@ const PromoItem = () => {
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {products?.length ? (
           products.map((el, i) => (
-            <Box style={styles.container} key={i} mr={3}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.container}
+              key={i}
+            >
               <Box>
                 <Image
                   source={{ uri: img }}
@@ -46,7 +50,7 @@ const PromoItem = () => {
                   alt='Product'
                 />
               </Box>
-              <Box>
+              <Box mt={1}>
                 <Text
                   ellipsizeMode={'clip'}
                   numberOfLines={1}
@@ -58,7 +62,7 @@ const PromoItem = () => {
               <Box mt={4}>
                 <BuyBtn price={el.price} />
               </Box>
-            </Box>
+            </TouchableOpacity>
           ))
         ) : (
           <Box></Box>
@@ -71,6 +75,7 @@ const PromoItem = () => {
 const styles = StyleSheet.create({
   container: {
     width: (width - 40) / 2.4,
+    marginRight: 13,
   },
   productImg: {
     width: (width - 40) / 2.4,

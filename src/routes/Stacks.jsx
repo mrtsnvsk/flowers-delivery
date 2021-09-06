@@ -13,6 +13,7 @@ import ActivateAppPage from '../pages/ActivateAppPage';
 import SearchPage from '../pages/SearchPage';
 import ContactsPage from '../pages/ContactsPage';
 import СonditionsDeliveryPage from '../pages/СonditionsDeliveryPage';
+import FavoritesPage from '../pages/FavoritesPage';
 
 import CatalogHeader from '../components/CatalogPageComponents/CatalogHeader';
 import SearchInput from '../components/Elements/SearchInput';
@@ -107,6 +108,15 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
         }}
         name='CatalogPage'
         component={CatalogPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitleAlign: 'left',
+          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
+          headerTitle: 'Избранное',
+        }}
+        name='FavoritesPage'
+        component={FavoritesPage}
       />
     </Stack.Navigator>
   );

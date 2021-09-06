@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   Dimensions,
@@ -18,6 +19,13 @@ import AddToBasketTopSlide from '../../Elements/AddToBasketTopSlide';
 const { width } = Dimensions.get('window');
 import { setOrderList, getOrderList } from '../../../store/actions/order';
 import { getOrderFromStorage } from '../../../resources/utils';
+import SwitchAdditionalProduct from '../../Elements/SwitchAdditionalProduct';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {
+  addToFavoriteList,
+  deleteFromFavoritesList,
+} from '../../../store/actions/favorites';
 
 const CircleIconWrapper = ({ icon, fn }) => {
   return (
@@ -34,10 +42,13 @@ const ProductModal = ({
   setOrderList,
   orderList,
   getOrderList,
+  addToFavoriteList,
+  deleteFromFavoritesList,
 }) => {
   const [isProduct, setProduct] = useState({});
   const [isOpenSlide, setOpenSlide] = useState(false);
   const [matchItem, setMatchItem] = useState(false);
+  const [isFavorite, setFavorite] = useState(false);
 
   const otherImgs = [
     {
@@ -60,6 +71,19 @@ const ProductModal = ({
   }, [product]);
 
   useEffect(() => {
+    (async () => {
+      const fav = await AsyncStorage.getItem('@favorites');
+
+      if (fav) {
+        const favList = JSON.parse(fav);
+        setFavorite(!!favList.filter((el) => el.id === isProduct.id).length);
+      } else {
+        setFavorite(false);
+      }
+    })();
+  }, [isProduct]);
+
+  useEffect(() => {
     const check = orderList.filter((el) => el.name === isProduct.name);
 
     check.length
@@ -76,7 +100,7 @@ const ProductModal = ({
 
   const addToBasket = async () => {
     const prevList = await getOrderFromStorage(),
-      list = [...prevList, isProduct];
+      list = [...prevList, { ...isProduct, count: 1 }];
     onOpenTopSlide();
     setOrderList(list);
   };
@@ -85,6 +109,16 @@ const ProductModal = ({
     const prevList = await getOrderFromStorage(),
       list = prevList.filter((el) => el.name !== isProduct.name);
     setOrderList(list);
+  };
+
+  const toggleFavorite = () => {
+    if (!isFavorite) {
+      addToFavoriteList(isProduct);
+      setFavorite((prevState) => !prevState);
+    } else {
+      deleteFromFavoritesList(isProduct.id);
+      setFavorite((prevState) => !prevState);
+    }
   };
 
   return (
@@ -109,8 +143,15 @@ const ProductModal = ({
                   }
                 />
                 <Flex direction='row' alignItems='center'>
-                  <TouchableOpacity style={{ marginRight: 16 }}>
-                    <AntDesign name='heart' size={24} color='#fff' />
+                  <TouchableOpacity
+                    onPress={toggleFavorite}
+                    style={{ marginRight: 16 }}
+                  >
+                    <AntDesign
+                      name='heart'
+                      size={24}
+                      color={isFavorite ? propStyles.spinnerColor : '#fff'}
+                    />
                   </TouchableOpacity>
                   <CircleIconWrapper
                     icon={
@@ -149,6 +190,16 @@ const ProductModal = ({
               <Box mt={3}>
                 <Text style={styles.productDescText}>{isProduct?.desc}</Text>
               </Box>
+              <Box mt={5}>
+                <Box
+                  _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
+                  mb={3}
+                >
+                  Дополнительно
+                </Box>
+                <SwitchAdditionalProduct />
+              </Box>
+
               <Box mt={5}>
                 <Box
                   _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
@@ -224,11 +275,11 @@ const mapStateToProps = ({ order: { orderList } }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setOrderList: (data) => dispatch(setOrderList(data)),
-    getOrderList: () => dispatch(getOrderList()),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setOrderList: (data) => dispatch(setOrderList(data)),
+  getOrderList: () => dispatch(getOrderList()),
+  addToFavoriteList: (data) => dispatch(addToFavoriteList(data)),
+  deleteFromFavoritesList: (id) => dispatch(deleteFromFavoritesList(id)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductModal);

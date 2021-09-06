@@ -6,6 +6,7 @@ const propStyles = {
   grayColor: 'grey',
   redColor: '#FF0000',
   basketBlocksColor: '#E6EFF0',
+  spinnerColor: '#E51234',
   shadowDefault: {
     shadowColor: '#000',
     shadowOffset: {

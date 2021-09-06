@@ -13,8 +13,12 @@ const OrderDetails = ({ order }) => {
   const [additPrice, setAdditPrice] = useState(0);
 
   useEffect(() => {
+    console.log('order', order);
+
     if (order.length) {
-      setPrice(order.reduce((acc, val) => acc + val.price, 0).toFixed(2));
+      setPrice(
+        order.reduce((acc, val) => acc + val.price * val.count, 0).toFixed(2)
+      );
     } else {
       setPrice(0);
     }

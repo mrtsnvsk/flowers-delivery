@@ -19,7 +19,7 @@ const SearchItems = ({ products }) => {
 
   return (
     <>
-      <Box p='20px'>
+      <Box flex={1} p='20px'>
         <ScrollView showsVerticalScrollIndicator={false}>
           {products.length
             ? products.map((el) => (

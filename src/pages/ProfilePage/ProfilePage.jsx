@@ -121,6 +121,7 @@ const ProfilePage = () => {
               />
             }
             text='История заказов'
+            actionFn={() => onPushToLink('OrderStoriesPage')}
           />
           <ListItem
             icon={

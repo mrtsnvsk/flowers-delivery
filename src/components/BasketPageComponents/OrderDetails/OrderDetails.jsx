@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 import { TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Box, Flex, Text } from 'native-base';
@@ -8,13 +9,13 @@ import DottedUnderline from '../DottedUnderline';
 
 const { width } = Dimensions.get('window');
 
-const OrderDetails = ({ order }) => {
+const OrderDetails = ({ order, hideOrderBtn }) => {
+  const navigation = useNavigation();
+
   const [price, setPrice] = useState(0);
   const [additPrice, setAdditPrice] = useState(0);
 
   useEffect(() => {
-    console.log('order', order);
-
     if (order.length) {
       setPrice(
         order.reduce((acc, val) => acc + val.price * val.count, 0).toFixed(2)
@@ -25,7 +26,12 @@ const OrderDetails = ({ order }) => {
   }, [order]);
 
   return (
-    <Box borderRadius={14} mt='30px' bg={propStyles.basketBlocksColor} p='14px'>
+    <Box
+      borderRadius={14}
+      mt='30px'
+      bg={!hideOrderBtn ? propStyles.basketBlocksColor : '#fff'}
+      p='14px'
+    >
       <Box mb={3}>
         <Flex direction='row' justify='space-between' align='center'>
           <Box>Товары</Box>
@@ -63,11 +69,16 @@ const OrderDetails = ({ order }) => {
         </Flex>
         <DottedUnderline />
       </Box>
-      <TouchableOpacity style={styles.orderBtn}>
-        <Text color='#fff' fontWeight='600'>
-          Заказать за: {price} p.
-        </Text>
-      </TouchableOpacity>
+      {!hideOrderBtn && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('OrderingPage')}
+          style={styles.orderBtn}
+        >
+          <Text color='#fff' fontWeight='600'>
+            Заказать за: {price} p.
+          </Text>
+        </TouchableOpacity>
+      )}
     </Box>
   );
 };

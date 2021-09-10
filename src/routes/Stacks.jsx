@@ -14,6 +14,9 @@ import SearchPage from '../pages/SearchPage';
 import ContactsPage from '../pages/ContactsPage';
 import СonditionsDeliveryPage from '../pages/СonditionsDeliveryPage';
 import FavoritesPage from '../pages/FavoritesPage';
+import FiltersPage from '../pages/FiltersPage';
+import OrderingPage from '../pages/OrderingPage';
+import OrderStoriesPage from '../pages/OrderStoriesPage';
 
 import CatalogHeader from '../components/CatalogPageComponents/CatalogHeader';
 import SearchInput from '../components/Elements/SearchInput';
@@ -111,12 +114,45 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
       />
       <Stack.Screen
         options={{
+          headerLeftContainerStyle: { paddingLeft: 16 },
           headerTitleAlign: 'left',
           headerLeft: () => <HeaderBackBtn navigation={navigation} />,
           headerTitle: 'Избранное',
         }}
         name='FavoritesPage'
         component={FavoritesPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitleAlign: 'left',
+          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
+          headerTitle: 'Фильтр',
+          headerRight: () => <CatalogHeader navigation={navigation} />,
+          headerLeftContainerStyle: { paddingLeft: 16 },
+          headerRightContainerStyle: { paddingRight: 16 },
+        }}
+        name='FiltersPage'
+        component={FiltersPage}
+      />
+      <Stack.Screen
+        options={{
+          headerLeftContainerStyle: { paddingLeft: 16 },
+          headerTitleAlign: 'left',
+          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
+          headerTitle: 'Оформление заказа',
+        }}
+        name='OrderingPage'
+        component={OrderingPage}
+      />
+      <Stack.Screen
+        options={{
+          headerLeftContainerStyle: { paddingLeft: 16 },
+          headerTitleAlign: 'left',
+          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
+          headerTitle: 'История заказов',
+        }}
+        name='OrderStoriesPage'
+        component={OrderStoriesPage}
       />
     </Stack.Navigator>
   );

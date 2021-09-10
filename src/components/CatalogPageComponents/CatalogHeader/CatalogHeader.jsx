@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
 import { TouchableOpacity } from 'react-native';
 import { Flex } from 'native-base';
@@ -8,6 +9,8 @@ import { MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import { showSortModal } from '../../../store/actions/modals';
 
 const CatalogHeader = ({ showSortModal }) => {
+  const navigation = useNavigation();
+
   return (
     <Flex direction='row' justify='space-between' alignItems='center'>
       <TouchableOpacity
@@ -16,7 +19,7 @@ const CatalogHeader = ({ showSortModal }) => {
       >
         <MaterialIcons name='sort' size={24} color='black' />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('FiltersPage')}>
         <FontAwesome name='filter' size={24} color='black' />
       </TouchableOpacity>
     </Flex>

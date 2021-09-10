@@ -143,16 +143,22 @@ const ProductModal = ({
                   }
                 />
                 <Flex direction='row' alignItems='center'>
-                  <TouchableOpacity
-                    onPress={toggleFavorite}
-                    style={{ marginRight: 16 }}
-                  >
-                    <AntDesign
-                      name='heart'
-                      size={24}
-                      color={isFavorite ? propStyles.spinnerColor : '#fff'}
+                  <Box mr='16px'>
+                    <CircleIconWrapper
+                      icon={
+                        <TouchableOpacity onPress={toggleFavorite}>
+                          <AntDesign
+                            name='heart'
+                            size={20}
+                            color={
+                              isFavorite ? propStyles.spinnerColor : '#fff'
+                            }
+                          />
+                        </TouchableOpacity>
+                      }
                     />
-                  </TouchableOpacity>
+                  </Box>
+
                   <CircleIconWrapper
                     icon={
                       <MaterialIcons
@@ -248,11 +254,11 @@ const styles = StyleSheet.create({
     height: 300,
   },
   circleIconWrapper: {
-    width: 30,
-    height: 30,
+    width: 32,
+    height: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: propStyles.shadowedColor,
+    backgroundColor: '#C6C6C6',
     borderRadius: 50,
   },
   carouselImg: {

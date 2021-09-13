@@ -49,6 +49,7 @@ const ProductModal = ({
   const [isOpenSlide, setOpenSlide] = useState(false);
   const [matchItem, setMatchItem] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
+  const [isPackage, setPackage] = useState(false);
 
   const otherImgs = [
     {
@@ -100,7 +101,16 @@ const ProductModal = ({
 
   const addToBasket = async () => {
     const prevList = await getOrderFromStorage(),
-      list = [...prevList, { ...isProduct, count: 1 }];
+      list = [
+        ...prevList,
+        {
+          ...isProduct,
+          count: 1,
+          package: !isPackage
+            ? null
+            : { price: 250, name: 'Добавить в упаковку' },
+        },
+      ];
     onOpenTopSlide();
     setOrderList(list);
   };
@@ -203,7 +213,11 @@ const ProductModal = ({
                 >
                   Дополнительно
                 </Box>
-                <SwitchAdditionalProduct />
+                <SwitchAdditionalProduct
+                  matchItem={matchItem}
+                  value={isPackage}
+                  setValue={setPackage}
+                />
               </Box>
 
               <Box mt={5}>
@@ -288,4 +302,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteFromFavoritesList: (id) => dispatch(deleteFromFavoritesList(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductModal);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(ProductModal));

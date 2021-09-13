@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Box, ScrollView, Text } from 'native-base';
@@ -7,6 +8,10 @@ import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
 
 const CatalogCategoriesCarousel = () => {
+  const navigation = useNavigation();
+
+  const [isCurCategory, setCurCategory] = useState(0);
+
   const categories = [
     {
       id: 0,
@@ -38,7 +43,10 @@ const CatalogCategoriesCarousel = () => {
     },
   ];
 
-  const [isCurCategory, setCurCategory] = useState(0);
+  const setCategory = (id, name) => {
+    setCurCategory(id);
+    navigation.setOptions({ headerTitle: name });
+  };
 
   return (
     <Box my={4}>
@@ -46,7 +54,7 @@ const CatalogCategoriesCarousel = () => {
         {categories?.length
           ? categories.map((el, i) => (
               <TouchableOpacity
-                onPress={() => setCurCategory(el.id)}
+                onPress={() => setCategory(el.id, el.name)}
                 key={i}
                 style={{
                   ...styles.categoryItem,

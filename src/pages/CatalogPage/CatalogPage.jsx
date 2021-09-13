@@ -8,10 +8,18 @@ import CatalogCategoriesCarousel from '../../components/CatalogPageComponents/Ca
 import ProductItems from '../../components/CatalogPageComponents/ProductItems';
 import BasketBottomLink from '../../components/Elements/BasketBottomLink';
 import SortModal from '../../components/Modals/SortModal';
+import ProductItemsColumn from '../../components/CatalogPageComponents/ProductItemsColumn';
 
 import { showSortModal } from '../../store/actions/modals';
+import { getCatalogBlockLayout } from '../../store/actions/catalogLayout';
 
-const CatalogPage = ({ route, isShowSortModal, showSortModal }) => {
+const CatalogPage = ({
+  route,
+  isShowSortModal,
+  showSortModal,
+  catalogLayout,
+  getCatalogBlockLayout,
+}) => {
   const { name, id } = route.params;
   const navigation = useNavigation();
 
@@ -53,17 +61,27 @@ const CatalogPage = ({ route, isShowSortModal, showSortModal }) => {
   ];
 
   useEffect(() => {
+    getCatalogBlockLayout();
+  }, []);
+
+  useEffect(() => {
     if (name) {
       navigation.setOptions({ headerTitle: name });
     }
   }, [name]);
 
+
+  
   return (
     <>
       <Box pb='60px'>
         <CatalogCategoriesCarousel />
         <ScrollView>
-          <ProductItems data={arr} />
+          {catalogLayout === 'row' ? (
+            <ProductItems data={arr} />
+          ) : catalogLayout === 'list' ? (
+            <ProductItemsColumn data={arr} />
+          ) : null}
         </ScrollView>
       </Box>
       <BasketBottomLink bottom={0} />
@@ -72,12 +90,17 @@ const CatalogPage = ({ route, isShowSortModal, showSortModal }) => {
   );
 };
 
-const mapStateToProps = ({ modals: { isShowSortModal } }) => ({
+const mapStateToProps = ({
+  modals: { isShowSortModal },
+  catalogLayout: { catalogLayout },
+}) => ({
   isShowSortModal,
+  catalogLayout,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   showSortModal: (bool) => dispatch(showSortModal(bool)),
+  getCatalogBlockLayout: () => dispatch(getCatalogBlockLayout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatalogPage);

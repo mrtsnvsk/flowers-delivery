@@ -57,7 +57,7 @@ const OrderingPage = ({ getOrderList, orderList }) => {
   }, [getOrderList]);
 
   return (
-    <Box flex={1} bg='#fff' p='20px'>
+    <Box flex={1} bg='#fff' p='20px' pt={2}>
       <Tabs tabId={tab} />
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* tab1 */}

@@ -16,15 +16,23 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
   const [additPrice, setAdditPrice] = useState(0);
 
   useEffect(() => {
+    getOrderDetails();
+  }, [order]);
+
+  const getOrderDetails = () => {
     if (order.length) {
       setPrice(
         order.reduce((acc, val) => acc + val.price * val.count, 0).toFixed(2)
       );
+      setAdditPrice(
+        order.reduce((acc, val) => (acc += +val?.package?.price || 0), 0)
+      );
     } else {
       setPrice(0);
+      setAdditPrice(0);
     }
-  }, [order]);
-
+  };
+  
   return (
     <Box
       borderRadius={14}
@@ -51,10 +59,10 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
           <Box>Дополнительно</Box>
           <Flex direction='row' align='center'>
             <Box mr={1}>
-              <Text>x0</Text>
+              <Text>x{order.filter((el) => el?.package).length}</Text>
             </Box>
             <Box>
-              <Text>{additPrice.toFixed(2)} p.</Text>
+              <Text>{additPrice} p.</Text>
             </Box>
           </Flex>
         </Flex>
@@ -64,7 +72,7 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
         <Flex direction='row' justify='space-between' align='center'>
           <Box>Всего</Box>
           <Box>
-            <Text>{price} p.</Text>
+            <Text>{(+price + +additPrice).toFixed(2)} p.</Text>
           </Box>
         </Flex>
         <DottedUnderline />
@@ -75,7 +83,7 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
           style={styles.orderBtn}
         >
           <Text color='#fff' fontWeight='600'>
-            Заказать за: {price} p.
+            Заказать за: {(+price + +additPrice).toFixed(2)} p.
           </Text>
         </TouchableOpacity>
       )}

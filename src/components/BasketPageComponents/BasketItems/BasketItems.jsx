@@ -5,7 +5,9 @@ import { Dimensions, TouchableOpacity } from 'react-native';
 import { Flex, Box, Image, Text } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
+
 import BasketCountBtns from '../BasketCountBtns';
+import DottedUnderline from '../DottedUnderline';
 
 const { width } = Dimensions.get('window');
 import { setOrderList } from '../../../store/actions/order';
@@ -29,7 +31,7 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
     <>
       {order.map((item) => (
         <Box borderRadius={14} mb={4} bg='#fff'>
-          <Box p='14px' mb={4}>
+          <Box p='14px' mb={3}>
             <Flex alignItems='flex-end'>
               <TouchableOpacity
                 onPress={async () => await deleteItem(item.name)}
@@ -66,17 +68,17 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
                 </Box>
                 <Flex direction='row' mt={3}>
                   {/* <Text
-                mr={2}
-                style={{
-                  textDecorationLine: 'line-through',
-                  textDecorationStyle: 'solid',
-                }}
-                fontWeight='500'
-                fontSize={14}
-                color={propStyles.mainRedColor}
-              >
-                2390,00 p.
-              </Text> */}
+                    mr={2}
+                    style={{
+                      textDecorationLine: 'line-through',
+                      textDecorationStyle: 'solid',
+                    }}
+                    fontWeight='500'
+                    fontSize={14}
+                    color={propStyles.mainRedColor}
+                  >
+                    2390,00 p.
+                  </Text> */}
                   <Text fontWeight='600' fontSize={15}>
                     {item.price.toFixed(2)} p.
                   </Text>
@@ -84,6 +86,24 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
               </Box>
             </Flex>
           </Box>
+          {item?.package ? (
+            <Box width={width - 32} px='14px' mb={4}>
+              <Flex
+                pb='2px'
+                direction='row'
+                align='center'
+                justify='space-between'
+              >
+                <Box width={width - 130}>
+                  <Text fontSize={14}>{item.package.name}</Text>
+                </Box>
+                <Box>
+                  <Text fontSize={14}>x1 {item.package.price} p.</Text>
+                </Box>
+              </Flex>
+              <DottedUnderline />
+            </Box>
+          ) : null}
           <Flex
             borderTopWidth={1}
             borderTopColor={propStyles.shadowColor}
@@ -115,10 +135,8 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setOrderList: (data) => dispatch(setOrderList(data)),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setOrderList: (data) => dispatch(setOrderList(data)),
+});
 
-export default connect(null, mapDispatchToProps)(BasketItem);
+export default connect(null, mapDispatchToProps)(React.memo(BasketItem));

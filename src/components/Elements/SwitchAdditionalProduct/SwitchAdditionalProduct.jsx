@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Switch, StyleSheet, Dimensions } from 'react-native';
+import { Switch, Dimensions } from 'react-native';
 import { Box, Flex, Image, Text } from 'native-base';
 
 const { width } = Dimensions.get('window');
 
-const SwitchAdditionalProduct = () => {
-  const [isEnabled, setEnabled] = useState(false);
-
+const SwitchAdditionalProduct = ({ value, setValue, matchItem }) => {
   const img = 'https://aggeek.net/files/blog/apple.1140x600.jpg';
 
   return (
@@ -28,8 +26,9 @@ const SwitchAdditionalProduct = () => {
       </Flex>
       <Box mr={1}>
         <Switch
-          onValueChange={() => setEnabled((prev) => !prev)}
-          value={isEnabled}
+          disabled={matchItem}
+          onValueChange={() => setValue((prev) => !prev)}
+          value={value}
         />
       </Box>
       <Box>
@@ -40,7 +39,5 @@ const SwitchAdditionalProduct = () => {
     </Flex>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default SwitchAdditionalProduct;

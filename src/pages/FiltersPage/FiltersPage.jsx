@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { connect } from 'react-redux';
 
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box, Text, Flex, Center } from 'native-base';
@@ -11,8 +12,9 @@ import {
 
 import RangeSlider from 'rn-range-slider';
 
-const FiltersPage = () => {
-  const [isDisplay, setDisplay] = useState('block');
+import { setCatalogBlockLayout } from '../../store/actions/catalogLayout';
+
+const FiltersPage = ({ setCatalogBlockLayout, catalogLayout }) => {
   const [low, setLow] = useState(1490);
   const [high, setHigh] = useState(9800);
 
@@ -31,51 +33,51 @@ const FiltersPage = () => {
         </Box>
         <Flex direction='row' align='center'>
           <TouchableOpacity
-            onPress={() => setDisplay('list')}
+            onPress={() => setCatalogBlockLayout('list')}
             style={[
               styles.displayBtn,
-              isDisplay === 'list' ? styles.displayBtnActive : null,
+              catalogLayout === 'list' ? styles.displayBtnActive : null,
             ]}
           >
             <Foundation
               name='list'
               size={24}
               color={
-                isDisplay === 'list'
+                catalogLayout === 'list'
                   ? propStyles.mainRedColor
                   : propStyles.shadowedColor
               }
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setDisplay('block')}
+            onPress={() => setCatalogBlockLayout('row')}
             style={[
               styles.displayBtn,
-              isDisplay === 'block' ? styles.displayBtnActive : null,
+              catalogLayout === 'row' ? styles.displayBtnActive : null,
             ]}
           >
             <AntDesign
               name='appstore1'
               size={24}
               color={
-                isDisplay === 'block'
+                catalogLayout === 'row'
                   ? propStyles.mainRedColor
                   : propStyles.shadowedColor
               }
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setDisplay('row')}
+            onPress={() => setCatalogBlockLayout('block')}
             style={[
               styles.displayBtn,
-              isDisplay === 'row' ? styles.displayBtnActive : null,
+              catalogLayout === 'block' ? styles.displayBtnActive : null,
             ]}
           >
             <MaterialCommunityIcons
               name='rectangle'
               size={24}
               color={
-                isDisplay === 'row'
+                catalogLayout === 'block'
                   ? propStyles.mainRedColor
                   : propStyles.shadowedColor
               }
@@ -185,4 +187,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FiltersPage;
+const mapStateToProps = ({ catalogLayout: { catalogLayout } }) => ({
+  catalogLayout,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCatalogBlockLayout: (value) => dispatch(setCatalogBlockLayout(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FiltersPage);

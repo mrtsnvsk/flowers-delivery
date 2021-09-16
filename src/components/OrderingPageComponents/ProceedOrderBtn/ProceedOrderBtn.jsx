@@ -10,7 +10,9 @@ const ProceedOrderBtn = ({ tab, setTab }) => {
         onPress={() => setTab((prevTab) => prevTab + 1)}
         style={styles.submitBtn}
       >
-        <Text color='#fff'>Продолжить оформление</Text>
+        <Text textAlign='center' color='#fff'>
+          Продолжить оформление
+        </Text>
       </TouchableOpacity>
     </Center>
   );

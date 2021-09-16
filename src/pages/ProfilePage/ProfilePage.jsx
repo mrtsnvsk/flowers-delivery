@@ -92,6 +92,7 @@ const ProfilePage = () => {
                 color={propStyles.mainRedColor}
               />
             }
+            actionFn={() => setPushes((prev) => !prev)}
             text={'Получать уведомления'}
             chevron={
               <Switch
@@ -109,6 +110,7 @@ const ProfilePage = () => {
                 color={propStyles.mainRedColor}
               />
             }
+            actionFn={() => onPushToLink('NotificationsPage')}
             text='Уведомления'
           />
 
@@ -131,6 +133,7 @@ const ProfilePage = () => {
                 color={propStyles.mainRedColor}
               />
             }
+            actionFn={() => onPushToLink('BonusesPage')}
             text='Мои бонусы'
             chevron={
               <Flex direction='row' align='center'>
@@ -156,6 +159,7 @@ const ProfilePage = () => {
                 color={propStyles.mainRedColor}
               />
             }
+            actionFn={() => onPushToLink('ConfidentialityPage')}
             text='Конфеденциальность'
           />
         </Box>

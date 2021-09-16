@@ -15,3 +15,8 @@ export const clearSearchInputText = () => {
     );
   };
 };
+
+export const setOrderingAddressTerm = (address) => ({
+  type: constant.SET_ORDERING_ADDRESS_TERM,
+  payload: address,
+});

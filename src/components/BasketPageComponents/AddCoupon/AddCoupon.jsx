@@ -4,9 +4,15 @@ import { TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Box, Flex, Input, Text } from 'native-base';
 import propStyles from '../../../resources/propStyles';
 
+import { onAlert } from '../../../resources/utils';
+
 const { width } = Dimensions.get('window');
 
 const AddCoupon = ({ setCoupon, coupon }) => {
+  const addNewCoupon = () => {
+    coupon ? console.log('фыв') : onAlert('Купон не может быть пустым!');
+  };
+
   return (
     <Flex
       mt='20px'
@@ -28,7 +34,7 @@ const AddCoupon = ({ setCoupon, coupon }) => {
           autoCapitalize='none'
         />
       </Box>
-      <TouchableOpacity style={styles.submitBtn}>
+      <TouchableOpacity onPress={addNewCoupon} style={styles.submitBtn}>
         <Text fontSize={14} color='#000' fontWeight='700'>
           Применить
         </Text>

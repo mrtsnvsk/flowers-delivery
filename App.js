@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Box, StatusBar } from 'native-base';
 
@@ -10,7 +10,13 @@ import { NativeBaseProvider } from 'native-base';
 
 import Routes from './src/routes/Drawers';
 
+import { allowLocation } from './src/resources/utils';
+
 const App = () => {
+  useEffect(() => {
+    allowLocation();
+  }, []);
+
   return (
     <Provider store={store}>
       <NativeBaseProvider>
@@ -29,7 +35,5 @@ const App = () => {
     </Provider>
   );
 };
-
-
 
 export default App;

@@ -9,6 +9,8 @@ import DottedUnderline from '../DottedUnderline';
 
 const { width } = Dimensions.get('window');
 
+import { onAlert } from '../../../resources/utils';
+
 const OrderDetails = ({ order, hideOrderBtn }) => {
   const navigation = useNavigation();
 
@@ -32,7 +34,13 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
       setAdditPrice(0);
     }
   };
-  
+
+  const createOrder = () => {
+    price > 0
+      ? navigation.navigate('OrderingPage')
+      : onAlert('Чтобы оформить заказ для начала выберите товар!');
+  };
+
   return (
     <Box
       borderRadius={14}
@@ -78,10 +86,7 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
         <DottedUnderline />
       </Box>
       {!hideOrderBtn && (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('OrderingPage')}
-          style={styles.orderBtn}
-        >
+        <TouchableOpacity onPress={createOrder} style={styles.orderBtn}>
           <Text color='#fff' fontWeight='600'>
             Заказать за: {(+price + +additPrice).toFixed(2)} p.
           </Text>

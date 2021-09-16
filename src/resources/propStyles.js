@@ -7,6 +7,7 @@ const propStyles = {
   redColor: '#FF0000',
   basketBlocksColor: '#E6EFF0',
   spinnerColor: '#E51234',
+  greenColor: '#4FB052',
   shadowDefault: {
     shadowColor: '#000',
     shadowOffset: {

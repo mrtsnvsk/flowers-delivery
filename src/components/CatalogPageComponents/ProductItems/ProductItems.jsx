@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   productNameText: {
     fontSize: 14,
-    fontWeight: '800',
+    fontWeight: 'bold',
     color: '#000',
   },
   productDescText: {},

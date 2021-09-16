@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { StyleSheet } from 'react-native';
 import { Box, ScrollView } from 'native-base';
 
 import Header from '../../components/MainPageComponents/Header';
@@ -11,12 +10,12 @@ import PromoItem from '../../components/PromosComponents/PromoItem';
 
 const MainPage = () => {
   return (
-    <Box safeAreaTop>
+    <Box flex={1} safeAreaTop>
       <ScrollView>
-        <Box style={styles.p20}>
+        <Box p='20px' pb={0}>
           <Header />
         </Box>
-        <Box style={{ paddingLeft: 20 }}>
+        <Box pl='20px'>
           <CategoriesCarousel />
         </Box>
         <NewsSlider />
@@ -28,11 +27,5 @@ const MainPage = () => {
     </Box>
   );
 };
-
-const styles = StyleSheet.create({
-  p20: {
-    padding: 20,
-  },
-});
 
 export default MainPage;

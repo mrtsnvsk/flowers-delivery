@@ -1,6 +1,7 @@
 // search
 export const SET_SHOW_SEARCH_ICON = 'SET_SHOW_SEARCH_ICON';
 export const CLEAR_SEARCH_INPUT_TEXT = 'CLEAR_SEARCH_INPUT_TEXT';
+export const SET_ORDERING_ADDRESS_TERM = 'SET_ORDERING_ADDRESS_TERM';
 // orders
 export const SET_ORDER_LIST = 'SET_ORDER_LIST';
 // favorites

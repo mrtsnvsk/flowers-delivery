@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 
 import {
   Dimensions,

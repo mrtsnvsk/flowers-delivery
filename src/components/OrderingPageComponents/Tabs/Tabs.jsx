@@ -44,7 +44,7 @@ const Tabs = ({ tabId }) => {
         >
           <Text
             color={tab.id === tabId ? propStyles.mainRedColor : '#000'}
-            fontSize={17}
+            fontSize={15}
           >
             {tab.name}
           </Text>

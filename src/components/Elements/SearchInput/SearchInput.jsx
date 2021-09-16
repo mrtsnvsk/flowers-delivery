@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { TextInput, StyleSheet, Dimensions } from 'react-native';
-import propStyles from '../../../resources/propStyles';
 
 const { width } = Dimensions.get('window');
 
 import { setShowSearchIcon } from '../../../store/actions/search';
 
-const SearchInput = ({ setShowSearchIcon, isClearSearchInputText }) => {
-  const [term, setTerm] = useState('');
-
+const SearchInput = ({
+  setShowSearchIcon,
+  isClearSearchInputText,
+  w = 140,
+  term,
+  setTerm,
+}) => {
   useEffect(() => {
     term.length ? setShowSearchIcon(false) : setShowSearchIcon(true);
   }, [term]);
@@ -23,7 +26,7 @@ const SearchInput = ({ setShowSearchIcon, isClearSearchInputText }) => {
 
   return (
     <TextInput
-      style={styles.input}
+      style={[styles.input, { width: width - w }]}
       onChangeText={(text) => setTerm(text)}
       value={term}
       placeholder='Поиск'
@@ -34,7 +37,6 @@ const SearchInput = ({ setShowSearchIcon, isClearSearchInputText }) => {
 const styles = StyleSheet.create({
   input: {
     alignItems: 'center',
-    width: width - 160,
     backgroundColor: '#f1f1f1',
     paddingHorizontal: 16,
     paddingVertical: 10,

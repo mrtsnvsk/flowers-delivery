@@ -8,7 +8,12 @@
       "bundleIdentifier": "flowers-delivery-app"
     },
     "android": {
-      "package": "com.hold_fast.flowersdeliveryapp"
+      "package": "com.hold_fast.flowersdeliveryapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCGkZJZXBaS7sRX7qyi6s6qaAcvDJvyK7A"
+        }
+      }
     }
   },
   "name": "flowers-delivery-app"

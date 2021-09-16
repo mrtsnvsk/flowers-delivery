@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Box, Text, ScrollView, Center, TextArea, Flex } from 'native-base';
+import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import {
+  Box,
+  Text,
+  ScrollView,
+  Center,
+  TextArea,
+  Flex,
+  KeyboardAvoidingView,
+} from 'native-base';
 import propStyles from '../../resources/propStyles';
 import { Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
@@ -19,6 +28,8 @@ import OrderDetails from '../../components/BasketPageComponents/OrderDetails/Ord
 import BackTabBtn from '../../components/OrderingPageComponents/BackTabBtn';
 
 const OrderingPage = ({ getOrderList, orderList }) => {
+  const navigation = useNavigation();
+
   const [tab, setTab] = useState(0);
   const [orderTo, setOrderTo] = useState('delivery');
   const [paymentMethod, setPaymentMethod] = useState('online');
@@ -56,168 +67,189 @@ const OrderingPage = ({ getOrderList, orderList }) => {
     getOrderList();
   }, [getOrderList]);
 
+  const onPushToLink = (link) => {
+    navigation.navigate(link);
+  };
+
   return (
-    <Box flex={1} bg='#fff' p='20px' pt={2}>
-      <Tabs tabId={tab} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* tab1 */}
-        {tab === 0 && (
-          <>
-            <Box mt={'30px'}>
-              <BlockLabel label={'Способ доставки'} />
-              <DeliveryMethodRadio
-                radioData={radioOrdetToList}
-                value={orderTo}
-                setValue={setOrderTo}
-              />
-            </Box>
+    <KeyboardAvoidingView
+      flex={1}
+      h={{
+        base: '700px',
+        lg: 'auto',
+      }}
+      behavior='padding'
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <Box flex={1} bg='#fff' p='20px' pt={2}>
+        <Tabs tabId={tab} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* tab1 */}
+          {tab === 0 && (
+            <>
+              <Box mt={'30px'}>
+                <BlockLabel label={'Способ доставки'} />
+                <DeliveryMethodRadio
+                  radioData={radioOrdetToList}
+                  value={orderTo}
+                  setValue={setOrderTo}
+                />
+              </Box>
+              <Box mt='30px'>
+                {orderTo === 'pickup' && (
+                  <Box mb='30px'>
+                    <SelectOrderAddress />
+                  </Box>
+                )}
+                <BlockLabel label={'Время доставки'} />
+                <TouchableOpacity style={styles.joinTimeWrapper}>
+                  <Box>
+                    <Text color='#000'>
+                      Нажмите здесь, чтобы указать время доставки
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Entypo
+                      name='chevron-right'
+                      size={24}
+                      color={propStyles.grayColor}
+                    />
+                  </Box>
+                </TouchableOpacity>
+              </Box>
+              <ProceedOrderBtn tab={tab} setTab={setTab} />
+            </>
+          )}
+          {/* tab2 */}
+          {tab === 1 && (
             <Box mt='30px'>
-              {orderTo === 'pickup' && (
-                <Box mb='30px'>
-                  <SelectOrderAddress />
+              <Box mb={4}>
+                <InputUnderline
+                  value={name}
+                  setValue={setName}
+                  placeholder='Введите имя'
+                />
+              </Box>
+              <Box mb={4}>
+                <InputUnderline
+                  value={phone}
+                  setValue={setPhone}
+                  placeholder='Введите номер'
+                />
+              </Box>
+              <Box>
+                <InputUnderline
+                  value={email}
+                  setValue={setEmail}
+                  placeholder='Введите email'
+                />
+              </Box>
+              <Center>
+                <TouchableOpacity
+                  onPress={() => onPushToLink('MapPage')}
+                  style={styles.joinAddressBtn}
+                >
+                  <Box mr={4}>
+                    <Ionicons name='location-sharp' size={24} color={'#fff'} />
+                  </Box>
+                  <Box>
+                    <Text color='#fff'>Указать адрес</Text>
+                  </Box>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.joinFromListBtn}>
+                  <Text>Выбрать из списка</Text>
+                </TouchableOpacity>
+              </Center>
+              <Box mt='30px'>
+                <Box mb={4}>
+                  <InputUnderline placeholder='Введите город' />
                 </Box>
-              )}
-              <BlockLabel label={'Время доставки'} />
-              <TouchableOpacity style={styles.joinTimeWrapper}>
+                <Box mb={4}>
+                  <InputUnderline placeholder='Введите регион' />
+                </Box>
+                <Box mb={4}>
+                  <InputUnderline placeholder='Введите этаж' />
+                </Box>
+                <Box mb={4}>
+                  <InputUnderline placeholder='Введите квартиру' />
+                </Box>
+              </Box>
+              <Center mt={5}>
+                <TouchableOpacity
+                  style={[styles.joinFromListBtn, { width: 240 }]}
+                >
+                  <Text>Сохранить адрес</Text>
+                </TouchableOpacity>
+                <ProceedOrderBtn tab={tab} setTab={setTab} />
+              </Center>
+            </Box>
+          )}
+          {tab === 2 && (
+            <Box mt='30px'>
+              <Box>
+                <BlockLabel label='Адрес доставки' />
+                <Box px={1}>
+                  {orderList.length
+                    ? orderList.map((el) => <OrderingItem item={el} />)
+                    : null}
+                </Box>
+              </Box>
+              <OrderDetails hideOrderBtn={true} order={orderList} />
+              <Box mt='30px'>
+                <BlockLabel label='Ваш комментарий' />
+                <TextArea h={24} placeholder='Написать комментарий' />
+              </Box>
+              <ProceedOrderBtn tab={tab} setTab={setTab} />
+              <BackTabBtn label=' Вернуться к адресу' setTab={setTab} />
+            </Box>
+          )}
+          {tab === 3 && (
+            <Box mt='30px'>
+              <Box>
+                <BlockLabel label='Способ оплаты' />
                 <Box>
-                  <Text color='#000'>
-                    Нажмите здесь, чтобы указать время доставки
+                  <Text fontSize={14} color={propStyles.shadowColor}>
+                    Выберите свой способ оплаты
                   </Text>
                 </Box>
+                <DeliveryMethodRadio
+                  value={paymentMethod}
+                  setValue={setPaymentMethod}
+                  radioData={radioPaymentMethodList}
+                />
+              </Box>
+              <TouchableOpacity style={styles.useBonusesBtn}>
                 <Box>
-                  <Entypo
-                    name='chevron-right'
-                    size={24}
-                    color={propStyles.grayColor}
-                  />
+                  <Text fontSize={15} color={propStyles.shadowColor}>
+                    Использовать бонусы
+                  </Text>
                 </Box>
+                <Flex direction='row' justify='flex-end' align='center'>
+                  <Box mr={2}>
+                    <MaterialIcons
+                      name='add-task'
+                      size={24}
+                      color={'#FECC1A'}
+                    />
+                  </Box>
+                  <Box>
+                    <Text color={propStyles.shadowColor}>0</Text>
+                  </Box>
+                </Flex>
               </TouchableOpacity>
+              <OrderDetails hideOrderBtn={true} order={orderList} />
+              <Center mt={'30px'}>
+                <TouchableOpacity style={styles.submitOrderBtn}>
+                  <Text color='#fff'>Оформить заказ</Text>
+                </TouchableOpacity>
+              </Center>
+              <BackTabBtn label=' Вернуться к деталям заказа' setTab={setTab} />
             </Box>
-            <ProceedOrderBtn tab={tab} setTab={setTab} />
-          </>
-        )}
-        {/* tab2 */}
-        {tab === 1 && (
-          <Box mt='30px'>
-            <Box mb={4}>
-              <InputUnderline
-                value={name}
-                setValue={setName}
-                placeholder='Введите имя'
-              />
-            </Box>
-            <Box mb={4}>
-              <InputUnderline
-                value={phone}
-                setValue={setPhone}
-                placeholder='Введите номер'
-              />
-            </Box>
-            <Box>
-              <InputUnderline
-                value={email}
-                setValue={setEmail}
-                placeholder='Введите email'
-              />
-            </Box>
-            <Center>
-              <TouchableOpacity style={styles.joinAddressBtn}>
-                <Box mr={4}>
-                  <Ionicons name='location-sharp' size={24} color={'#fff'} />
-                </Box>
-                <Box>
-                  <Text color='#fff'>Указать адрес</Text>
-                </Box>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.joinFromListBtn}>
-                <Text>Выбрать из списка</Text>
-              </TouchableOpacity>
-            </Center>
-            <Box mt='30px'>
-              <Box mb={4}>
-                <InputUnderline placeholder='Введите город' />
-              </Box>
-              <Box mb={4}>
-                <InputUnderline placeholder='Введите регион' />
-              </Box>
-              <Box mb={4}>
-                <InputUnderline placeholder='Введите этаж' />
-              </Box>
-              <Box mb={4}>
-                <InputUnderline placeholder='Введите квартиру' />
-              </Box>
-            </Box>
-            <Center mt={5}>
-              <TouchableOpacity
-                style={[styles.joinFromListBtn, { width: 240 }]}
-              >
-                <Text>Сохранить адрес</Text>
-              </TouchableOpacity>
-              <ProceedOrderBtn tab={tab} setTab={setTab} />
-            </Center>
-          </Box>
-        )}
-        {tab === 2 && (
-          <Box mt='30px'>
-            <Box>
-              <BlockLabel label='Адрес доставки' />
-              <Box px={1}>
-                {orderList.length
-                  ? orderList.map((el) => <OrderingItem item={el} />)
-                  : null}
-              </Box>
-            </Box>
-            <OrderDetails hideOrderBtn={true} order={orderList} />
-            <Box mt='30px'>
-              <BlockLabel label='Ваш комментарий' />
-              <TextArea h={24} placeholder='Написать комментарий' />
-            </Box>
-            <ProceedOrderBtn tab={tab} setTab={setTab} />
-            <BackTabBtn label=' Вернуться к адресу' setTab={setTab} />
-          </Box>
-        )}
-        {tab === 3 && (
-          <Box mt='30px'>
-            <Box>
-              <BlockLabel label='Способ оплаты' />
-              <Box>
-                <Text fontSize={14} color={propStyles.shadowColor}>
-                  Выберите свой способ оплаты
-                </Text>
-              </Box>
-              <DeliveryMethodRadio
-                value={paymentMethod}
-                setValue={setPaymentMethod}
-                radioData={radioPaymentMethodList}
-              />
-            </Box>
-            <TouchableOpacity style={styles.useBonusesBtn}>
-              <Box>
-                <Text fontSize={15} color={propStyles.shadowColor}>
-                  Использовать бонусы
-                </Text>
-              </Box>
-              <Flex direction='row' justify='flex-end' align='center'>
-                <Box mr={2}>
-                  <MaterialIcons name='add-task' size={24} color={'#FECC1A'} />
-                </Box>
-                <Box>
-                  <Text color={propStyles.shadowColor}>0</Text>
-                </Box>
-              </Flex>
-            </TouchableOpacity>
-            <OrderDetails hideOrderBtn={true} order={orderList} />
-            <Center mt={'30px'}>
-              <TouchableOpacity style={styles.submitOrderBtn}>
-                <Text color='#fff'>Оформить заказ</Text>
-              </TouchableOpacity>
-            </Center>
-            <BackTabBtn label=' Вернуться к деталям заказа' setTab={setTab} />
-          </Box>
-        )}
-      </ScrollView>
-    </Box>
+          )}
+        </ScrollView>
+      </Box>
+    </KeyboardAvoidingView>
   );
 };
 

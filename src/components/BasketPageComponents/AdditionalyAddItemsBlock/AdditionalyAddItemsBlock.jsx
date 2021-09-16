@@ -72,7 +72,7 @@ const AdditionalyAddItemsBlock = () => {
                     </Box>
                     <Flex width={width / 1.3 - 134} justify='space-between'>
                       <Box>
-                        <Text color='#000' fontWeight='600'>
+                        <Text fontSize={14} color='#000' fontWeight='bold'>
                           {el.name}
                         </Text>
                       </Box>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,20 +17,39 @@ import FavoritesPage from '../pages/FavoritesPage';
 import FiltersPage from '../pages/FiltersPage';
 import OrderingPage from '../pages/OrderingPage';
 import OrderStoriesPage from '../pages/OrderStoriesPage';
+import MapPage from '../pages/MapPage';
+import ConfidentialityPage from '../pages/ConfidentialityPage';
+import BonusesPage from '../pages/BonusesPage';
+import NotificationsPage from '../pages/NotificationsPage';
 
 import CatalogHeader from '../components/CatalogPageComponents/CatalogHeader';
 import SearchInput from '../components/Elements/SearchInput';
-
-import { clearSearchInputText } from '../store/actions/search';
 import HeaderBackBtn from '../components/Elements/HeaderBackBtn';
+
+import {
+  clearSearchInputText,
+  setOrderingAddressTerm,
+} from '../store/actions/search';
 
 const Stack = createStackNavigator();
 
-const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
+const Stacks = ({
+  navigation,
+  isShowSearchIcon,
+  clearSearchInputText,
+  setOrderingAddressTerm,
+  isOrderingAddressTerm,
+}) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerTitleContainerStyle: { paddingVertical: 4 },
+        headerLeft: () => <HeaderBackBtn navigation={navigation} />,
+        headerLeftContainerStyle: { paddingLeft: 16 },
+        headerRightContainerStyle: { paddingRight: 16 },
+        headerTitleAlign: 'left',
       }}
     >
       <Stack.Screen
@@ -52,7 +71,6 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
         name='ContactsPage'
         component={ContactsPage}
         options={{
-          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
           headerTitle: 'Контакты',
         }}
       />
@@ -60,7 +78,6 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
         name='СonditionsDeliveryPage'
         component={СonditionsDeliveryPage}
         options={{
-          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
           headerTitle: 'Доставка',
         }}
       />
@@ -68,9 +85,9 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
         name='SearchPage'
         component={SearchPage}
         options={{
-          headerLeftContainerStyle: { paddingLeft: 16 },
-          headerRightContainerStyle: { paddingRight: 16 },
-          headerTitle: () => <SearchInput />,
+          headerTitle: () => (
+            <SearchInput term={searchTerm} setTerm={setSearchTerm} />
+          ),
           headerLeft: () => (
             <Ionicons
               onPress={() => navigation.goBack()}
@@ -101,12 +118,7 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
       />
       <Stack.Screen
         options={{
-          headerLeftContainerStyle: { paddingLeft: 16 },
-          headerRightContainerStyle: { paddingRight: 16 },
-          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
-          headerTitleAlign: 'left',
-          headerTitle: 'Кустовая роза',
-
+          headerTitle: '',
           headerRight: () => <CatalogHeader />,
         }}
         name='CatalogPage'
@@ -114,9 +126,6 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
       />
       <Stack.Screen
         options={{
-          headerLeftContainerStyle: { paddingLeft: 16 },
-          headerTitleAlign: 'left',
-          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
           headerTitle: 'Избранное',
         }}
         name='FavoritesPage'
@@ -124,21 +133,14 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
       />
       <Stack.Screen
         options={{
-          headerTitleAlign: 'left',
-          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
           headerTitle: 'Фильтр',
           headerRight: () => <CatalogHeader navigation={navigation} />,
-          headerLeftContainerStyle: { paddingLeft: 16 },
-          headerRightContainerStyle: { paddingRight: 16 },
         }}
         name='FiltersPage'
         component={FiltersPage}
       />
       <Stack.Screen
         options={{
-          headerLeftContainerStyle: { paddingLeft: 16 },
-          headerTitleAlign: 'left',
-          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
           headerTitle: 'Оформление заказа',
         }}
         name='OrderingPage'
@@ -146,28 +148,61 @@ const Stacks = ({ navigation, isShowSearchIcon, clearSearchInputText }) => {
       />
       <Stack.Screen
         options={{
-          headerLeftContainerStyle: { paddingLeft: 16 },
-          headerTitleAlign: 'left',
-          headerLeft: () => <HeaderBackBtn navigation={navigation} />,
           headerTitle: 'История заказов',
         }}
         name='OrderStoriesPage'
         component={OrderStoriesPage}
       />
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <SearchInput
+              term={isOrderingAddressTerm}
+              setTerm={setOrderingAddressTerm}
+              w={100}
+            />
+          ),
+        }}
+        name='MapPage'
+        component={MapPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Конфиденциальность',
+        }}
+        name='ConfidentialityPage'
+        component={ConfidentialityPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Бонусы',
+        }}
+        name='BonusesPage'
+        component={BonusesPage}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Уведомления',
+        }}
+        name='NotificationsPage'
+        component={NotificationsPage}
+      />
     </Stack.Navigator>
   );
 };
 
-const mapStateToProps = ({ search: { isShowSearchIcon } }) => {
+const mapStateToProps = ({
+  search: { isShowSearchIcon, isOrderingAddressTerm },
+}) => {
   return {
     isShowSearchIcon,
+    isOrderingAddressTerm,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    clearSearchInputText: () => dispatch(clearSearchInputText()),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  clearSearchInputText: () => dispatch(clearSearchInputText()),
+  setOrderingAddressTerm: (term) => dispatch(setOrderingAddressTerm(term)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stacks);

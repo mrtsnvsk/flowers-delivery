@@ -12,6 +12,7 @@ import SearchItems from '../../components/SearchPageComponents/SearchItems/Searc
 const SearchPage = () => {
   const [showActionsheet, setShowActionSheet] = useState(false);
   const [termCategory, setTermCategory] = useState(null);
+  const [term, setTerm] = useState('');
 
   const menu = [
     {

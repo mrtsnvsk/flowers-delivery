@@ -3,6 +3,7 @@ import * as constant from '../constants';
 const initialState = {
   isShowSearchIcon: true,
   isClearSearchInputText: false,
+  isOrderingAddressTerm: '',
 };
 
 const searchReducer = (state = initialState, { type, payload }) => {
@@ -16,6 +17,11 @@ const searchReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         isClearSearchInputText: payload,
+      };
+    case constant.SET_ORDERING_ADDRESS_TERM:
+      return {
+        ...state,
+        isOrderingAddressTerm: payload,
       };
     default:
       return state;

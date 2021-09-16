@@ -26,13 +26,6 @@ const Drawers = () => {
         name='Stacks'
         component={Stacks}
       />
-      {/* <Drawer.Screen
-        options={() => ({
-          headerShown: false,
-        })}
-        name='Tabs'
-        component={Tabs}
-      /> */}
     </Drawer.Navigator>
   );
 };

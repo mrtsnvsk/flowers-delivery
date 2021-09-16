@@ -61,7 +61,7 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
                     numberOfLines={3}
                     color='#000'
                     fontSize={18}
-                    fontWeight='600'
+                    fontWeight='bold'
                   >
                     {item.name}
                   </Text>

@@ -12,8 +12,8 @@ const AdditionalyAddItemsBlock = () => {
   const [isProduct, setProduct] = useState({});
 
   const onOpenProductModal = (el) => {
-    setProduct(el);
-    setShowModal(true);
+    // setProduct(el);
+    // setShowModal(true);
   };
 
   const img = 'https://flowers.ua/images/Flowers/2397.jpg';

@@ -1,54 +1,34 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/core';
+import { connect } from 'react-redux';
 
 import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { Box, ScrollView } from 'native-base';
+import { Box, ScrollView, Image } from 'native-base';
+
+import SpinnerFw from '../../components/Elements/SpinnerFw';
 
 const { width } = Dimensions.get('window');
 
-import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import { getCategoriesList } from '../../store/actions/categories';
 
-const CategoriesPage = () => {
+const CategoriesPage = ({
+  categoriesList,
+  getCategoriesList,
+  loadingCategoriesList,
+}) => {
   const navigation = useNavigation();
 
-  const categories = [
-    {
-      id: 0,
-      name: 'Акции',
-      icon: <Ionicons name='rose' size={46} color={'#fff'} />,
-    },
-    {
-      id: 1,
-      name: 'Ароматная роза',
-      icon: <Entypo name='flower' size={46} color={'#fff'} />,
-    },
-    {
-      id: 2,
-      name: 'Кустовая роза',
-      icon: (
-        <MaterialCommunityIcons
-          name='flower-tulip-outline'
-          size={46}
-          color={'#fff'}
-        />
-      ),
-    },
-    {
-      id: 3,
-      name: 'Пионовидная роза',
-      icon: (
-        <MaterialCommunityIcons
-          name='flower-outline'
-          size={46}
-          color={'#fff'}
-        />
-      ),
-    },
-  ];
+  useEffect(() => {
+    getCategoriesList();
+  }, [getCategoriesList]);
 
-  const onPushToLink = (el) => {
+  const onPushToLink = useCallback((el) => {
     navigation.navigate('CatalogPage', { name: el.name, id: el.id });
-  };
+  }, []);
+
+  if (loadingCategoriesList) {
+    return <SpinnerFw />;
+  }
 
   return (
     <Box flex={1} p='20px' pb={0} safeAreaTop>
@@ -56,16 +36,25 @@ const CategoriesPage = () => {
         <Box mb={3} _text={styles.headerText}>
           Каталог
         </Box>
-        {categories.map((el) => (
-          <TouchableOpacity
-            key={el.name}
-            onPress={() => onPushToLink(el)}
-            style={styles.categoryItem}
-          >
-            <Box _text={styles.categoryNameText}>{el.name}</Box>
-            <Box>{el.icon}</Box>
-          </TouchableOpacity>
-        ))}
+        {categoriesList.length
+          ? categoriesList.map((el) => (
+              <TouchableOpacity
+                onPress={() => onPushToLink(el)}
+                activeOpacity={0.6}
+                key={el.id}
+                style={styles.categoryItem}
+              >
+                <Box _text={styles.categoryNameText}>{el.name}</Box>
+                <Image
+                  borderRadius={8}
+                  w={46}
+                  h={46}
+                  source={{ uri: el.image }}
+                  alt={el.name}
+                />
+              </TouchableOpacity>
+            ))
+          : null}
       </ScrollView>
     </Box>
   );
@@ -94,4 +83,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoriesPage;
+const mapStateToProps = ({
+  categories: { categoriesList, loadingCategoriesList },
+}) => ({
+  categoriesList,
+  loadingCategoriesList,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCategoriesList: () => dispatch(getCategoriesList()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesPage);

@@ -10,10 +10,10 @@ const { width } = Dimensions.get('window');
 
 const SearchItems = ({ products }) => {
   const [isShowModal, setShowModal] = useState(false);
-  const [product, setProduct] = useState(false);
+  const [productId, setProductId] = useState(false);
 
-  const onOpenProductModal = (el) => {
-    setProduct(el);
+  const onOpenProductModal = (id) => {
+    setProductId(id);
     setShowModal(true);
   };
 
@@ -22,9 +22,10 @@ const SearchItems = ({ products }) => {
       <Box flex={1} p='20px'>
         <ScrollView showsVerticalScrollIndicator={false}>
           {products.length
-            ? products.map((el) => (
+            ? products.map((el, i) => (
                 <TouchableOpacity
-                  onPress={() => onOpenProductModal(el)}
+                  key={i}
+                  onPress={() => onOpenProductModal(el.id)}
                   style={styles.productItem}
                 >
                   <Box mr='20px'>
@@ -33,7 +34,7 @@ const SearchItems = ({ products }) => {
                       width={78}
                       height={78}
                       alt={el.name}
-                      source={{ uri: el.img }}
+                      source={{ uri: el.image }}
                       borderRadius={14}
                     />
                   </Box>
@@ -42,7 +43,7 @@ const SearchItems = ({ products }) => {
                       <Text
                         color='#000'
                         fontSize={18}
-                        fontWeight='600'
+                        bold
                         ellipsizeMode='tail'
                         numberOfLines={2}
                       >
@@ -51,7 +52,7 @@ const SearchItems = ({ products }) => {
                     </Box>
                     <Box>
                       <Text color={propStyles.grayColor}>
-                        {el.price.toFixed(2)} p.
+                        {(+el.price).toFixed(2)} p.
                       </Text>
                     </Box>
                   </Box>
@@ -60,11 +61,7 @@ const SearchItems = ({ products }) => {
             : null}
         </ScrollView>
       </Box>
-      <ProductModal
-        open={isShowModal}
-        setOpen={setShowModal}
-        product={product}
-      />
+      <ProductModal open={isShowModal} setOpen={setShowModal} id={productId} />
     </>
   );
 };

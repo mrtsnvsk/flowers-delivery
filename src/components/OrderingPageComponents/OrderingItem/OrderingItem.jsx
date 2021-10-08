@@ -15,7 +15,7 @@ const OrderingItem = ({ item }) => {
               borderRadius={14}
               width={100}
               height={100}
-              source={{ uri: item.img }}
+              source={{ uri: item.images[0].url }}
               alt='Product'
             />
           </Box>

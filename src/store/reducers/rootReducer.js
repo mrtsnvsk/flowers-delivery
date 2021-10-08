@@ -6,6 +6,8 @@ import orderReducer from './orderReducer';
 import favoritesReducer from './favoritesReducer';
 import modalsReducer from './modalsReducer';
 import catalogLayoutReducer from './catalogLayoutReducer';
+import categoriesReducer from './categoriesReducer';
+import productsReducer from './productsReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -14,4 +16,6 @@ export default combineReducers({
   favorites: favoritesReducer,
   modals: modalsReducer,
   catalogLayout: catalogLayoutReducer,
+  categories: categoriesReducer,
+  products: productsReducer,
 });

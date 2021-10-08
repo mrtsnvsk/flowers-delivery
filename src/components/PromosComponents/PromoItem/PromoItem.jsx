@@ -1,74 +1,80 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  ImageBackground,
+} from 'react-native';
 import { Box, ScrollView, Image, Text } from 'native-base';
 import BuyBtn from '../../Elements/BuyBtn';
 
 const { width } = Dimensions.get('window');
 
-const PromoItem = () => {
-  const img =
-    'https://shop.camellia.ua/upload/kamelia_flora/photos/80/78/1200x1200/ee0bc92_5e26c6781a49e.JPG';
+import { getProductsWithStocks } from '../../../store/actions/product';
+import BlockHeader from '../../MainPageComponents/BlockHeader';
+import PromoPercent from '../../Elements/PromoPercent';
+import ProductModal from '../../Modals/ProductModal';
 
-  const products = [
-    {
-      name: 'БУКЕТ НЕДЕЛИ',
-      price: 1200,
-      img,
-    },
-    {
-      name: 'БУКЕТ ДНЯ',
-      price: 1000,
-      img,
-    },
-    {
-      name: 'БУКЕТ МЕСЯЦА',
-      price: 2000,
-      img,
-    },
-    {
-      name: 'БУКЕТ ГОДА',
-      price: 900,
-      img,
-    },
-  ];
+const PromoItem = ({ getProductsWithStocks, productsWithStocksList }) => {
+  const [isShowModal, setShowModal] = useState(false);
+  const [productId, setProductId] = useState({});
+
+  useEffect(() => {
+    getProductsWithStocks();
+  }, [getProductsWithStocks]);
+
+  const onOpenProductModal = (id) => {
+    setProductId(id);
+    setShowModal(true);
+  };
 
   return (
-    <Box pl='20px'>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {products?.length ? (
-          products.map((el, i) => (
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={styles.container}
-              key={i}
+    <>
+      {productsWithStocksList?.length ? (
+        <Box>
+          <BlockHeader label={'Акции'} />
+          <Box pl='20px'>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
             >
-              <Box>
-                <Image
-                  source={{ uri: img }}
-                  style={styles.productImg}
-                  alt='Product'
-                />
-              </Box>
-              <Box mt={1}>
-                <Text
-                  ellipsizeMode={'clip'}
-                  numberOfLines={1}
-                  style={styles.productNameText}
+              {productsWithStocksList.map((el, i) => (
+                <TouchableOpacity
+                  onPress={() => onOpenProductModal(el.id)}
+                  activeOpacity={0.5}
+                  style={styles.container}
+                  key={i}
                 >
-                  {el.name}
-                </Text>
-              </Box>
-              <Box mt={4}>
-                <BuyBtn price={el.price} />
-              </Box>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <Box></Box>
-        )}
-      </ScrollView>
-    </Box>
+                  <ImageBackground
+                    source={{ uri: el.image }}
+                    style={styles.productImg}
+                    alt='Product'
+                    imageStyle={{ borderRadius: 14 }}
+                  >
+                    <PromoPercent promo={Math.ceil(el.percent_stock)} />
+                  </ImageBackground>
+                  <Box mt={1}>
+                    <Text
+                      ellipsizeMode={'clip'}
+                      numberOfLines={1}
+                      style={styles.productNameText}
+                    >
+                      {el.name}
+                    </Text>
+                  </Box>
+                  <Box mt={4}>
+                    <BuyBtn price={el.stock} />
+                  </Box>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </Box>
+        </Box>
+      ) : null}
+      <ProductModal id={productId} open={isShowModal} setOpen={setShowModal} />
+    </>
   );
 };
 
@@ -76,11 +82,11 @@ const styles = StyleSheet.create({
   container: {
     width: (width - 40) / 2.4,
     marginRight: 13,
+    position: 'relative',
   },
   productImg: {
     width: (width - 40) / 2.4,
     height: (width - 40) / 2.4,
-    borderRadius: 14,
   },
   productNameText: {
     fontSize: 20,
@@ -88,4 +94,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PromoItem;
+const mapStateToProps = ({ products: { productsWithStocksList } }) => ({
+  productsWithStocksList,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getProductsWithStocks: () => dispatch(getProductsWithStocks()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PromoItem);

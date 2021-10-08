@@ -20,7 +20,6 @@ const MainPage = () => {
         </Box>
         <NewsSlider />
         <Box>
-          <BlockHeader label={'Акции'} />
           <PromoItem />
         </Box>
       </ScrollView>

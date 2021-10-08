@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box, Text } from 'native-base';
+import { Text, Center } from 'native-base';
 
 const NotificationsPage = () => {
   return (
-    <Box>
-      <Text>NotificationsPage</Text>
-    </Box>
+    <Center bg='#fff' flex={1}>
+      <Text>Нет данных</Text>
+    </Center>
   );
 };
 

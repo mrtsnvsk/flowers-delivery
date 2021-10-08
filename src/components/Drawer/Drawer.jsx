@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-import { StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Box, Image, Flex, ScrollView } from 'native-base';
 import propStyles from '../../resources/propStyles';
 import {
@@ -12,8 +13,18 @@ import {
 } from '@expo/vector-icons';
 import CallPhoneBlock from '../Elements/CallPhoneBlock';
 
-const Drawer = ({ navigation }) => {
-  const [isOpenMenu, setOpenMenu] = useState(false);
+import { getCategoriesList } from '../../store/actions/categories';
+
+const Drawer = ({ navigation, getCategoriesList, categoriesList }) => {
+  const [isOpenMenu, setOpenMenu] = useState(true);
+
+  useEffect(() => {
+    getCategoriesList();
+  }, [getCategoriesList]);
+
+  const onPushToLink = (el) => {
+    navigation.navigate('CatalogPage', { name: el.name, id: el.id });
+  };
 
   const shopLogo =
     'https://florcat.ru/upload/delight.webpconverter/local/templates/florcat/images/logo.png.webp?162728356719376';
@@ -126,54 +137,30 @@ const Drawer = ({ navigation }) => {
             </TouchableOpacity>
             {isOpenMenu && (
               <>
-                <TouchableOpacity style={{ marginTop: '10%' }}>
-                  <Flex
-                    direction='row'
-                    justify='space-between'
-                    alignItems='center'
-                  >
-                    <Box _text={{ fontSize: 18 }}>АКЦИИ</Box>
-                    <Box>
-                      <Ionicons
-                        name='chevron-forward'
-                        size={18}
-                        color={propStyles.shadowColor}
-                      />
-                    </Box>
-                  </Flex>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ marginTop: '10%' }}>
-                  <Flex
-                    direction='row'
-                    justify='space-between'
-                    alignItems='center'
-                  >
-                    <Box _text={{ fontSize: 18 }}>РОЗЫ</Box>
-                    <Box>
-                      <Ionicons
-                        name='chevron-forward'
-                        size={18}
-                        color={propStyles.shadowColor}
-                      />
-                    </Box>
-                  </Flex>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ marginTop: '10%' }}>
-                  <Flex
-                    direction='row'
-                    justify='space-between'
-                    alignItems='center'
-                  >
-                    <Box _text={{ fontSize: 18 }}>ЦВЕТЫ</Box>
-                    <Box>
-                      <Ionicons
-                        name='chevron-forward'
-                        size={18}
-                        color={propStyles.shadowColor}
-                      />
-                    </Box>
-                  </Flex>
-                </TouchableOpacity>
+                {categoriesList.length
+                  ? categoriesList.map((el) => (
+                      <TouchableOpacity
+                        onPress={() => onPushToLink(el)}
+                        key={el.id}
+                        style={{ marginTop: '10%' }}
+                      >
+                        <Flex
+                          direction='row'
+                          justify='space-between'
+                          alignItems='center'
+                        >
+                          <Box _text={{ fontSize: 18 }}>{el.name}</Box>
+                          <Box>
+                            <Ionicons
+                              name='chevron-forward'
+                              size={18}
+                              color={propStyles.shadowColor}
+                            />
+                          </Box>
+                        </Flex>
+                      </TouchableOpacity>
+                    ))
+                  : null}
               </>
             )}
           </Box>
@@ -185,4 +172,12 @@ const Drawer = ({ navigation }) => {
 
 const styles = StyleSheet.create({});
 
-export default Drawer;
+const mapStateToProps = ({ categories: { categoriesList } }) => ({
+  categoriesList,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCategoriesList: () => dispatch(getCategoriesList()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

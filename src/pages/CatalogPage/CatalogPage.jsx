@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 
@@ -9,9 +9,18 @@ import ProductItems from '../../components/CatalogPageComponents/ProductItems';
 import BasketBottomLink from '../../components/Elements/BasketBottomLink';
 import SortModal from '../../components/Modals/SortModal';
 import ProductItemsColumn from '../../components/CatalogPageComponents/ProductItemsColumn';
+import ProductItemsBlock from '../../components/CatalogPageComponents/ProductItemsBlock';
 
 import { showSortModal } from '../../store/actions/modals';
 import { getCatalogBlockLayout } from '../../store/actions/catalogLayout';
+
+import {
+  getProductsList,
+  updateSortProductsOrder,
+  updateProductsList,
+} from '../../store/actions/product';
+import SpinnerFw from '../../components/Elements/SpinnerFw';
+import { Text } from 'react-native-svg';
 
 const CatalogPage = ({
   route,
@@ -19,50 +28,25 @@ const CatalogPage = ({
   showSortModal,
   catalogLayout,
   getCatalogBlockLayout,
+  getProductsList,
+  loadingProductsList,
+  productsList,
+  orderSortProducts,
+  updateSortProductsOrder,
+  updateProductsList,
+  productPriceFrom,
+  productPriceTo,
 }) => {
   const { name, id } = route.params;
   const navigation = useNavigation();
 
-  const img = 'https://tea-rose.com.ua/img/products/1598341880_70427.JPG';
-  let idx = 0;
-  const arr = [
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 25 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 25 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 2400,
-      promo: 36,
-    },
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 11 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 11 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 1200,
-      promo: 19,
-    },
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 101 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 101 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 5000,
-      promo: 5,
-    },
-    {
-      id: idx++,
-      img,
-      name: 'Букет из 13 кустовых пионовидных роз Sweet',
-      desc: 'Букет из 13 кустовых пионовидных роз сорта Sweet Flow нежно-розового цвета.',
-      price: 1300,
-      promo: null,
-    },
-  ];
+  useEffect(() => {
+    getProductsList(id, orderSortProducts, productPriceFrom, productPriceTo);
+  }, [id, orderSortProducts, productPriceFrom, productPriceTo]);
 
   useEffect(() => {
     getCatalogBlockLayout();
-  }, []);
+  }, [getCatalogBlockLayout]);
 
   useEffect(() => {
     if (name) {
@@ -70,22 +54,37 @@ const CatalogPage = ({
     }
   }, [name]);
 
+  useEffect(() => {
+    return () => {
+      updateProductsList([]);
+    };
+  }, []);
 
-  
   return (
     <>
-      <Box pb='60px'>
+      <Box flex={1}>
         <CatalogCategoriesCarousel />
-        <ScrollView>
-          {catalogLayout === 'row' ? (
-            <ProductItems data={arr} />
-          ) : catalogLayout === 'list' ? (
-            <ProductItemsColumn data={arr} />
-          ) : null}
-        </ScrollView>
+        {loadingProductsList ? (
+          <SpinnerFw />
+        ) : (
+          <ScrollView>
+            {catalogLayout === 'row' ? (
+              <ProductItems data={productsList} />
+            ) : catalogLayout === 'list' ? (
+              <ProductItemsColumn data={productsList} />
+            ) : catalogLayout === 'block' ? (
+              <ProductItemsBlock data={productsList} />
+            ) : null}
+          </ScrollView>
+        )}
       </Box>
       <BasketBottomLink bottom={0} />
-      <SortModal open={isShowSortModal} setOpen={showSortModal} />
+      <SortModal
+        orderPrice={orderSortProducts}
+        setOrderPrice={updateSortProductsOrder}
+        open={isShowSortModal}
+        setOpen={showSortModal}
+      />
     </>
   );
 };
@@ -93,14 +92,30 @@ const CatalogPage = ({
 const mapStateToProps = ({
   modals: { isShowSortModal },
   catalogLayout: { catalogLayout },
+  products: {
+    loadingProductsList,
+    productsList,
+    orderSortProducts,
+    productPriceFrom,
+    productPriceTo,
+  },
 }) => ({
   isShowSortModal,
   catalogLayout,
+  loadingProductsList,
+  productsList,
+  orderSortProducts,
+  productPriceFrom,
+  productPriceTo,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   showSortModal: (bool) => dispatch(showSortModal(bool)),
   getCatalogBlockLayout: () => dispatch(getCatalogBlockLayout()),
+  getProductsList: (id, order, from, to) =>
+    dispatch(getProductsList(id, order, from, to)),
+  updateSortProductsOrder: (order) => dispatch(updateSortProductsOrder(order)),
+  updateProductsList: (list) => dispatch(updateProductsList(list)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatalogPage);

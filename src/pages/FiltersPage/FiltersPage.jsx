@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { TouchableOpacity, StyleSheet } from 'react-native';
@@ -13,15 +13,38 @@ import {
 import RangeSlider from 'rn-range-slider';
 
 import { setCatalogBlockLayout } from '../../store/actions/catalogLayout';
+import { setProductPriceDif } from '../../store/actions/product';
+import { onAlert } from '../../resources/utils';
 
-const FiltersPage = ({ setCatalogBlockLayout, catalogLayout }) => {
-  const [low, setLow] = useState(1490);
-  const [high, setHigh] = useState(9800);
+const FiltersPage = ({
+  setCatalogBlockLayout,
+  catalogLayout,
+  orderSortProducts,
+  setProductPriceDif,
+  productPriceFrom,
+  productPriceTo,
+}) => {
+  const [low, setLow] = useState(0);
+  const [high, setHigh] = useState(10000);
 
   const handleValueChange = useCallback((low, high) => {
     setLow(low);
     setHigh(high);
   }, []);
+
+  useEffect(() => {
+    if (productPriceFrom) {
+      setLow(productPriceFrom);
+    }
+    if (productPriceTo) {
+      setHigh(productPriceTo);
+    }
+  }, [productPriceFrom, productPriceTo]);
+
+  const applyFilters = () => {
+    setProductPriceDif({ from: low, to: high });
+    onAlert('Фильтр применен!');
+  };
 
   return (
     <Box p='20px'>
@@ -96,10 +119,10 @@ const FiltersPage = ({ setCatalogBlockLayout, catalogLayout }) => {
             {low.toFixed(2)} p. - {high.toFixed(2)} p.
           </Text>
         </Box>
-        <Box width='90%'>
+        <Box width='93%'>
           <RangeSlider
-            min={1490}
-            max={9800}
+            min={0}
+            max={99999}
             step={1}
             floatingLabel
             renderThumb={() => <Box style={styles.thumb} />}
@@ -118,7 +141,7 @@ const FiltersPage = ({ setCatalogBlockLayout, catalogLayout }) => {
         </Box>
         <Flex direction='row' wrap='wrap' mt={4}>
           {['ЦВЕТ', 'КОЛИЧЕСТВО ЦВЕТОВ В БУКЕТЕ', 'РАЗМЕР'].map((el) => (
-            <TouchableOpacity style={styles.characterSelect}>
+            <TouchableOpacity key={el} style={styles.characterSelect}>
               <Text fontSize={14} color={propStyles.grayColor}>
                 {el}
               </Text>
@@ -127,7 +150,7 @@ const FiltersPage = ({ setCatalogBlockLayout, catalogLayout }) => {
         </Flex>
       </Box>
       <Center mt={5}>
-        <TouchableOpacity style={styles.submitBtn}>
+        <TouchableOpacity onPress={applyFilters} style={styles.submitBtn}>
           <Text color='#fff'>Применить</Text>
         </TouchableOpacity>
       </Center>
@@ -187,12 +210,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ catalogLayout: { catalogLayout } }) => ({
+const mapStateToProps = ({
+  catalogLayout: { catalogLayout },
+  products: { orderSortProducts, productPriceFrom, productPriceTo },
+}) => ({
   catalogLayout,
+  orderSortProducts,
+  productPriceFrom,
+  productPriceTo,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setCatalogBlockLayout: (value) => dispatch(setCatalogBlockLayout(value)),
+  setProductPriceDif: (dif) => dispatch(setProductPriceDif(dif)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FiltersPage);

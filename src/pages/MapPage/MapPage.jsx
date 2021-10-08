@@ -24,16 +24,16 @@ import useDebounce from '../../hooks/useDebounce';
 import { setOrderingAddressTerm } from '../../store/actions/search';
 
 const { width } = Dimensions.get('window');
+const zoom = {
+  longitudeDelta: 0.01,
+  latitudeDelta: 0.01,
+};
 
 const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
   const debouncedSearch = useDebounce(onSearch, 1000);
 
   const [curLoc, setCurLoc] = useState();
   const [curLocName, setCurLocName] = useState('');
-  const zoom = {
-    longitudeDelta: 0.01,
-    latitudeDelta: 0.01,
-  };
 
   useEffect(() => {
     debouncedSearch(isOrderingAddressTerm);
@@ -44,12 +44,14 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
       const {
         coords: { latitude, longitude },
       } = await getCurrentLocation();
+      const loc = await getReverseGeocode(latitude, longitude);
 
       setCurLoc({
         latitude,
         longitude,
         ...zoom,
       });
+      setCurLocName(loc);
     })();
   }, [getCurrentLocation]);
 
@@ -82,8 +84,9 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
 
   async function onSearch() {
     const data = await Location.geocodeAsync(isOrderingAddressTerm);
+
     if (!data.length) return;
-    setCurLoc(data[0]);
+    setCurLoc({ ...data[0], ...zoom });
   }
 
   const joinAddress = () => {
@@ -105,20 +108,19 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
         region={curLoc}
         style={styles.map}
         onRegionChangeComplete={(coords) => setCurLoc(coords)}
-      >
-        <Box
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            padding: 5,
-            borderRadius: 50,
-            backgroundColor: '#000',
-            borderColor: '#f1f1f1',
-            borderWidth: 1,
-          }}
-        />
-      </MapView>
+      ></MapView>
+      <Box
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          padding: 5,
+          borderRadius: 50,
+          backgroundColor: '#000',
+          borderColor: '#f1f1f1',
+          borderWidth: 1,
+        }}
+      />
       <Box pos='absolute' bottom={0}>
         <TouchableOpacity
           onPress={setUserLocation}
@@ -129,7 +131,7 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
         </TouchableOpacity>
         <Box height={90} py='10px' px='20px' bg='#fff' width={width}>
           <Box mb={1}>
-            <Text fontWeight='500'>{curLocName.name}</Text>
+            <Text fontWeight='500'>{curLocName}</Text>
           </Box>
           <Flex direction='row' justify='space-between' align='center'>
             <Box>

@@ -7,7 +7,13 @@ import propStyles from '../../../resources/propStyles';
 
 import BasketBottomLink from '../BasketBottomLink';
 
-const AddToBasketFooter = ({ price, actionFn, actionDeleteFn, matchItem }) => {
+const AddToBasketFooter = ({
+  price,
+  actionFn,
+  actionDeleteFn,
+  matchItem,
+  oldPrice,
+}) => {
   return (
     <Flex
       direction='row'
@@ -22,9 +28,19 @@ const AddToBasketFooter = ({ price, actionFn, actionDeleteFn, matchItem }) => {
       borderTopWidth={1}
       borderTopColor={propStyles.shadowedColor}
     >
-      <Box>
+      <Flex justify='center'>
+        {oldPrice && (
+          <Text
+            color={propStyles.orangeColor}
+            textDecoration='line-through'
+            textDecorationColor={propStyles.orangeColor}
+            fontSize={14}
+          >
+            {oldPrice} p.
+          </Text>
+        )}
         <Text fontSize={20}>{price?.toFixed(2)} p.</Text>
-      </Box>
+      </Flex>
       {!matchItem ? (
         <TouchableOpacity onPress={actionFn} style={styles.basketBtn}>
           <Box mr={3}>

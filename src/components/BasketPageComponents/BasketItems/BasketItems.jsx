@@ -13,6 +13,8 @@ const { width } = Dimensions.get('window');
 import { setOrderList } from '../../../store/actions/order';
 import { getOrderFromStorage } from '../../../resources/utils';
 
+import { imgPath } from '../../../resources/variables';
+
 const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
   const setProductCount = async (count, id) => {
     const prevList = await getOrderFromStorage();
@@ -27,10 +29,12 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
     setOrder(list);
   };
 
+  console.log('order', order);
+
   return (
     <>
-      {order.map((item) => (
-        <Box borderRadius={14} mb={4} bg='#fff'>
+      {order.map((item, i) => (
+        <Box key={i} borderRadius={14} mb={4} bg='#fff'>
           <Box p='14px' mb={3}>
             <Flex alignItems='flex-end'>
               <TouchableOpacity
@@ -49,7 +53,7 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
                   borderRadius={14}
                   width={100}
                   height={100}
-                  source={{ uri: item.img }}
+                  source={{ uri: item.images[0].url }}
                   alt='Product'
                 />
               </Box>

@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
+import { connect } from 'react-redux';
 
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Box, ScrollView, Flex } from 'native-base';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Box, ScrollView, Flex, Text, Image } from 'native-base';
 
 import propStyles from '../../../resources/propStyles';
 
-const CategoriesCarousel = () => {
+import { getCategoriesList } from '../../../store/actions/categories';
+
+const CategoriesCarousel = ({ getCategoriesList, categoriesList }) => {
   const navigation = useNavigation();
 
-  const arr = [
-    { name: 'Акции', id: 0 },
-    { name: 'Розы', id: 1 },
-    { name: 'Премиум', id: 2 },
-    { name: 'Цветы', id: 3 },
-    { name: 'Повод', id: 4 },
-  ];
+  useEffect(() => {
+    getCategoriesList();
+  }, [getCategoriesList]);
 
   const onPushToLink = (el) => {
     navigation.navigate('CatalogPage', { name: el.name, id: el.id });
@@ -25,13 +23,14 @@ const CategoriesCarousel = () => {
   return (
     <Box>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {arr.map((el) => (
+        {categoriesList.map((el) => (
           <TouchableOpacity
             onPress={() => onPushToLink(el)}
             key={el.id}
             style={{
+              width: 60,
               marginRight: 16,
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               alignItems: 'center',
             }}
           >
@@ -41,13 +40,19 @@ const CategoriesCarousel = () => {
               justifyContent='center'
               style={styles.categoryImg}
             >
-              <MaterialCommunityIcons
-                name='compass-rose'
-                size={38}
-                color={propStyles.mainRedColor}
+              <Image
+                source={{ uri: el.image }}
+                alt={el.name}
+                w={46}
+                h={46}
+                borderRadius={50}
               />
             </Flex>
-            <Flex _text={{ fontSize: 12 }}>{el.name}</Flex>
+            <Flex>
+              <Text textAlign='center' numberOfLines={2} fontSize={12}>
+                {el.name}
+              </Text>
+            </Flex>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -65,4 +70,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoriesCarousel;
+const mapStateToProps = ({ categories: { categoriesList } }) => ({
+  categoriesList,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getCategoriesList: () => dispatch(getCategoriesList()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesCarousel);

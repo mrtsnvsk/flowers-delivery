@@ -1,78 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
+import { connect } from 'react-redux';
 
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Box, ScrollView, Text } from 'native-base';
-import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Box, ScrollView, Text, Image } from 'native-base';
 
 import propStyles from '../../../resources/propStyles';
 
-const CatalogCategoriesCarousel = () => {
+import { getProductsList } from '../../../store/actions/product';
+
+const CatalogCategoriesCarousel = ({
+  categoriesList,
+  getProductsList,
+  currentProductCategory,
+  orderSortProducts,
+}) => {
   const navigation = useNavigation();
 
-  const [isCurCategory, setCurCategory] = useState(0);
-
-  const categories = [
-    {
-      id: 0,
-      name: 'Акции',
-      icon: (color) => <Ionicons name='rose' size={24} color={color} />,
-    },
-    {
-      id: 1,
-      name: 'Ароматная роза',
-      icon: (color) => <Entypo name='flower' size={24} color={color} />,
-    },
-    {
-      id: 2,
-      name: 'Кустовая роза',
-      icon: (color) => (
-        <MaterialCommunityIcons
-          name='flower-tulip-outline'
-          size={24}
-          color={color}
-        />
-      ),
-    },
-    {
-      id: 3,
-      name: 'Пионовидная роза',
-      icon: (color) => (
-        <MaterialCommunityIcons name='flower-outline' size={24} color={color} />
-      ),
-    },
-  ];
-
   const setCategory = (id, name) => {
-    setCurCategory(id);
     navigation.setOptions({ headerTitle: name });
+    getProductsList(id, orderSortProducts);
   };
 
   return (
     <Box my={4}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {categories?.length
-          ? categories.map((el, i) => (
+        {categoriesList?.length
+          ? categoriesList.map((el, i) => (
               <TouchableOpacity
                 onPress={() => setCategory(el.id, el.name)}
                 key={i}
                 style={{
                   ...styles.categoryItem,
                   backgroundColor:
-                    isCurCategory === el.id ? propStyles.mainRedColor : '#fff',
+                    currentProductCategory === el.id
+                      ? propStyles.mainRedColor
+                      : '#fff',
                   marginLeft: i === 0 ? 20 : 12,
                 }}
               >
                 <Box mr={4}>
-                  {el.icon(
-                    isCurCategory === el.id ? '#fff' : propStyles.mainRedColor
-                  )}
+                  <Image
+                    borderRadius={50}
+                    source={{ uri: el.image }}
+                    w={30}
+                    h={30}
+                    alt={el.name}
+                  />
                 </Box>
                 <Box>
                   <Text
                     style={{
                       color:
-                        isCurCategory === el.id
+                        currentProductCategory === el.id
                           ? '#fff'
                           : propStyles.mainRedColor,
                     }}
@@ -102,4 +82,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CatalogCategoriesCarousel;
+const mapStateToProps = ({
+  categories: { categoriesList, currentProductCategory },
+  products: { orderSortProducts },
+}) => ({
+  categoriesList,
+  currentProductCategory,
+  orderSortProducts,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getProductsList: (id, order) => dispatch(getProductsList(id, order)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CatalogCategoriesCarousel);

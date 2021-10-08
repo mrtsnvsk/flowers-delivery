@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Box, Center, Image, Actionsheet } from 'native-base';
@@ -9,10 +10,24 @@ import { clearSearchImg } from '../../resources/images';
 import SearchFilterActionSheet from '../../components/SearchPageComponents/SearchFilterActionSheet';
 import SearchItems from '../../components/SearchPageComponents/SearchItems/SearchItems';
 
-const SearchPage = () => {
+import {
+  getSearchProductsList,
+  updateSearchProductsTerm,
+} from '../../store/actions/product';
+import useDebounce from '../../hooks/useDebounce';
+import SpinnerFw from '../../components/Elements/SpinnerFw';
+
+const SearchPage = ({
+  searchProductsList,
+  loadingSearchProductsList,
+  getSearchProductsList,
+  searchProductsTerm,
+  updateSearchProductsTerm,
+}) => {
+  const debouncedSearch = useDebounce(getSearchProductsList, 1000);
+
   const [showActionsheet, setShowActionSheet] = useState(false);
   const [termCategory, setTermCategory] = useState(null);
-  const [term, setTerm] = useState('');
 
   const menu = [
     {
@@ -37,35 +52,24 @@ const SearchPage = () => {
       name: 'Синий',
     },
   ];
-  const img =
-    'https://st.volga.news/image/w630/413ab04d-ddc8-4c46-a697-016be62026b2.jpg';
 
-  const searchItems = [
-    {
-      name: 'Моно Deep Purple M',
-      price: 1300,
-      img,
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur repellat, reprehenderit et sunt delectus voluptates alias soluta exercitationem error asperiores placeat laudantium eveniet laboriosam dolorem pariatur maiores officiis ipsa? Saepe!',
-    },
-    {
-      name: 'Mono Deep Purple S',
-      price: 1300,
-      img,
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur repellat, reprehenderit et sunt delectus voluptates alias soluta exercitationem error asperiores placeat laudantium eveniet laboriosam dolorem pariatur maiores officiis ipsa? Saepe!',
-    },
-    {
-      name: 'Букет из 1010 красной розы',
-      price: 1300,
-      img,
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur repellat, reprehenderit et sunt delectus voluptates alias soluta exercitationem error asperiores placeat laudantium eveniet laboriosam dolorem pariatur maiores officiis ipsa? Saepe!',
-    },
-    {
-      name: 'Moho Kahala и эвкалипт',
-      price: 1300,
-      img,
-      desc: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur repellat, reprehenderit et sunt delectus voluptates alias soluta exercitationem error asperiores placeat laudantium eveniet laboriosam dolorem pariatur maiores officiis ipsa? Saepe!',
-    },
-  ];
+  useEffect(() => {
+    return () => {
+      updateSearchProductsTerm('');
+    };
+  }, []);
+
+  useEffect(() => {
+    if (searchProductsTerm) {
+      debouncedSearch(searchProductsTerm);
+    } else {
+      getSearchProductsList('');
+    }
+  }, [searchProductsTerm]);
+
+  if (loadingSearchProductsList) {
+    return <SpinnerFw />;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -75,7 +79,8 @@ const SearchPage = () => {
           setTermCategory={setTermCategory}
           openFilters={() => setShowActionSheet(true)}
         />
-        {!termCategory?.name || !searchItems.length ? (
+        {(!termCategory?.name && !searchProductsTerm) ||
+        !searchProductsList.length ? (
           <Center flex={1}>
             <Image
               resizeMode='stretch'
@@ -86,7 +91,7 @@ const SearchPage = () => {
             />
           </Center>
         ) : (
-          <SearchItems products={searchItems} />
+          <SearchItems products={searchProductsList} />
         )}
 
         <Actionsheet
@@ -112,4 +117,21 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+const mapStateToProps = ({
+  products: {
+    searchProductsList,
+    loadingSearchProductsList,
+    searchProductsTerm,
+  },
+}) => ({
+  searchProductsList,
+  loadingSearchProductsList,
+  searchProductsTerm,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getSearchProductsList: (term) => dispatch(getSearchProductsList(term)),
+  updateSearchProductsTerm: (term) => dispatch(updateSearchProductsTerm(term)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -14,6 +14,7 @@ import propStyles from '../../../resources/propStyles';
 
 import AddToBasketFooter from '../../Elements/AddToBasketFooter';
 import AddToBasketTopSlide from '../../Elements/AddToBasketTopSlide';
+import SpinnerFw from '../../Elements/SpinnerFw';
 
 const { width } = Dimensions.get('window');
 import { setOrderList, getOrderList } from '../../../store/actions/order';
@@ -25,6 +26,10 @@ import {
   addToFavoriteList,
   deleteFromFavoritesList,
 } from '../../../store/actions/favorites';
+import {
+  getProductById,
+  updateProductById,
+} from '../../../store/actions/product';
 
 const CircleIconWrapper = ({ icon, fn }) => {
   return (
@@ -37,18 +42,23 @@ const CircleIconWrapper = ({ icon, fn }) => {
 const ProductModal = ({
   open,
   setOpen,
-  product,
+  id,
   setOrderList,
   orderList,
   getOrderList,
   addToFavoriteList,
   deleteFromFavoritesList,
+  getProductById,
+  productById,
+  loadingProductById,
+  updateProductById,
 }) => {
   const [isProduct, setProduct] = useState({});
   const [isOpenSlide, setOpenSlide] = useState(false);
   const [matchItem, setMatchItem] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
   const [isPackage, setPackage] = useState(false);
+  const [mainImage, setMainImage] = useState(null);
 
   const otherImgs = [
     {
@@ -63,35 +73,50 @@ const ProductModal = ({
   ];
 
   useEffect(() => {
+    getProductById(id);
+  }, [id]);
+
+  useEffect(() => {
+    if (productById) {
+      setProduct(productById);
+      setMainImage(productById?.images[0]?.url);
+    }
+  }, [productById, id]);
+
+  useEffect(() => {
     getOrderList();
   }, [getOrderList]);
 
-  useEffect(() => {
-    setProduct(product);
-  }, [product]);
-
-  useEffect(() => {
-    (async () => {
+  useMemo(() => {
+    return (async () => {
       const fav = await AsyncStorage.getItem('@favorites');
 
       if (fav) {
         const favList = JSON.parse(fav);
-        setFavorite(!!favList.filter((el) => el.id === isProduct.id).length);
+        setFavorite(!!favList.filter((el) => el.id === isProduct?.id).length);
       } else {
         setFavorite(false);
       }
     })();
   }, [isProduct]);
 
-  useEffect(() => {
-    const check = orderList.filter((el) => el.name === isProduct.name);
+  useMemo(() => {
+    const check = orderList.filter((el) => el.id === isProduct?.id);
 
-    check.length
+    return check.length
       ? (() => {
           setMatchItem(true);
         })()
       : setMatchItem(false);
   }, [orderList, isProduct]);
+
+  useEffect(() => {
+    return () => {
+      updateProductById({});
+      setProduct({});
+      setMainImage(null);
+    };
+  }, []);
 
   const onOpenTopSlide = () => {
     setOpenSlide(true);
@@ -104,6 +129,7 @@ const ProductModal = ({
         ...prevList,
         {
           ...isProduct,
+          price: isProduct?.stock ? isProduct.stock : isProduct?.price,
           count: 1,
           package: !isPackage
             ? null
@@ -133,121 +159,149 @@ const ProductModal = ({
   return (
     <Modal animationType='slide' transparent={true} visible={open}>
       <>
-        <Box style={styles.modal}>
-          <ScrollView>
-            <ImageBackground
-              resizeMode='stretch'
-              style={styles.imgBg}
-              source={{ uri: isProduct?.img }}
-            >
-              <Flex direction='row' justify='space-between' alignItems='center'>
-                <CircleIconWrapper
-                  fn={() => setOpen(false)}
-                  icon={
-                    <AntDesign
-                      name='close'
-                      size={24}
-                      color={propStyles.mainRedColor}
-                    />
-                  }
-                />
-                <Flex direction='row' alignItems='center'>
-                  <Box mr='16px'>
+        {loadingProductById ? (
+          <Box style={styles.modal}>
+            <SpinnerFw />
+          </Box>
+        ) : (
+          <>
+            <Box style={styles.modal}>
+              <ScrollView>
+                <ImageBackground
+                  resizeMode='stretch'
+                  style={styles.imgBg}
+                  source={{ uri: mainImage }}
+                >
+                  <Flex
+                    direction='row'
+                    justify='space-between'
+                    alignItems='center'
+                  >
                     <CircleIconWrapper
+                      fn={() => setOpen(false)}
                       icon={
-                        <TouchableOpacity onPress={toggleFavorite}>
-                          <AntDesign
-                            name='heart'
-                            size={20}
-                            color={
-                              isFavorite ? propStyles.spinnerColor : '#fff'
-                            }
+                        <AntDesign
+                          name='close'
+                          size={24}
+                          color={propStyles.mainRedColor}
+                        />
+                      }
+                    />
+                    <Flex direction='row' alignItems='center'>
+                      <Box mr='16px'>
+                        <CircleIconWrapper
+                          icon={
+                            <TouchableOpacity onPress={toggleFavorite}>
+                              <AntDesign
+                                name='heart'
+                                size={20}
+                                color={
+                                  isFavorite ? propStyles.spinnerColor : '#fff'
+                                }
+                              />
+                            </TouchableOpacity>
+                          }
+                        />
+                      </Box>
+
+                      <CircleIconWrapper
+                        icon={
+                          <MaterialIcons
+                            name='more-vert'
+                            size={24}
+                            color={propStyles.mainRedColor}
+                          />
+                        }
+                      />
+                    </Flex>
+                  </Flex>
+                </ImageBackground>
+                {/* photos carousel */}
+                {isProduct?.images?.length && (
+                  <Box my={3}>
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      {isProduct.images.map((el, i) => (
+                        <TouchableOpacity
+                          activeOpacity={0.6}
+                          key={i}
+                          onPress={() => setMainImage(el.url)}
+                        >
+                          <Image
+                            style={styles.carouselImg}
+                            source={{ uri: el.url }}
+                            alt='Other photos'
                           />
                         </TouchableOpacity>
-                      }
+                      ))}
+                    </ScrollView>
+                  </Box>
+                )}
+                <Box p='20px'>
+                  <Box>
+                    <Text style={styles.productNameText}>
+                      {isProduct?.name}
+                    </Text>
+                  </Box>
+                  <Box mt={3}>
+                    <Text style={styles.productDescText}>
+                      {isProduct?.description}
+                    </Text>
+                  </Box>
+                  <Box mt={5}>
+                    <Box
+                      _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
+                      mb={3}
+                    >
+                      Дополнительно
+                    </Box>
+                    <SwitchAdditionalProduct
+                      matchItem={matchItem}
+                      value={isPackage}
+                      setValue={setPackage}
                     />
                   </Box>
 
-                  <CircleIconWrapper
-                    icon={
-                      <MaterialIcons
-                        name='more-vert'
-                        size={24}
-                        color={propStyles.mainRedColor}
-                      />
-                    }
-                  />
-                </Flex>
-              </Flex>
-            </ImageBackground>
-            {/* photos carousel */}
-            <Box my={3}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {otherImgs.map((el, i) => (
-                  <TouchableOpacity
-                    activeOpacity={0.6}
-                    key={i}
-                    onPress={() => setProduct({ ...isProduct, img: el.uri })}
-                  >
-                    <Image
-                      style={styles.carouselImg}
-                      source={{ uri: el.uri }}
-                      alt='Other photos'
-                    />
-                  </TouchableOpacity>
-                ))}
+                  <Box mt={5}>
+                    <Box
+                      _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
+                      mb={3}
+                    >
+                      Похожие букеты
+                    </Box>
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      {otherImgs.map((el, i) => (
+                        <TouchableOpacity key={i}>
+                          <Image
+                            style={styles.carouselImg}
+                            source={{ uri: el.uri }}
+                            alt='Other photos'
+                          />
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </Box>
+                </Box>
               </ScrollView>
             </Box>
-            <Box p='20px'>
-              <Box>
-                <Text style={styles.productNameText}>{isProduct?.name}</Text>
-              </Box>
-              <Box mt={3}>
-                <Text style={styles.productDescText}>{isProduct?.desc}</Text>
-              </Box>
-              <Box mt={5}>
-                <Box
-                  _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
-                  mb={3}
-                >
-                  Дополнительно
-                </Box>
-                <SwitchAdditionalProduct
-                  matchItem={matchItem}
-                  value={isPackage}
-                  setValue={setPackage}
-                />
-              </Box>
-
-              <Box mt={5}>
-                <Box
-                  _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
-                  mb={3}
-                >
-                  Похожие букеты
-                </Box>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {otherImgs.map((el, i) => (
-                    <TouchableOpacity key={i}>
-                      <Image
-                        style={styles.carouselImg}
-                        source={{ uri: el.uri }}
-                        alt='Other photos'
-                      />
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </Box>
-            </Box>
-          </ScrollView>
-        </Box>
-        <AddToBasketFooter
-          matchItem={matchItem}
-          actionDeleteFn={deleteFromBasket}
-          actionFn={addToBasket}
-          price={isProduct?.price}
-        />
-        <AddToBasketTopSlide productName={isProduct?.name} open={isOpenSlide} />
+            <AddToBasketFooter
+              matchItem={matchItem}
+              actionDeleteFn={deleteFromBasket}
+              actionFn={addToBasket}
+              price={isProduct?.stock ? isProduct.stock : isProduct?.price}
+              oldPrice={isProduct?.stock ? isProduct?.price : null}
+            />
+            <AddToBasketTopSlide
+              productName={isProduct?.name}
+              open={isOpenSlide}
+            />
+          </>
+        )}
       </>
     </Modal>
   );
@@ -288,9 +342,14 @@ const styles = StyleSheet.create({
   productDescText: {},
 });
 
-const mapStateToProps = ({ order: { orderList } }) => {
+const mapStateToProps = ({
+  order: { orderList },
+  products: { productById, loadingProductById },
+}) => {
   return {
     orderList,
+    productById,
+    loadingProductById,
   };
 };
 
@@ -299,9 +358,8 @@ const mapDispatchToProps = (dispatch) => ({
   getOrderList: () => dispatch(getOrderList()),
   addToFavoriteList: (data) => dispatch(addToFavoriteList(data)),
   deleteFromFavoritesList: (id) => dispatch(deleteFromFavoritesList(id)),
+  getProductById: (id) => dispatch(getProductById(id)),
+  updateProductById: () => dispatch(updateProductById()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(React.memo(ProductModal));
+export default connect(mapStateToProps, mapDispatchToProps)(ProductModal);

@@ -30,6 +30,7 @@ import {
   clearSearchInputText,
   setOrderingAddressTerm,
 } from '../store/actions/search';
+import { updateSearchProductsTerm } from '../store/actions/product';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,8 @@ const Stacks = ({
   clearSearchInputText,
   setOrderingAddressTerm,
   isOrderingAddressTerm,
+  searchProductsTerm,
+  updateSearchProductsTerm,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -86,7 +89,10 @@ const Stacks = ({
         component={SearchPage}
         options={{
           headerTitle: () => (
-            <SearchInput term={searchTerm} setTerm={setSearchTerm} />
+            <SearchInput
+              term={searchProductsTerm}
+              setTerm={updateSearchProductsTerm}
+            />
           ),
           headerLeft: () => (
             <Ionicons
@@ -193,16 +199,17 @@ const Stacks = ({
 
 const mapStateToProps = ({
   search: { isShowSearchIcon, isOrderingAddressTerm },
-}) => {
-  return {
-    isShowSearchIcon,
-    isOrderingAddressTerm,
-  };
-};
+  products: { searchProductsTerm },
+}) => ({
+  isShowSearchIcon,
+  isOrderingAddressTerm,
+  searchProductsTerm,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   clearSearchInputText: () => dispatch(clearSearchInputText()),
   setOrderingAddressTerm: (term) => dispatch(setOrderingAddressTerm(term)),
+  updateSearchProductsTerm: (term) => dispatch(updateSearchProductsTerm(term)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stacks);

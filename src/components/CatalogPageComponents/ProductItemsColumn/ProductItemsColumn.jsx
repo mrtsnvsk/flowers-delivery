@@ -12,11 +12,11 @@ import ProductModal from '../../Modals/ProductModal';
 const { width } = Dimensions.get('window');
 
 const ProductItemsColumn = ({ data }) => {
-  const [isProduct, setProduct] = useState({});
   const [isShowModal, setShowModal] = useState(false);
+  const [productId, setProductId] = useState({});
 
-  const openProductModal = (item) => {
-    setProduct(item);
+  const openProductModal = (id) => {
+    setProductId(id);
     setShowModal(true);
   };
 
@@ -25,13 +25,13 @@ const ProductItemsColumn = ({ data }) => {
       {data.map((item) => (
         <TouchableOpacity
           key={item.id}
-          onPress={() => openProductModal(item)}
+          onPress={() => openProductModal(item.id)}
           style={styles.item}
         >
-          <Flex direction='row' alignItems='center'>
+          <Flex direction='row'>
             <ImageBackground
               style={styles.productImg}
-              source={{ uri: item.img }}
+              source={{ uri: item.image }}
               imageStyle={{ borderRadius: 14 }}
             >
               {item.promo && (
@@ -80,33 +80,38 @@ const ProductItemsColumn = ({ data }) => {
                 </Flex>
               )}
             </ImageBackground>
-            <Box>
+            <Flex
+              py={1}
+              w={width - 180}
+              direction='column'
+              justify='space-between'
+            >
               <Box>
-                <Text
-                  style={{ width: width - 180 }}
-                  ellipsizeMode={'tail'}
-                  numberOfLines={3}
-                  color='#000'
-                  fontSize={18}
-                  fontWeight='600'
-                >
-                  {item.name}
+                <Box>
+                  <Text
+                    ellipsizeMode={'tail'}
+                    numberOfLines={3}
+                    color='#000'
+                    fontSize={18}
+                    fontWeight='600'
+                  >
+                    {item.name}
+                  </Text>
+                </Box>
+                <Box mt={1}>
+                  <Text numberOfLines={2}>{item.description}</Text>
+                </Box>
+              </Box>
+              <Box>
+                <Text fontWeight='600' fontSize={15}>
+                  {(+item.price).toFixed(2)} p.
                 </Text>
               </Box>
-              <Flex direction='row' mt={3}>
-                <Text fontWeight='600' fontSize={15}>
-                  {item.price.toFixed(2)} p.
-                </Text>
-              </Flex>
-            </Box>
+            </Flex>
           </Flex>
         </TouchableOpacity>
       ))}
-      <ProductModal
-        product={isProduct}
-        open={isShowModal}
-        setOpen={setShowModal}
-      />
+      <ProductModal id={productId} open={isShowModal} setOpen={setShowModal} />
     </>
   );
 };

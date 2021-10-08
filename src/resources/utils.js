@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 export const onAlert = (text) => {
   Alert.alert('', text);
@@ -32,5 +32,5 @@ export const getReverseGeocode = async (latitude, longitude) => {
     longitude,
   });
 
-  return loc;
+  return Platform.OS === 'ios' ? loc.name : `${loc.street}, ${loc.name}`;
 };

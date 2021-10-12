@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Box, Image, Flex, ScrollView } from 'native-base';
 import propStyles from '../../resources/propStyles';
 import {
@@ -14,8 +14,16 @@ import {
 import CallPhoneBlock from '../Elements/CallPhoneBlock';
 
 import { getCategoriesList } from '../../store/actions/categories';
+import { logoutUser, activateApp } from '../../store/actions/auth';
 
-const Drawer = ({ navigation, getCategoriesList, categoriesList }) => {
+const Drawer = ({
+  navigation,
+  getCategoriesList,
+  categoriesList,
+  logoutUser,
+  isAuth,
+  activateApp,
+}) => {
   const [isOpenMenu, setOpenMenu] = useState(true);
 
   useEffect(() => {
@@ -59,17 +67,6 @@ const Drawer = ({ navigation, getCategoriesList, categoriesList }) => {
       ),
       path: 'СonditionsDeliveryPage',
     },
-    {
-      path: 'ActivateAppPage',
-      link: 'Логин',
-      icon: (
-        <FontAwesome5
-          name='user-alt'
-          size={20}
-          color={propStyles.mainRedColor}
-        />
-      ),
-    },
   ];
   return (
     <Box h='100%' safeAreaY>
@@ -108,6 +105,45 @@ const Drawer = ({ navigation, getCategoriesList, categoriesList }) => {
                   </Flex>
                 </TouchableOpacity>
               ))}
+              <>
+                {isAuth ? (
+                  <TouchableOpacity
+                    onPress={logoutUser}
+                    style={{ marginBottom: '10%' }}
+                  >
+                    <Flex direction='row' alignItems='center'>
+                      <Box mr='36px'>
+                        <MaterialCommunityIcons
+                          name='location-exit'
+                          size={20}
+                          color={propStyles.mainRedColor}
+                        />
+                      </Box>
+                      <Box _text={{ fontSize: 18 }}>Выйти</Box>
+                    </Flex>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.closeDrawer();
+                      activateApp(false);
+                      navigation.navigate('ActivateAppPage');
+                    }}
+                    style={{ marginBottom: '10%' }}
+                  >
+                    <Flex direction='row' alignItems='center'>
+                      <Box mr='36px'>
+                        <FontAwesome5
+                          name='user-alt'
+                          size={20}
+                          color={propStyles.mainRedColor}
+                        />
+                      </Box>
+                      <Box _text={{ fontSize: 18 }}>Профиль</Box>
+                    </Flex>
+                  </TouchableOpacity>
+                )}
+              </>
             </Box>
           </Box>
           {/*  */}
@@ -170,14 +206,18 @@ const Drawer = ({ navigation, getCategoriesList, categoriesList }) => {
   );
 };
 
-const styles = StyleSheet.create({});
-
-const mapStateToProps = ({ categories: { categoriesList } }) => ({
+const mapStateToProps = ({
+  categories: { categoriesList },
+  auth: { isAuth },
+}) => ({
   categoriesList,
+  isAuth,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getCategoriesList: () => dispatch(getCategoriesList()),
+  logoutUser: () => dispatch(logoutUser()),
+  activateApp: (bool) => dispatch(activateApp(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

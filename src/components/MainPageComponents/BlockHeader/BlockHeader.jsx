@@ -24,10 +24,11 @@ const BlockHeader = ({ label }) => {
 
 const styles = StyleSheet.create({
   labelText: {
-    fontSize: 23,
+    fontSize: 20,
     fontWeight: '500',
   },
   showAllText: {
+    fontSize: 14,
     color: propStyles.mainRedColor,
     fontWeight: '500',
   },

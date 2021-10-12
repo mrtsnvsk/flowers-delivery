@@ -10,8 +10,8 @@ const initialState = {
   searchProductsTerm: '',
   orderSortProducts: null,
   productsWithStocksList: [],
-  productPriceFrom: null,
-  productPriceTo: null,
+  productPriceFrom: 0,
+  productPriceTo: 99999,
 };
 
 const productsReducer = (state = initialState, { type, payload }) => {

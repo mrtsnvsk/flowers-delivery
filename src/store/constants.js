@@ -1,3 +1,8 @@
+// auth
+export const IS_SENDED_CODE = 'IS_SENDED_CODE';
+export const IS_AUTH_USER = 'IS_AUTH_USER';
+export const IS_ACTIVATE_APP = 'IS_ACTIVATE_APP';
+export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
 // search
 export const SET_SHOW_SEARCH_ICON = 'SET_SHOW_SEARCH_ICON';
 export const CLEAR_SEARCH_INPUT_TEXT = 'CLEAR_SEARCH_INPUT_TEXT';

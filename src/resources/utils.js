@@ -34,3 +34,9 @@ export const getReverseGeocode = async (latitude, longitude) => {
 
   return Platform.OS === 'ios' ? loc.name : `${loc.street}, ${loc.name}`;
 };
+
+export const getUserPhone = async () => {
+  const user = await AsyncStorage.getItem('@userData');
+
+  return JSON.parse(user).password;
+};

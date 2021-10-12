@@ -39,7 +39,7 @@ const AddToBasketFooter = ({
             {oldPrice} p.
           </Text>
         )}
-        <Text fontSize={20}>{price?.toFixed(2)} p.</Text>
+        <Text fontSize={20}>{price} p.</Text>
       </Flex>
       {!matchItem ? (
         <TouchableOpacity onPress={actionFn} style={styles.basketBtn}>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: 50,
     paddingHorizontal: 14,
-    borderRadius: 50,
+    borderRadius: 6,
   },
 });
 

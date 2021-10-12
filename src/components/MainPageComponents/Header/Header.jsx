@@ -9,12 +9,10 @@ import propStyles from '../../../resources/propStyles';
 const Header = () => {
   const navigation = useNavigation();
 
-  const shopLogo =
-    'https://florcat.ru/upload/delight.webpconverter/local/templates/florcat/images/logo.png.webp?162728356719376';
-
   return (
     <Flex
-      py={4}
+      mt={1}
+      pb={4}
       direction='row'
       justifyContent='space-between'
       alignItems='center'

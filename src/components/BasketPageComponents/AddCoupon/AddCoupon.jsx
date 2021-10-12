@@ -21,7 +21,7 @@ const AddCoupon = ({ setCoupon, coupon }) => {
       alignItems='center'
       p='14px'
       bg={propStyles.basketBlocksColor}
-      borderRadius={14}
+      borderRadius={6}
     >
       <Box width={width - 200}>
         <Input
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     color: '#000',
     height: 45,
-    borderRadius: 50,
+    borderRadius: 6,
     width: 126,
     justifyContent: 'center',
     alignItems: 'center',

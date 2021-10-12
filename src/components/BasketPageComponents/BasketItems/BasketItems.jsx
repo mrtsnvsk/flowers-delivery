@@ -29,12 +29,10 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
     setOrder(list);
   };
 
-  console.log('order', order);
-
   return (
     <>
       {order.map((item, i) => (
-        <Box key={i} borderRadius={14} mb={4} bg='#fff'>
+        <Box key={i} borderRadius={6} mb={4} bg='#fff'>
           <Box p='14px' mb={3}>
             <Flex alignItems='flex-end'>
               <TouchableOpacity
@@ -50,7 +48,7 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
             <Flex direction='row' alignItems='center'>
               <Box mr={'14px'}>
                 <Image
-                  borderRadius={14}
+                  borderRadius={6}
                   width={100}
                   height={100}
                   source={{ uri: item.images[0].url }}
@@ -84,7 +82,7 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
                     2390,00 p.
                   </Text> */}
                   <Text fontWeight='600' fontSize={15}>
-                    {item.price.toFixed(2)} p.
+                    {item.price} p.
                   </Text>
                 </Flex>
               </Box>
@@ -128,9 +126,7 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
             </Flex>
 
             <Box>
-              <Text fontWeight='600'>
-                {(item.price * item.count).toFixed(2)} p.
-              </Text>
+              <Text fontWeight='600'>{item.price * item.count} p.</Text>
             </Box>
           </Flex>
         </Box>

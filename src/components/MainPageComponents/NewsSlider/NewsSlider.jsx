@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
   imgContainer: {
     width: width - 40,
     height: 160,
-    borderRadius: 8,
+    borderRadius: 6,
   },
   imgBg: {
     width: '100%',
     height: 160,
 
-    borderRadius: 8,
+    borderRadius: 6,
     resizeMode: 'stretch',
   },
   paginationContainer: {

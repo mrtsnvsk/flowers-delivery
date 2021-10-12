@@ -34,7 +34,7 @@ const ProductItemsBlock = ({ data }) => {
               <ImageBackground
                 source={{ uri: el.image }}
                 style={styles.productImg}
-                imageStyle={{ borderRadius: 14 }}
+                imageStyle={{ borderRadius: 6 }}
               >
                 {el.promo && (
                   <Flex
@@ -46,8 +46,8 @@ const ProductItemsBlock = ({ data }) => {
                     position='absolute'
                     top={0}
                     left={0}
-                    borderBottomRightRadius={14}
-                    borderTopLeftRadius={14}
+                    borderBottomRightRadius={6}
+                    borderTopLeftRadius={6}
                   >
                     <Text>
                       {String(el?.promo).length >= 2 ? (

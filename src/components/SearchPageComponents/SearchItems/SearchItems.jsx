@@ -35,7 +35,7 @@ const SearchItems = ({ products }) => {
                       height={78}
                       alt={el.name}
                       source={{ uri: el.image }}
-                      borderRadius={14}
+                      borderRadius={6}
                     />
                   </Box>
                   <Box>
@@ -51,9 +51,7 @@ const SearchItems = ({ products }) => {
                       </Text>
                     </Box>
                     <Box>
-                      <Text color={propStyles.grayColor}>
-                        {(+el.price).toFixed(2)} p.
-                      </Text>
+                      <Text color={propStyles.grayColor}>{el.price} p.</Text>
                     </Box>
                   </Box>
                 </TouchableOpacity>

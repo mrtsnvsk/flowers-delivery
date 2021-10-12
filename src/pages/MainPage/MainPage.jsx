@@ -11,7 +11,7 @@ import PromoItem from '../../components/PromosComponents/PromoItem';
 const MainPage = () => {
   return (
     <Box flex={1} safeAreaTop>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Box p='20px' pb={0}>
           <Header />
         </Box>

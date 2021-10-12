@@ -31,11 +31,8 @@ const CategoriesPage = ({
   }
 
   return (
-    <Box flex={1} p='20px' pb={0} safeAreaTop>
+    <Box safeAreaY flex={1} p='20px' pb={0} safeAreaTop>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Box mb={3} _text={styles.headerText}>
-          Каталог
-        </Box>
         {categoriesList.length
           ? categoriesList.map((el) => (
               <TouchableOpacity
@@ -46,7 +43,7 @@ const CategoriesPage = ({
               >
                 <Box _text={styles.categoryNameText}>{el.name}</Box>
                 <Image
-                  borderRadius={8}
+                  borderRadius={6}
                   w={46}
                   h={46}
                   source={{ uri: el.image }}
@@ -66,7 +63,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   categoryItem: {
-    borderRadius: 14,
+    borderRadius: 6,
     backgroundColor: '#000',
     width: width - 40,
     paddingHorizontal: 34,
@@ -74,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginTop: 14,
   },
   categoryNameText: {
     color: '#fff',

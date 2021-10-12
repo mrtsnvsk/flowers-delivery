@@ -32,7 +32,7 @@ const ProductItemsColumn = ({ data }) => {
             <ImageBackground
               style={styles.productImg}
               source={{ uri: item.image }}
-              imageStyle={{ borderRadius: 14 }}
+              imageStyle={{ borderRadius: 6 }}
             >
               {item.promo && (
                 <Flex
@@ -44,8 +44,8 @@ const ProductItemsColumn = ({ data }) => {
                   position='absolute'
                   top={0}
                   left={0}
-                  borderBottomRightRadius={14}
-                  borderTopLeftRadius={14}
+                  borderBottomRightRadius={6}
+                  borderTopLeftRadius={6}
                 >
                   <Text>
                     {String(item?.promo).length >= 2 ? (
@@ -104,7 +104,7 @@ const ProductItemsColumn = ({ data }) => {
               </Box>
               <Box>
                 <Text fontWeight='600' fontSize={15}>
-                  {(+item.price).toFixed(2)} p.
+                  {+item.price} p.
                 </Text>
               </Box>
             </Flex>
@@ -119,7 +119,7 @@ const ProductItemsColumn = ({ data }) => {
 const styles = StyleSheet.create({
   item: {
     padding: 14,
-    borderRadius: 14,
+    borderRadius: 6,
     marginHorizontal: 14,
     marginBottom: 14,
     backgroundColor: '#fff',

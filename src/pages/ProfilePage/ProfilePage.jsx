@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
+import { connect } from 'react-redux';
 
 import { TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { Box, Flex, Center, Text, ScrollView } from 'native-base';
@@ -17,9 +18,27 @@ import {
 import CallPhoneBlock from '../../components/Elements/CallPhoneBlock';
 import ListItem from '../../components/ProfilePageComponents/ListItem';
 
-const ProfilePage = () => {
+import { getUserPhone } from '../../resources/utils';
+import { activateApp, logoutUser } from '../../store/actions/auth';
+
+const ProfilePage = ({ isAuth, activateApp, logoutUser }) => {
   const navigation = useNavigation();
   const [isPushes, setPushes] = useState(false);
+  const [userPhone, setUserPhone] = useState('');
+
+  useEffect(() => {
+    if (isAuth) {
+      (async () => {
+        setUserPhone(await getUserPhone());
+      })();
+    }
+  }, [isAuth]);
+
+  const pushToAuth = () => {
+    navigation.closeDrawer();
+    activateApp(false);
+    navigation.navigate('ActivateAppPage');
+  };
 
   const onPushToLink = (link) => {
     navigation.navigate(link);
@@ -39,34 +58,58 @@ const ProfilePage = () => {
         {/*  */}
         <Box p='30px'>
           <CallPhoneBlock />
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: '8%',
-              marginTop: '8%',
-            }}
-          >
-            <Box p={'5px'} mr={4}>
-              <FontAwesome5
-                name='user-alt'
-                size={28}
-                color={propStyles.mainRedColor}
+          {isAuth ? (
+            <>
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: '8%',
+                  marginTop: '8%',
+                }}
+              >
+                <Box p={'5px'} mr={4}>
+                  <FontAwesome5
+                    name='user-alt'
+                    size={28}
+                    color={propStyles.mainRedColor}
+                  />
+                </Box>
+                <Box>{userPhone}</Box>
+              </TouchableOpacity>
+              <ListItem
+                actionFn={logoutUser}
+                icon={
+                  <MaterialCommunityIcons
+                    name='location-exit'
+                    size={28}
+                    color={propStyles.mainRedColor}
+                  />
+                }
+                text={'Выйти из профиля'}
+                noBorder={true}
               />
-            </Box>
-            <Box>User</Box>
-          </TouchableOpacity>
-          <ListItem
-            icon={
-              <MaterialCommunityIcons
-                name='location-exit'
-                size={28}
-                color={propStyles.mainRedColor}
-              />
-            }
-            text={'Выйти из профиля'}
-            noBorder={true}
-          />
+            </>
+          ) : (
+            <TouchableOpacity
+              onPress={pushToAuth}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: '8%',
+                marginTop: '8%',
+              }}
+            >
+              <Box p={'5px'} mr={4}>
+                <FontAwesome5
+                  name='user-alt'
+                  size={28}
+                  color={propStyles.mainRedColor}
+                />
+              </Box>
+              <Box>Авторизация</Box>
+            </TouchableOpacity>
+          )}
         </Box>
         {/*  */}
         <Box px='30px'>
@@ -168,6 +211,13 @@ const ProfilePage = () => {
   );
 };
 
-const styles = StyleSheet.create({});
+const mapStateToProps = ({ auth: { isAuth } }) => ({
+  isAuth,
+});
 
-export default ProfilePage;
+const mapDispatchToProps = (dispatch) => ({
+  activateApp: (bool) => dispatch(activateApp(bool)),
+  logoutUser: () => dispatch(logoutUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

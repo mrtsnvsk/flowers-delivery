@@ -58,12 +58,12 @@ const AdditionalyAddItemsBlock = () => {
                     bg='#fff'
                     direction='row'
                     width={width / 1.3}
-                    borderRadius={14}
+                    borderRadius={6}
                     shadow={2}
                   >
                     <Box mr={4}>
                       <Image
-                        borderRadius={14}
+                        borderRadius={6}
                         width={100}
                         height={100}
                         source={{ uri: el.img }}

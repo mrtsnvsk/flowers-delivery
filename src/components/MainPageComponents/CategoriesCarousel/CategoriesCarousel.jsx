@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 
@@ -16,9 +16,9 @@ const CategoriesCarousel = ({ getCategoriesList, categoriesList }) => {
     getCategoriesList();
   }, [getCategoriesList]);
 
-  const onPushToLink = (el) => {
+  const onPushToLink = useCallback((el) => {
     navigation.navigate('CatalogPage', { name: el.name, id: el.id });
-  };
+  }, []);
 
   return (
     <Box>

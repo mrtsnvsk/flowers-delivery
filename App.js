@@ -12,15 +12,33 @@ import Routes from './src/routes/Drawers';
 
 import { allowLocation } from './src/resources/utils';
 
+import * as Linking from 'expo-linking';
+
+const prefix = Linking.createURL('/');
+
 const App = () => {
   useEffect(() => {
     allowLocation();
   }, []);
 
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        Stacks: {
+          initialRouteName: 'Tabs',
+          screens: {
+            Test: 'test/:id',
+          },
+        },
+      },
+    },
+  };
+
   return (
     <Provider store={store}>
       <NativeBaseProvider>
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
           <Box height='100%' safeAreaBottom>
             <StatusBar
               animated={true}

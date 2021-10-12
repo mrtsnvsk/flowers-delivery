@@ -16,7 +16,7 @@ const SwitchAdditionalProduct = ({ value, setValue, matchItem }) => {
             width={50}
             height={50}
             source={{ uri: img }}
-            borderRadius={9}
+            borderRadius={6}
             alt='Additional product'
           />
         </Box>

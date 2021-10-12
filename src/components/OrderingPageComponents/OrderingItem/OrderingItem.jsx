@@ -7,12 +7,12 @@ const { width } = Dimensions.get('window');
 
 const OrderingItem = ({ item }) => {
   return (
-    <Box shadow={3} borderRadius={14} mb={4} bg='#fff'>
+    <Box shadow={3} borderRadius={6} mb={4} bg='#fff'>
       <Box p='14px'>
         <Flex direction='row' alignItems='center'>
           <Box mr={'14px'}>
             <Image
-              borderRadius={14}
+              borderRadius={6}
               width={100}
               height={100}
               source={{ uri: item.images[0].url }}
@@ -34,7 +34,7 @@ const OrderingItem = ({ item }) => {
             </Box>
             <Flex direction='row' mt={3}>
               <Text fontWeight='600' fontSize={15}>
-                {item.price.toFixed(2)} p.
+                {item.price} p.
               </Text>
             </Flex>
           </Box>

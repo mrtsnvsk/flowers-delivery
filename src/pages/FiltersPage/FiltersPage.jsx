@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box, Text, Flex, Center } from 'native-base';
 import propStyles from '../../resources/propStyles';
+
 import {
   Foundation,
   AntDesign,
@@ -25,21 +26,12 @@ const FiltersPage = ({
   productPriceTo,
 }) => {
   const [low, setLow] = useState(0);
-  const [high, setHigh] = useState(10000);
+  const [high, setHigh] = useState(99999);
 
   const handleValueChange = useCallback((low, high) => {
     setLow(low);
     setHigh(high);
   }, []);
-
-  useEffect(() => {
-    if (productPriceFrom) {
-      setLow(productPriceFrom);
-    }
-    if (productPriceTo) {
-      setHigh(productPriceTo);
-    }
-  }, [productPriceFrom, productPriceTo]);
 
   const applyFilters = () => {
     setProductPriceDif({ from: low, to: high });
@@ -116,7 +108,7 @@ const FiltersPage = ({
         </Box>
         <Box mb={5}>
           <Text>
-            {low.toFixed(2)} p. - {high.toFixed(2)} p.
+            {low} p. - {high} p.
           </Text>
         </Box>
         <Box width='93%'>
@@ -132,7 +124,6 @@ const FiltersPage = ({
           />
         </Box>
       </Center>
-
       <Box mt={'40px'}>
         <Box>
           <Text fontSize={18} fontWeight='500'>
@@ -164,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: propStyles.shadowedColor,
-    borderRadius: 12,
+    borderRadius: 6,
     width: 44,
     height: 44,
     marginRight: 20,
@@ -176,7 +167,7 @@ const styles = StyleSheet.create({
   thumb: {
     width: 12 * 2,
     height: 12 * 2,
-    borderRadius: 12,
+    borderRadius: 6,
     borderWidth: 2,
     borderColor: propStyles.mainRedColor,
     backgroundColor: propStyles.mainRedColor,

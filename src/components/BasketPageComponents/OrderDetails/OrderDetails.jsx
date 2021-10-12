@@ -23,9 +23,7 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
 
   const getOrderDetails = () => {
     if (order.length) {
-      setPrice(
-        order.reduce((acc, val) => acc + val.price * val.count, 0).toFixed(2)
-      );
+      setPrice(order.reduce((acc, val) => acc + val.price * val.count, 0));
       setAdditPrice(
         order.reduce((acc, val) => (acc += +val?.package?.price || 0), 0)
       );
@@ -43,7 +41,7 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
 
   return (
     <Box
-      borderRadius={14}
+      borderRadius={6}
       mt='30px'
       bg={!hideOrderBtn ? propStyles.basketBlocksColor : '#fff'}
       p='14px'
@@ -80,7 +78,7 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
         <Flex direction='row' justify='space-between' align='center'>
           <Box>Всего</Box>
           <Box>
-            <Text>{(+price + +additPrice).toFixed(2)} p.</Text>
+            <Text>{+price + +additPrice} p.</Text>
           </Box>
         </Flex>
         <DottedUnderline />
@@ -88,7 +86,7 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
       {!hideOrderBtn && (
         <TouchableOpacity onPress={createOrder} style={styles.orderBtn}>
           <Text color='#fff' fontWeight='600'>
-            Заказать за: {(+price + +additPrice).toFixed(2)} p.
+            Заказать за: {+price + +additPrice} p.
           </Text>
         </TouchableOpacity>
       )}
@@ -102,7 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: '#000',
     width: width - 28 - 32,
-    borderRadius: 50,
+    borderRadius: 6,
     paddingHorizontal: 14,
     paddingVertical: 12,
     alignItems: 'center',

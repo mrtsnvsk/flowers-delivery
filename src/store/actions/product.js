@@ -12,15 +12,17 @@ export const updateCurrentProductCategory = (id) => ({
   payload: id,
 });
 
-export const getProductsList = (id, order, from, to) => {
+export const getProductsList = (id, order) => {
   const loading = constant.LOADING_PRODUCTS_LIST;
 
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(updateCurrentProductCategory(id));
     dispatch(onDs(loading, true));
 
     try {
-      const { data } = await getProductsListReq(id, order, from, to);
+      const f = getState().products.productPriceFrom,
+        t = getState().products.productPriceTo;
+      const { data } = await getProductsListReq(id, order, f, t);
 
       dispatch(onDs(constant.GET_PRODUCTS_LIST, data));
     } catch (e) {
@@ -41,7 +43,7 @@ export const getProductById = (id) => {
 
       dispatch(onDs(constant.GET_PRODUCT_BY_ID, data));
     } catch (e) {
-      console.log('e', e.response);
+      // console.log('e', e.response);
     } finally {
       dispatch(onDs(loading, false));
     }

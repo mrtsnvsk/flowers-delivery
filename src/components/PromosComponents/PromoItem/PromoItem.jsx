@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     height: (width - 40) / 2.4,
   },
   productNameText: {
-    fontSize: 20,
     fontWeight: '500',
   },
 });

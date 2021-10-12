@@ -41,7 +41,7 @@ const CatalogCategoriesCarousel = ({
               >
                 <Box mr={4}>
                   <Image
-                    borderRadius={50}
+                    borderRadius={6}
                     source={{ uri: el.image }}
                     w={30}
                     h={30}

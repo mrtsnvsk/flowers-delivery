@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#f1f1f1',
     marginRight: 14,
-    borderRadius: 8,
+    borderRadius: 6,
   },
   filterBtnText: {
     color: 'rgba(0, 0, 0, 0.5)',

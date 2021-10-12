@@ -41,18 +41,18 @@ const CatalogPage = ({
   const navigation = useNavigation();
 
   useEffect(() => {
-    getProductsList(id, orderSortProducts, productPriceFrom, productPriceTo);
-  }, [id, orderSortProducts, productPriceFrom, productPriceTo]);
+    if (name) {
+      navigation.setOptions({ headerTitle: name });
+    }
+  }, [name]);
 
   useEffect(() => {
     getCatalogBlockLayout();
   }, [getCatalogBlockLayout]);
 
   useEffect(() => {
-    if (name) {
-      navigation.setOptions({ headerTitle: name });
-    }
-  }, [name]);
+    getProductsList(id, orderSortProducts);
+  }, [id, orderSortProducts, productPriceFrom, productPriceTo]);
 
   useEffect(() => {
     return () => {
@@ -112,8 +112,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch) => ({
   showSortModal: (bool) => dispatch(showSortModal(bool)),
   getCatalogBlockLayout: () => dispatch(getCatalogBlockLayout()),
-  getProductsList: (id, order, from, to) =>
-    dispatch(getProductsList(id, order, from, to)),
+  getProductsList: (id, order) => dispatch(getProductsList(id, order)),
   updateSortProductsOrder: (order) => dispatch(updateSortProductsOrder(order)),
   updateProductsList: (list) => dispatch(updateProductsList(list)),
 });

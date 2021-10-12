@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000',
     width: 240,
-    borderRadius: 4,
+    borderRadius: 6,
     paddingVertical: 12,
   },
   joinAddressBtn: {
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: propStyles.mainRedColor,
-    borderRadius: 4,
+    borderRadius: 6,
     marginVertical: 20,
   },
   joinFromListBtn: {
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: propStyles.mainRedColor,
     borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: 6,
   },
   useBonusesBtn: {
     flexDirection: 'row',
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     backgroundColor: propStyles.mainRedColor,
     alignItems: 'center',
     width: 240,
-    borderRadius: 4,
+    borderRadius: 6,
     paddingVertical: 14,
   },
 });

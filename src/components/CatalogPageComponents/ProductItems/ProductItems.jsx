@@ -26,44 +26,45 @@ const ProductItems = ({ data }) => {
   return (
     <>
       <Flex direction='row' justify='space-between' wrap='wrap' p='20px'>
-        {data?.length &&
-          data.map((el) => (
-            <TouchableOpacity
-              key={el.id}
-              activeOpacity={0.6}
-              onPress={() => onOpenProductModal(el.id)}
-              style={styles.productItemWrap}
-            >
-              <ImageBackground
-                source={{ uri: el.image }}
-                style={styles.productImg}
-                imageStyle={{ borderRadius: 14 }}
+        {data?.length
+          ? data.map((el) => (
+              <TouchableOpacity
+                key={el.id}
+                activeOpacity={0.6}
+                onPress={() => onOpenProductModal(el.id)}
+                style={styles.productItemWrap}
               >
-                {el.promo && <PromoPercent promo={el.promo} />}
-              </ImageBackground>
-              <Box mt={4}>
-                <Text
-                  style={styles.productNameText}
-                  ellipsizeMode={'tail'}
-                  numberOfLines={2}
+                <ImageBackground
+                  source={{ uri: el.image }}
+                  style={styles.productImg}
+                  imageStyle={{ borderRadius: 6 }}
                 >
-                  {el.name}
-                </Text>
-              </Box>
-              <Box mt={4}>
-                <Text
-                  style={styles.productDescText}
-                  ellipsizeMode={'tail'}
-                  numberOfLines={3}
-                >
-                  {el.description}
-                </Text>
-              </Box>
-              <Box mt={4}>
-                <BuyBtn price={el.price} />
-              </Box>
-            </TouchableOpacity>
-          ))}
+                  {el.promo && <PromoPercent promo={el.promo} />}
+                </ImageBackground>
+                <Box height={'34px'} mt={4}>
+                  <Text
+                    style={styles.productNameText}
+                    ellipsizeMode={'tail'}
+                    numberOfLines={2}
+                  >
+                    {el.name}
+                  </Text>
+                </Box>
+                <Box mt={2}>
+                  <Text
+                    style={styles.productDescText}
+                    ellipsizeMode={'tail'}
+                    numberOfLines={3}
+                  >
+                    {el.description}
+                  </Text>
+                </Box>
+                <Box mt={4}>
+                  <BuyBtn price={el.price} />
+                </Box>
+              </TouchableOpacity>
+            ))
+          : null}
       </Flex>
       <ProductModal id={productId} open={isShowModal} setOpen={setShowModal} />
     </>

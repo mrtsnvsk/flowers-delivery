@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Box, Flex, ScrollView, Image, Text } from 'native-base';
+import { Box, Flex, ScrollView, Image, Text, Menu, Button } from 'native-base';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
 
@@ -148,7 +148,7 @@ const ProductModal = ({
 
   const toggleFavorite = () => {
     if (!isFavorite) {
-      addToFavoriteList(isProduct);
+      addToFavoriteList({ ...productById, image: productById?.images[0]?.url });
       setFavorite((prevState) => !prevState);
     } else {
       deleteFromFavoritesList(isProduct.id);
@@ -203,16 +203,17 @@ const ProductModal = ({
                           }
                         />
                       </Box>
-
-                      <CircleIconWrapper
-                        icon={
-                          <MaterialIcons
-                            name='more-vert'
-                            size={24}
-                            color={propStyles.mainRedColor}
-                          />
-                        }
-                      />
+                      <Box>
+                        <CircleIconWrapper
+                          icon={
+                            <MaterialIcons
+                              name='more-vert'
+                              size={24}
+                              color={propStyles.mainRedColor}
+                            />
+                          }
+                        />
+                      </Box>
                     </Flex>
                   </Flex>
                 </ImageBackground>
@@ -331,7 +332,7 @@ const styles = StyleSheet.create({
   carouselImg: {
     width: (width - 30) / 3,
     height: (width - 30) / 3,
-    borderRadius: 8,
+    borderRadius: 6,
     marginHorizontal: 5,
   },
   productNameText: {

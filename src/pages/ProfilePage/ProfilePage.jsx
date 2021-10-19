@@ -19,9 +19,9 @@ import CallPhoneBlock from '../../components/Elements/CallPhoneBlock';
 import ListItem from '../../components/ProfilePageComponents/ListItem';
 
 import { getUserPhone } from '../../resources/utils';
-import { activateApp, logoutUser } from '../../store/actions/auth';
+import { logoutUser } from '../../store/actions/auth';
 
-const ProfilePage = ({ isAuth, activateApp, logoutUser }) => {
+const ProfilePage = ({ isAuth, logoutUser }) => {
   const navigation = useNavigation();
   const [isPushes, setPushes] = useState(false);
   const [userPhone, setUserPhone] = useState('');
@@ -36,7 +36,6 @@ const ProfilePage = ({ isAuth, activateApp, logoutUser }) => {
 
   const pushToAuth = () => {
     navigation.closeDrawer();
-    activateApp(false);
     navigation.navigate('ActivateAppPage');
   };
 
@@ -216,7 +215,6 @@ const mapStateToProps = ({ auth: { isAuth } }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  activateApp: (bool) => dispatch(activateApp(bool)),
   logoutUser: () => dispatch(logoutUser()),
 });
 

@@ -53,7 +53,10 @@ const AddToBasketFooter = ({
       ) : (
         <TouchableOpacity
           onPress={actionDeleteFn}
-          style={[styles.basketBtn, { backgroundColor: propStyles.redColor }]}
+          style={[
+            styles.basketBtn,
+            { backgroundColor: propStyles.mainRedColor },
+          ]}
         >
           <Box mr={3}>
             <SimpleLineIcons name='basket' size={24} color={'#fff'} />

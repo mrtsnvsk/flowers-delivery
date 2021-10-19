@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, Share } from 'react-native';
 
 export const onAlert = (text) => {
   Alert.alert('', text);
@@ -39,4 +39,13 @@ export const getUserPhone = async () => {
   const user = await AsyncStorage.getItem('@userData');
 
   return JSON.parse(user).password;
+};
+
+// sharing
+export const shareUrl = async (id) => {
+  const url = `npx uri-scheme open exp://127.0.0.1:19000/--/product/${id} --ios`;
+
+  await Share.share({
+    message: url,
+  });
 };

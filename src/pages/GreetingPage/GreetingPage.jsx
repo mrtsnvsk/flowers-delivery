@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
 import { Box, Center, Image, Text } from 'native-base';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUserPhone } from '../../resources/utils';
 
 const Greetingpage = ({ isAuth }) => {
+  const navigation = useNavigation();
+
   const [userPhone, setUserPhone] = useState('');
   const curHours = new Date().getHours();
 
@@ -16,6 +18,10 @@ const Greetingpage = ({ isAuth }) => {
         setUserPhone(await getUserPhone());
       }
     })();
+    
+    setTimeout(() => {
+      navigation.navigate(isAuth ? 'Tabs' : 'ActivateAppPage');
+    }, 3000);
   }, [isAuth]);
 
   const logo =

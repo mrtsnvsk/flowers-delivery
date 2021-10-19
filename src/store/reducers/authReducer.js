@@ -3,7 +3,6 @@ import * as constant from '../constants';
 const initialState = {
   isAuth: false,
   loadingIsAuth: true,
-  isActivateApp: false,
   isSendedCode: null,
   userData: null,
 };
@@ -26,11 +25,7 @@ const authReducer = (state = initialState, { type, payload }) => {
         ...state,
         isAuth: payload,
       };
-    case constant.IS_ACTIVATE_APP:
-      return {
-        ...state,
-        isActivateApp: payload,
-      };
+
     default:
       return state;
   }

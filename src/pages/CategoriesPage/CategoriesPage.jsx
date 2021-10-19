@@ -31,7 +31,7 @@ const CategoriesPage = ({
   }
 
   return (
-    <Box safeAreaY flex={1} p='20px' pb={0} safeAreaTop>
+    <Box safeAreaTop flex={1} p='20px' pb={0}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {categoriesList.length
           ? categoriesList.map((el) => (

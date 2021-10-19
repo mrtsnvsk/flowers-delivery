@@ -15,7 +15,6 @@ import {
   registerUser,
   updateSmsCode,
   authUser,
-  activateApp,
 } from '../../store/actions/auth';
 
 import { TextInputMask } from 'react-native-masked-text';
@@ -25,11 +24,17 @@ const ActivateAppPage = ({
   isSendedCode,
   updateSmsCode,
   authUser,
-  activateApp,
+  isAuth,
 }) => {
   const navigation = useNavigation();
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
+
+  useEffect(() => {
+    if (isAuth) {
+      onPushToLink();
+    }
+  }, [isAuth]);
 
   const onPushToLink = () => {
     navigation.navigate('Tabs');
@@ -40,8 +45,6 @@ const ActivateAppPage = ({
       registerUser(phone);
     }
   };
-
-  const handleAuthUser = () => {};
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -142,13 +145,7 @@ const ActivateAppPage = ({
             <Text style={styles.activeBtnText}>Активировать</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity
-          onPress={() => {
-            activateApp(true);
-            onPushToLink();
-          }}
-          style={{ marginTop: 20 }}
-        >
+        <TouchableOpacity onPress={onPushToLink} style={{ marginTop: 20 }}>
           <Text
             fontSize={16}
             fontWeight='700'
@@ -176,13 +173,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ auth: { isSendedCode } }) => ({ isSendedCode });
+const mapStateToProps = ({ auth: { isSendedCode, isAuth } }) => ({
+  isSendedCode,
+  isAuth,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   registerUser: (phone) => dispatch(registerUser(phone)),
   updateSmsCode: (code) => dispatch(updateSmsCode(code)),
   authUser: (code) => dispatch(authUser(code)),
-  activateApp: (bool) => dispatch(activateApp(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivateAppPage);

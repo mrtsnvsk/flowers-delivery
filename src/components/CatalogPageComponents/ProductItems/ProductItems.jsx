@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 import {
   StyleSheet,
@@ -9,18 +10,15 @@ import {
 import { Box, Flex, Text } from 'native-base';
 
 import BuyBtn from '../../Elements/BuyBtn';
-import ProductModal from '../../Modals/ProductModal';
 import PromoPercent from '../../Elements/PromoPercent';
 
 const { width } = Dimensions.get('window');
 
 const ProductItems = ({ data }) => {
-  const [isShowModal, setShowModal] = useState(false);
-  const [productId, setProductId] = useState({});
+  const navigation = useNavigation();
 
   const onOpenProductModal = (id) => {
-    setProductId(id);
-    setShowModal(true);
+    navigation.navigate('ProductPage', { id });
   };
 
   return (
@@ -66,7 +64,6 @@ const ProductItems = ({ data }) => {
             ))
           : null}
       </Flex>
-      <ProductModal id={productId} open={isShowModal} setOpen={setShowModal} />
     </>
   );
 };

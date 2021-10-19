@@ -22,13 +22,14 @@ const App = () => {
   }, []);
 
   const linking = {
+    // prefixes: ['https://*.florcat.com','florcat://'],
     prefixes: [prefix],
     config: {
       screens: {
         Stacks: {
           initialRouteName: 'Tabs',
           screens: {
-            Test: 'test/:id',
+            ProductPage: 'product/:id',
           },
         },
       },

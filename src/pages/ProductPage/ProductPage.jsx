@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
 import {
   Dimensions,
   ImageBackground,
-  Modal,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Box, Flex, ScrollView, Image, Text, Menu, Button } from 'native-base';
+import { Box, Flex, ScrollView, Image, Text } from 'native-base';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import propStyles from '../../resources/propStyles';
 
@@ -18,18 +18,15 @@ import SpinnerFw from '../../components/Elements/SpinnerFw';
 
 const { width } = Dimensions.get('window');
 import { setOrderList, getOrderList } from '../../store/actions/order';
-import { getOrderFromStorage } from '../..resources/utils';
+import { getOrderFromStorage, shareUrl } from '../../resources/utils';
 import SwitchAdditionalProduct from '../../components/Elements/SwitchAdditionalProduct';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   addToFavoriteList,
   deleteFromFavoritesList,
-} from '../../../store/actions/favorites';
-import {
-  getProductById,
-  updateProductById,
-} from '../../../store/actions/product';
+} from '../../store/actions/favorites';
+import { getProductById, updateProductById } from '../../store/actions/product';
 
 const CircleIconWrapper = ({ icon, fn }) => {
   return (
@@ -54,14 +51,15 @@ const ProductModal = ({
   updateProductById,
   route,
 }) => {
+  const navigation = useNavigation();
+  const { id } = route.params;
+
   const [isProduct, setProduct] = useState({});
   const [isOpenSlide, setOpenSlide] = useState(false);
   const [matchItem, setMatchItem] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
   const [isPackage, setPackage] = useState(false);
   const [mainImage, setMainImage] = useState(null);
-
-  const { id } = route.params;
 
   const otherImgs = [
     {
@@ -168,7 +166,7 @@ const ProductModal = ({
       ) : (
         <>
           <Box style={styles.modal}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <ImageBackground
                 resizeMode='stretch'
                 style={styles.imgBg}
@@ -180,7 +178,7 @@ const ProductModal = ({
                   alignItems='center'
                 >
                   <CircleIconWrapper
-                    fn={() => setOpen(false)}
+                    fn={navigation.goBack}
                     icon={
                       <AntDesign
                         name='close'
@@ -205,17 +203,16 @@ const ProductModal = ({
                         }
                       />
                     </Box>
-                    <Box>
-                      <CircleIconWrapper
-                        icon={
-                          <MaterialIcons
-                            name='more-vert'
-                            size={24}
-                            color={propStyles.mainRedColor}
-                          />
-                        }
-                      />
-                    </Box>
+                    <CircleIconWrapper
+                      fn={() => shareUrl(productById.id)}
+                      icon={
+                        <MaterialIcons
+                          name='more-vert'
+                          size={24}
+                          color={propStyles.mainRedColor}
+                        />
+                      }
+                    />
                   </Flex>
                 </Flex>
               </ImageBackground>

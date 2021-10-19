@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -22,12 +23,12 @@ import MapPage from '../pages/MapPage';
 import ConfidentialityPage from '../pages/ConfidentialityPage';
 import BonusesPage from '../pages/BonusesPage';
 import NotificationsPage from '../pages/NotificationsPage';
-//
-import Test from '../pages/Test';
+import ProductPage from '../pages/ProductPage';
 
 import CatalogHeader from '../components/CatalogPageComponents/CatalogHeader';
 import SearchInput from '../components/Elements/SearchInput';
 import HeaderBackBtn from '../components/Elements/HeaderBackBtn';
+import SpinnerFw from '../components/Elements/SpinnerFw';
 
 import {
   clearSearchInputText,
@@ -46,15 +47,16 @@ const Stacks = ({
   isOrderingAddressTerm,
   searchProductsTerm,
   updateSearchProductsTerm,
-  isActivateApp,
   loadingIsAuth,
   checkAuthUser,
 }) => {
-  const [startPage, setStartPage] = useState(true);
-
   useEffect(() => {
     checkAuthUser();
   }, [checkAuthUser]);
+
+  if (loadingIsAuth) {
+    return <SpinnerFw />;
+  }
 
   return (
     <Stack.Navigator
@@ -66,23 +68,20 @@ const Stacks = ({
         headerTitleAlign: 'left',
       }}
     >
-      {/* {loadingIsAuth ? (
-        <Stack.Screen
-          name='GreetingPage'
-          component={GreetingPage}
-          options={{
-            headerShown: false,
-          }}
-        />
-      ) : !isActivateApp ? (
-        <Stack.Screen
-          name='ActivateAppPage'
-          component={ActivateAppPage}
-          options={{
-            headerShown: false,
-          }}
-        />
-      ) : ( */}
+      <Stack.Screen
+        name='GreetingPage'
+        component={GreetingPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='ActivateAppPage'
+        component={ActivateAppPage}
+        options={{
+          headerShown: false,
+        }}
+      />
       <>
         <Stack.Screen
           name='Tabs'
@@ -91,7 +90,13 @@ const Stacks = ({
             headerShown: false,
           }}
         />
-        <Stack.Screen name='Test' component={Test} />
+        <Stack.Screen
+          name='ProductPage'
+          component={ProductPage}
+          options={{
+            headerShown: false,
+          }}
+        />
 
         <Stack.Screen
           name='ContactsPage'
@@ -217,7 +222,6 @@ const Stacks = ({
           component={NotificationsPage}
         />
       </>
-      {/* )} */}
     </Stack.Navigator>
   );
 };
@@ -225,12 +229,11 @@ const Stacks = ({
 const mapStateToProps = ({
   search: { isShowSearchIcon, isOrderingAddressTerm },
   products: { searchProductsTerm },
-  auth: { isActivateApp, loadingIsAuth },
+  auth: { loadingIsAuth },
 }) => ({
   isShowSearchIcon,
   isOrderingAddressTerm,
   searchProductsTerm,
-  isActivateApp,
   loadingIsAuth,
 });
 

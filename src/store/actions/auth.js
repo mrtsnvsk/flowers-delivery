@@ -10,17 +10,18 @@ export const updateSmsCode = (password, userData) => ({
   payload: { password, userData },
 });
 
-export const activateApp = (payload) => ({
-  type: constant.IS_ACTIVATE_APP,
-  payload,
-});
-
 export const logoutUser = () => {
   return async (dispatch) => {
     dispatch(onDs(constant.IS_AUTH_USER, false));
+    dispatch(onDs(constant.IS_SENDED_CODE, { password: null, userData: null }));
     await AsyncStorage.removeItem('@userData');
   };
 };
+
+export const setLoading = (payload) => ({
+  type: constant.SET_AUTH_LOADING,
+  payload,
+});
 
 export const registerUser = (phone) => {
   return async (dispatch) => {
@@ -47,7 +48,6 @@ export const authUser = (code) => {
       await AsyncStorage.setItem('@userData', JSON.stringify(userData));
 
       dispatch(onDs(constant.IS_AUTH_USER, true));
-      dispatch(activateApp(true));
       onAlert('Вы успешно авторизовались!');
     } else {
       dispatch(logoutUser());
@@ -63,7 +63,6 @@ export const checkAuthUser = () => {
 
       if (user) {
         dispatch(onDs(constant.IS_AUTH_USER, true));
-        dispatch(activateApp(true));
       } else {
         dispatch(logoutUser());
       }

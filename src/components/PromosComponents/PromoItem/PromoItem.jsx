@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
 import {
   StyleSheet,
@@ -15,19 +16,16 @@ const { width } = Dimensions.get('window');
 import { getProductsWithStocks } from '../../../store/actions/product';
 import BlockHeader from '../../MainPageComponents/BlockHeader';
 import PromoPercent from '../../Elements/PromoPercent';
-import ProductModal from '../../Modals/ProductModal';
 
 const PromoItem = ({ getProductsWithStocks, productsWithStocksList }) => {
-  const [isShowModal, setShowModal] = useState(false);
-  const [productId, setProductId] = useState({});
+  const navigation = useNavigation();
 
   useEffect(() => {
     getProductsWithStocks();
   }, [getProductsWithStocks]);
 
   const onOpenProductModal = (id) => {
-    setProductId(id);
-    setShowModal(true);
+    navigation.navigate('ProductPage', { id });
   };
 
   return (
@@ -73,7 +71,6 @@ const PromoItem = ({ getProductsWithStocks, productsWithStocksList }) => {
           </Box>
         </Box>
       ) : null}
-      <ProductModal id={productId} open={isShowModal} setOpen={setShowModal} />
     </>
   );
 };

@@ -14,7 +14,7 @@ import {
 import CallPhoneBlock from '../Elements/CallPhoneBlock';
 
 import { getCategoriesList } from '../../store/actions/categories';
-import { logoutUser, activateApp } from '../../store/actions/auth';
+import { logoutUser } from '../../store/actions/auth';
 
 const Drawer = ({
   navigation,
@@ -22,7 +22,6 @@ const Drawer = ({
   categoriesList,
   logoutUser,
   isAuth,
-  activateApp,
 }) => {
   const [isOpenMenu, setOpenMenu] = useState(true);
 
@@ -126,7 +125,6 @@ const Drawer = ({
                   <TouchableOpacity
                     onPress={() => {
                       navigation.closeDrawer();
-                      activateApp(false);
                       navigation.navigate('ActivateAppPage');
                     }}
                     style={{ marginBottom: '10%' }}
@@ -217,7 +215,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch) => ({
   getCategoriesList: () => dispatch(getCategoriesList()),
   logoutUser: () => dispatch(logoutUser()),
-  activateApp: (bool) => dispatch(activateApp(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

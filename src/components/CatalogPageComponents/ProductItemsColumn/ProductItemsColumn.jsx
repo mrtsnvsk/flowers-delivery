@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 import {
   Dimensions,
@@ -7,17 +8,14 @@ import {
   ImageBackground,
 } from 'react-native';
 import { Box, Flex, Text } from 'native-base';
-import ProductModal from '../../Modals/ProductModal';
 
 const { width } = Dimensions.get('window');
 
 const ProductItemsColumn = ({ data }) => {
-  const [isShowModal, setShowModal] = useState(false);
-  const [productId, setProductId] = useState({});
+  const navigation = useNavigation();
 
-  const openProductModal = (id) => {
-    setProductId(id);
-    setShowModal(true);
+  const onOpenProductModal = (id) => {
+    navigation.navigate('ProductPage', { id });
   };
 
   return (
@@ -25,7 +23,7 @@ const ProductItemsColumn = ({ data }) => {
       {data.map((item) => (
         <TouchableOpacity
           key={item.id}
-          onPress={() => openProductModal(item.id)}
+          onPress={() => onOpenProductModal(item.id)}
           style={styles.item}
         >
           <Flex direction='row'>
@@ -34,51 +32,7 @@ const ProductItemsColumn = ({ data }) => {
               source={{ uri: item.image }}
               imageStyle={{ borderRadius: 6 }}
             >
-              {item.promo && (
-                <Flex
-                  alignItems='center'
-                  justify='center'
-                  width={52}
-                  height={30}
-                  bgColor='#FF451D'
-                  position='absolute'
-                  top={0}
-                  left={0}
-                  borderBottomRightRadius={6}
-                  borderTopLeftRadius={6}
-                >
-                  <Text>
-                    {String(item?.promo).length >= 2 ? (
-                      <>
-                        <Text
-                          style={[
-                            styles.promoText,
-                            {
-                              fontSize:
-                                item.promo >= 10 && item.promo <= 20 ? 16 : 14,
-                            },
-                          ]}
-                        >
-                          {item.promo?.toString().slice(0, 1)}
-                        </Text>
-                        <Text
-                          style={[
-                            styles.promoText,
-                            {
-                              fontSize:
-                                item.promo >= 10 && item.promo <= 20 ? 14 : 16,
-                            },
-                          ]}
-                        >
-                          {item.promo?.toString().slice(1)}%
-                        </Text>
-                      </>
-                    ) : (
-                      <Text style={styles.promoText}>{item.promo}%</Text>
-                    )}
-                  </Text>
-                </Flex>
-              )}
+              {item.promo && <PromoPercent promo={el.promo} />}
             </ImageBackground>
             <Flex
               py={1}
@@ -111,7 +65,6 @@ const ProductItemsColumn = ({ data }) => {
           </Flex>
         </TouchableOpacity>
       ))}
-      <ProductModal id={productId} open={isShowModal} setOpen={setShowModal} />
     </>
   );
 };

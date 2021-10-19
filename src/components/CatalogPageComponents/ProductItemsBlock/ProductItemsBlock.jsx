@@ -1,23 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigation } from '@react-navigation/core';
 
-import {
-  StyleSheet,
-  Dimensions,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { Box, Flex, Text } from 'native-base';
 
 import BuyBtn from '../../Elements/BuyBtn';
-import ProductModal from '../../Modals/ProductModal';
 
 const ProductItemsBlock = ({ data }) => {
-  const [isShowModal, setShowModal] = useState(false);
-  const [productId, setProductId] = useState({});
+  const navigation = useNavigation();
 
   const onOpenProductModal = (id) => {
-    setProductId(id);
-    setShowModal(true);
+    navigation.navigate('ProductPage', { id });
   };
 
   return (
@@ -36,51 +29,7 @@ const ProductItemsBlock = ({ data }) => {
                 style={styles.productImg}
                 imageStyle={{ borderRadius: 6 }}
               >
-                {el.promo && (
-                  <Flex
-                    alignItems='center'
-                    justify='center'
-                    width={52}
-                    height={30}
-                    bgColor='#FF451D'
-                    position='absolute'
-                    top={0}
-                    left={0}
-                    borderBottomRightRadius={6}
-                    borderTopLeftRadius={6}
-                  >
-                    <Text>
-                      {String(el?.promo).length >= 2 ? (
-                        <>
-                          <Text
-                            style={[
-                              styles.promoText,
-                              {
-                                fontSize:
-                                  el.promo >= 10 && el.promo <= 20 ? 16 : 14,
-                              },
-                            ]}
-                          >
-                            {el.promo?.toString().slice(0, 1)}
-                          </Text>
-                          <Text
-                            style={[
-                              styles.promoText,
-                              {
-                                fontSize:
-                                  el.promo >= 10 && el.promo <= 20 ? 14 : 16,
-                              },
-                            ]}
-                          >
-                            {el.promo?.toString().slice(1)}%
-                          </Text>
-                        </>
-                      ) : (
-                        <Text style={styles.promoText}>{el.promo}%</Text>
-                      )}
-                    </Text>
-                  </Flex>
-                )}
+                {el.promo && <PromoPercent promo={el.promo} />}
               </ImageBackground>
               <Box mt={4}>
                 <Text
@@ -106,7 +55,6 @@ const ProductItemsBlock = ({ data }) => {
             </TouchableOpacity>
           ))}
       </Flex>
-      <ProductModal id={productId} open={isShowModal} setOpen={setShowModal} />
     </>
   );
 };

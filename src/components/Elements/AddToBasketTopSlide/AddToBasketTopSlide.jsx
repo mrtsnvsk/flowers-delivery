@@ -12,7 +12,7 @@ const AddToBasketTopSlide = ({ open, productName }) => {
         px='20px'
         py='30px'
         safeAreaTop
-        bg={propStyles.redColor}
+        bg={propStyles.mainRedColor}
         direction='row'
         alignItems='center'
         borderBottomLeftRadius={14}

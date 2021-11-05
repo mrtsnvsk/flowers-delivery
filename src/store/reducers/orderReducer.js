@@ -3,6 +3,7 @@ import * as constant from '../constants';
 const initialState = {
   orderList: [],
   orderListCount: 0,
+  orderAddress: null,
 };
 
 const orderReducer = (state = initialState, { type, payload }) => {
@@ -12,6 +13,11 @@ const orderReducer = (state = initialState, { type, payload }) => {
         ...state,
         orderList: payload,
         orderListCount: payload.length,
+      };
+    case constant.CHANGE_ORDER_ADDRESS:
+      return {
+        ...state,
+        orderAddress: payload,
       };
     default:
       return state;

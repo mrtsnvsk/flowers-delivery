@@ -3,7 +3,7 @@
     "scheme": "florcat",
     "name": "flowers-delivery-app",
     "slug": "flowers-delivery-app",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "flowers-delivery-app"

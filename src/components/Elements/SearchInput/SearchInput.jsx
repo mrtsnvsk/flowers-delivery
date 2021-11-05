@@ -6,6 +6,7 @@ import { TextInput, StyleSheet, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
 
 import { setShowSearchIcon } from '../../../store/actions/search';
+import i18n from 'i18n-js';
 
 const SearchInput = ({
   setShowSearchIcon,
@@ -29,7 +30,7 @@ const SearchInput = ({
       style={[styles.input, { width: width - w }]}
       onChangeText={(text) => setTerm(text)}
       value={term}
-      placeholder='Поиск'
+      placeholder={i18n.t('searchInput')}
     />
   );
 };

@@ -11,6 +11,7 @@ import ProductItems from '../../components/CatalogPageComponents/ProductItems';
 
 import { getFavoritesList } from '../../store/actions/favorites';
 import SpinnerFw from '../../components/Elements/SpinnerFw';
+import i18n from 'i18n-js';
 
 const { width } = Dimensions.get('window');
 
@@ -53,13 +54,11 @@ const FavoritesPage = ({
           </Box>
           <Box mt={3}>
             <Text fontSize={18} fontWeight='600'>
-              Избранных пока нет
+              {i18n.t('favoritesEmptyList')}
             </Text>
           </Box>
           <Box mt={3}>
-            <Text textAlign='center'>
-              Нажмите на сердце рядом с товаром, чтобы выбрать его.
-            </Text>
+            <Text textAlign='center'>{i18n.t('favoritesDesc')}</Text>
           </Box>
           <Box shadow={4} mt={'30px'}>
             <TouchableOpacity
@@ -67,7 +66,7 @@ const FavoritesPage = ({
               style={[styles.btn, { backgroundColor: '#E51234' }]}
             >
               <Text color='#fff' fontSize={18} fontWeight='500'>
-                Начните делать покупки
+                {i18n.t('favoritesStartPurchases')}
               </Text>
             </TouchableOpacity>
           </Box>
@@ -77,7 +76,7 @@ const FavoritesPage = ({
               style={[styles.btn, { backgroundColor: '#EDEDEE' }]}
             >
               <Text color={propStyles.grayColor} fontSize={18} fontWeight='500'>
-                Поиск товаров
+                {i18n.t('favoritesSearchProducts')}
               </Text>
             </TouchableOpacity>
           </Box>

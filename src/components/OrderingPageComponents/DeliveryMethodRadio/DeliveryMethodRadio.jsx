@@ -24,16 +24,17 @@ const DeliveryMethodRadio = ({ value, setValue, radioData }) => {
             bgColor={value === el.value ? '#f1f1f1' : '#fff'}
             borderRadius={4}
           >
-            <Radio
-              accessibilityLabel='pick an option'
-              colorScheme='secondary'
-              value={el.value}
-              py={4}
-            >
-              <Text fontSize={18} ml={5}>
-                {el.name}
-              </Text>
-            </Radio>
+            <Box py={4}>
+              <Radio
+                accessibilityLabel='pick an option'
+                colorScheme='secondary'
+                value={el.value}
+              >
+                <Text fontSize={18} ml={5}>
+                  {el.name}
+                </Text>
+              </Radio>
+            </Box>
           </Flex>
         ))}
       </>

@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 
 import { Select, CheckIcon } from 'native-base';
-import propStyles from '../../../resources/propStyles';
 
 const SelectOrderAddress = () => {
-  let [language, setLanguage] = useState('');
+  let [address, setAddress] = useState('');
 
   return (
     <Select
       accessibilityLabel='Адрес самовывоза'
       placeholder='Выберите адрес самовывоза'
-      onValueChange={(itemValue) => setLanguage(itemValue)}
+      onValueChange={(itemValue) => setAddress(itemValue)}
       _selectedItem={{
-        bg: propStyles.shadowedColor,
         endIcon: <CheckIcon size={4} />,
       }}
     >

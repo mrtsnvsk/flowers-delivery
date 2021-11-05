@@ -16,6 +16,7 @@ import RangeSlider from 'rn-range-slider';
 import { setCatalogBlockLayout } from '../../store/actions/catalogLayout';
 import { setProductPriceDif } from '../../store/actions/product';
 import { onAlert } from '../../resources/utils';
+import i18n from 'i18n-js';
 
 const FiltersPage = ({
   setCatalogBlockLayout,
@@ -43,7 +44,7 @@ const FiltersPage = ({
       <Box mt='40px'>
         <Box mb={4}>
           <Text fontSize={18} fontWeight='500'>
-            Отображение товаров
+            {i18n.t('filterProductDisplay')}{' '}
           </Text>
         </Box>
         <Flex direction='row' align='center'>
@@ -103,7 +104,7 @@ const FiltersPage = ({
       <Center mt='40px'>
         <Box mb={3}>
           <Text color='#000' fontSize={19} fontWeight='500'>
-            По цене
+            {i18n.t('filterByPrice')}
           </Text>
         </Box>
         <Box mb={5}>
@@ -127,7 +128,7 @@ const FiltersPage = ({
       <Box mt={'40px'}>
         <Box>
           <Text fontSize={18} fontWeight='500'>
-            Характеристики
+            {i18n.t('filterCharacters')}
           </Text>
         </Box>
         <Flex direction='row' wrap='wrap' mt={4}>
@@ -142,7 +143,7 @@ const FiltersPage = ({
       </Box>
       <Center mt={5}>
         <TouchableOpacity onPress={applyFilters} style={styles.submitBtn}>
-          <Text color='#fff'>Применить</Text>
+          <Text color='#fff'>{i18n.t('filterApplyButton')}</Text>
         </TouchableOpacity>
       </Center>
     </Box>
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
   thumb: {
     width: 12 * 2,
     height: 12 * 2,
-    borderRadius: 6,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: propStyles.mainRedColor,
     backgroundColor: propStyles.mainRedColor,

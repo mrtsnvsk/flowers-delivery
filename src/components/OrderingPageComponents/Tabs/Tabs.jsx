@@ -5,24 +5,25 @@ import { Flex, Text, Box } from 'native-base';
 import propStyles from '../../../resources/propStyles';
 
 const { width } = Dimensions.get('window');
+import i18n from 'i18n-js';
 
 const Tabs = ({ tabId }) => {
   const tabs = [
     {
       id: 0,
-      name: 'Доставка',
+      name: i18n.t('orderingDeliveryTab'),
     },
     {
       id: 1,
-      name: 'Адрес',
+      name: i18n.t('orderingAddressTab'),
     },
     {
       id: 2,
-      name: 'Детали',
+      name: i18n.t('orderingDetailsTab'),
     },
     {
       id: 3,
-      name: 'Оплата',
+      name: i18n.t('orderingPayment'),
     },
   ];
 

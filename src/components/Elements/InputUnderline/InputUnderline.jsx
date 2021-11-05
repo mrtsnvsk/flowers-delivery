@@ -8,10 +8,8 @@ const InputUnderline = ({ value, setValue, placeholder }) => {
     <Input
       value={value}
       onChangeText={(text) => setValue(text)}
-      border={0}
-      borderBottomWidth={1}
-      borderBottomColor={propStyles.shadowedColor}
-      w='100%'
+      borderColor={propStyles.shadowedColor}
+      isFullWidth
       placeholder={placeholder}
       autoCapitalize='none'
     />

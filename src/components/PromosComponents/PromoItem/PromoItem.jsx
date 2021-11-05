@@ -8,7 +8,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import { Box, ScrollView, Image, Text } from 'native-base';
+import { Box, ScrollView, Text } from 'native-base';
 import BuyBtn from '../../Elements/BuyBtn';
 
 const { width } = Dimensions.get('window');
@@ -16,6 +16,7 @@ const { width } = Dimensions.get('window');
 import { getProductsWithStocks } from '../../../store/actions/product';
 import BlockHeader from '../../MainPageComponents/BlockHeader';
 import PromoPercent from '../../Elements/PromoPercent';
+import i18n from 'i18n-js';
 
 const PromoItem = ({ getProductsWithStocks, productsWithStocksList }) => {
   const navigation = useNavigation();
@@ -28,11 +29,18 @@ const PromoItem = ({ getProductsWithStocks, productsWithStocksList }) => {
     navigation.navigate('ProductPage', { id });
   };
 
+  const pushToPromosPage = () => {
+    navigation.navigate('PromosPage');
+  };
+
   return (
     <>
       {productsWithStocksList?.length ? (
-        <Box>
-          <BlockHeader label={'Акции'} />
+        <Box pb={2}>
+          <BlockHeader
+            actionFn={pushToPromosPage}
+            label={i18n.t('blockHeaderPromo')}
+          />
           <Box pl='20px'>
             <ScrollView
               horizontal={true}

@@ -5,6 +5,7 @@ import {
   getProductsListReq,
   getSearchProductsListReq,
   getProductsWithStocksReq,
+  getRecommendationsProductsReq,
 } from '../../api/products';
 
 export const updateCurrentProductCategory = (id) => ({
@@ -101,3 +102,14 @@ export const setProductPriceDif = ({ from, to }) => ({
   type: constant.SET_PRODUCT_PRICE_DIF,
   payload: { from, to },
 });
+
+export const getRecommendationsProducts = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await getRecommendationsProductsReq();
+
+      dispatch(onDs(constant.GET_RECOMMEND_PRODUCTS_LIST, data));
+    } finally {
+    }
+  };
+};

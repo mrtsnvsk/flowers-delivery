@@ -44,10 +44,7 @@ const BasketPage = ({ getOrderList, orderList, setOrderList }) => {
             />
           ) : null}
         </Box>
-        <Box>
-          <HeaderInfo label={'Рекомендуемы добавить'} />
-          <AdditionalyAddItemsBlock />
-        </Box>
+        <AdditionalyAddItemsBlock />
         <AddCoupon coupon={coupon} setCoupon={setCoupon} />
         <OrderDetails order={orderList} />
       </ScrollView>

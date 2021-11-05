@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Box, Flex, Slide, Text } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
-
 import propStyles from '../../../resources/propStyles';
+import i18n from 'i18n-js';
 
 const AddToBasketTopSlide = ({ open, productName }) => {
   return (
@@ -31,7 +31,7 @@ const AddToBasketTopSlide = ({ open, productName }) => {
             _text={{ color: '#fff', fontWeight: '400', fontSize: 17 }}
             mt={3}
           >
-            Были добавлены в вашу корзину
+            {i18n.t('addToBasketTopSlide')}
           </Box>
         </Box>
       </Flex>

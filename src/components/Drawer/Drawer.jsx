@@ -15,6 +15,7 @@ import CallPhoneBlock from '../Elements/CallPhoneBlock';
 
 import { getCategoriesList } from '../../store/actions/categories';
 import { logoutUser } from '../../store/actions/auth';
+import i18n from 'i18n-js';
 
 const Drawer = ({
   navigation,
@@ -38,7 +39,7 @@ const Drawer = ({
 
   const links = [
     {
-      link: 'Категории',
+      link: i18n.t('drawerCategories'),
       icon: (
         <MaterialCommunityIcons
           name='flower-tulip-outline'
@@ -49,14 +50,14 @@ const Drawer = ({
       path: 'CategoriesPage',
     },
     {
-      link: 'Контакты',
+      link: i18n.t('drawerContacts'),
       icon: (
-        <AntDesign name='contacts' size={24} color={propStyles.mainRedColor} />
+        <AntDesign name='contacts' size={20} color={propStyles.mainRedColor} />
       ),
       path: 'ContactsPage',
     },
     {
-      link: 'Условия доставки',
+      link: i18n.t('drawerDeliveryTerm'),
       icon: (
         <MaterialIcons
           name='delivery-dining'
@@ -118,7 +119,9 @@ const Drawer = ({
                           color={propStyles.mainRedColor}
                         />
                       </Box>
-                      <Box _text={{ fontSize: 18 }}>Выйти</Box>
+                      <Box _text={{ fontSize: 18 }}>
+                        {i18n.t('drawerLogout')}
+                      </Box>
                     </Flex>
                   </TouchableOpacity>
                 ) : (
@@ -137,7 +140,9 @@ const Drawer = ({
                           color={propStyles.mainRedColor}
                         />
                       </Box>
-                      <Box _text={{ fontSize: 18 }}>Профиль</Box>
+                      <Box _text={{ fontSize: 18 }}>
+                        {i18n.t('drawerProfile')}
+                      </Box>
                     </Flex>
                   </TouchableOpacity>
                 )}
@@ -151,7 +156,9 @@ const Drawer = ({
               style={{ marginTop: '10%' }}
             >
               <Flex direction='row' justify='space-between' alignItems='center'>
-                <Box _text={{ fontSize: 24, fontWeight: '600' }}>Меню</Box>
+                <Box _text={{ fontSize: 24, fontWeight: '600' }}>
+                  {i18n.t('drawerMenu')}
+                </Box>
                 <Box>
                   {isOpenMenu ? (
                     <Ionicons

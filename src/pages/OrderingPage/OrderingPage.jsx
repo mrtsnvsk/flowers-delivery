@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 
-import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import {
   Box,
   Text,
@@ -27,38 +27,49 @@ import { getOrderList } from '../../store/actions/order';
 import OrderDetails from '../../components/BasketPageComponents/OrderDetails/OrderDetails';
 import BackTabBtn from '../../components/OrderingPageComponents/BackTabBtn';
 
-const OrderingPage = ({ getOrderList, orderList }) => {
+const { width } = Dimensions.get('window');
+import i18n from 'i18n-js';
+import { onAlert } from '../../resources/utils';
+
+const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
   const navigation = useNavigation();
 
   const [tab, setTab] = useState(0);
-  const [orderTo, setOrderTo] = useState('delivery');
-  const [paymentMethod, setPaymentMethod] = useState('online');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const [orderInfo, setOrderInfo] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    city: '',
+    region: '',
+    floor: '',
+    apartment: '',
+    comment: '',
+    orderTo: 'delivery',
+    paymentMethod: 'online',
+  });
 
   const radioOrdetToList = [
     {
-      name: 'Доставка до двери',
+      name: i18n.t('orderingDoorToDoorDelivery'),
       value: 'delivery',
     },
     {
-      name: 'Самовывоз',
+      name: i18n.t('orderingPickupDelivery'),
       value: 'pickup',
     },
   ];
 
   const radioPaymentMethodList = [
     {
-      name: 'Оплата онлайн',
+      name: i18n.t('orderingPaymentOnline'),
       value: 'online',
     },
     {
-      name: 'Наличными курьеру',
+      name: i18n.t('orderingCourierCash'),
       value: 'courCash',
     },
     {
-      name: 'Картой курьеру',
+      name: i18n.t('orderingCourierCard'),
       value: 'courCard',
     },
   ];
@@ -71,44 +82,65 @@ const OrderingPage = ({ getOrderList, orderList }) => {
     navigation.navigate(link);
   };
 
+  const saveAddress = () => {
+    const { name, phone, email, city, region, floor, apartment } = orderInfo,
+      emptyOrderInfo =
+        !name ||
+        !phone ||
+        !email ||
+        !city ||
+        !region ||
+        !floor ||
+        !apartment ||
+        !orderAddress?.curLocName;
+    console.log(orderInfo);
+    if (emptyOrderInfo) {
+      onAlert(i18n.t('orderingNoOrderInfoAlert'));
+      return;
+    }
+  };
+
+  const submitOrder = () => {
+    console.log({ order: orderList, address: orderAddress, info: orderInfo });
+  };
+
   return (
-    <KeyboardAvoidingView
-      flex={1}
-      h={{
-        base: '700px',
-        lg: 'auto',
-      }}
-      behavior='padding'
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <Box flex={1} bg='#fff' p='20px' pt={2}>
-        <Tabs tabId={tab} />
+    <Box flex={1} bg='#fff' p='20px' py={2}>
+      <Tabs tabId={tab} />
+      <KeyboardAvoidingView
+        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
+        behavior='padding'
+        enabled
+        keyboardVerticalOffset={80}
+      >
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* tab1 */}
           {tab === 0 && (
             <>
               <Box mt={'30px'}>
-                <BlockLabel label={'Способ доставки'} />
+                <BlockLabel label={i18n.t('orderingDeliveryMethod')} />
                 <DeliveryMethodRadio
                   radioData={radioOrdetToList}
-                  value={orderTo}
-                  setValue={setOrderTo}
+                  value={orderInfo.orderTo}
+                  setValue={(value) =>
+                    setOrderInfo({ ...orderInfo, orderTo: value })
+                  }
                 />
               </Box>
               <Box mt='30px'>
-                {orderTo === 'pickup' && (
+                {orderInfo.orderTo === 'pickup' && (
                   <Box mb='30px'>
                     <SelectOrderAddress />
                   </Box>
                 )}
-                <BlockLabel label={'Время доставки'} />
+                <BlockLabel label={i18n.t('orderingDeliveryTime')} />
                 <TouchableOpacity style={styles.joinTimeWrapper}>
-                  <Box>
-                    <Text color='#000'>
-                      Нажмите здесь, чтобы указать время доставки
+                  <Box width={width - 60}>
+                    <Text fontSize='14' color='#000'>
+                      {i18n.t('orderingJoinDeliveryTime')}
                     </Text>
                   </Box>
-                  <Box>
+                  <Box width={40}>
                     <Entypo
                       name='chevron-right'
                       size={24}
@@ -125,25 +157,38 @@ const OrderingPage = ({ getOrderList, orderList }) => {
             <Box mt='30px'>
               <Box mb={4}>
                 <InputUnderline
-                  value={name}
-                  setValue={setName}
-                  placeholder='Введите имя'
+                  value={orderInfo.name}
+                  setValue={(text) =>
+                    setOrderInfo({ ...orderInfo, name: text })
+                  }
+                  placeholder={i18n.t('orderingNameInput')}
                 />
               </Box>
               <Box mb={4}>
                 <InputUnderline
-                  value={phone}
-                  setValue={setPhone}
-                  placeholder='Введите номер'
+                  value={orderInfo.phone}
+                  setValue={(text) =>
+                    setOrderInfo({ ...orderInfo, phone: text })
+                  }
+                  placeholder={i18n.t('orderingPhoneInput')}
                 />
               </Box>
-              <Box>
+              <Box mb={4}>
                 <InputUnderline
-                  value={email}
-                  setValue={setEmail}
-                  placeholder='Введите email'
+                  value={orderInfo.email}
+                  setValue={(text) =>
+                    setOrderInfo({ ...orderInfo, email: text })
+                  }
+                  placeholder={i18n.t('orderingEmailInput')}
                 />
               </Box>
+              {orderAddress?.curLocName && (
+                <Box>
+                  <Text fontSize={14} color='#A7A7A7'>
+                    {i18n.t('orderingAddress')}: {orderAddress.curLocName}
+                  </Text>
+                </Box>
+              )}
               <Center>
                 <TouchableOpacity
                   onPress={() => onPushToLink('MapPage')}
@@ -153,33 +198,60 @@ const OrderingPage = ({ getOrderList, orderList }) => {
                     <Ionicons name='location-sharp' size={24} color={'#fff'} />
                   </Box>
                   <Box>
-                    <Text color='#fff'>Указать адрес</Text>
+                    <Text color='#fff'>
+                      {i18n.t('orderingIndicareAddress')}
+                    </Text>
                   </Box>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.joinFromListBtn}>
-                  <Text>Выбрать из списка</Text>
+                  <Text>{i18n.t('orderingJoinAddress')}</Text>
                 </TouchableOpacity>
               </Center>
               <Box mt='30px'>
                 <Box mb={4}>
-                  <InputUnderline placeholder='Введите город' />
+                  <InputUnderline
+                    value={orderInfo.city}
+                    setValue={(text) =>
+                      setOrderInfo({ ...orderInfo, city: text })
+                    }
+                    placeholder={i18n.t('orderingCityInput')}
+                  />
                 </Box>
                 <Box mb={4}>
-                  <InputUnderline placeholder='Введите регион' />
+                  <InputUnderline
+                    value={orderInfo.region}
+                    setValue={(text) =>
+                      setOrderInfo({ ...orderInfo, region: text })
+                    }
+                    placeholder={i18n.t('orderingRegionInput')}
+                  />
                 </Box>
                 <Box mb={4}>
-                  <InputUnderline placeholder='Введите этаж' />
+                  <InputUnderline
+                    value={orderInfo.floor}
+                    setValue={(text) =>
+                      setOrderInfo({ ...orderInfo, floor: text })
+                    }
+                    placeholder={i18n.t('orderingFloorInput')}
+                  />
                 </Box>
                 <Box mb={4}>
-                  <InputUnderline placeholder='Введите квартиру' />
+                  <InputUnderline
+                    value={orderInfo.apartment}
+                    setValue={(text) =>
+                      setOrderInfo({ ...orderInfo, apartment: text })
+                    }
+                    placeholder={i18n.t('orderingApartmentInput')}
+                  />
                 </Box>
               </Box>
               <Center mt={5}>
                 <TouchableOpacity
+                  onPress={saveAddress}
                   style={[styles.joinFromListBtn, { width: 240 }]}
                 >
-                  <Text>Сохранить адрес</Text>
+                  <Text>{i18n.t('orderingSaveAddress')}</Text>
                 </TouchableOpacity>
                 <ProceedOrderBtn tab={tab} setTab={setTab} />
               </Center>
@@ -188,41 +260,55 @@ const OrderingPage = ({ getOrderList, orderList }) => {
           {tab === 2 && (
             <Box mt='30px'>
               <Box>
-                <BlockLabel label='Адрес доставки' />
+                <BlockLabel label={i18n.t('orderingDeliveryAddress')} />
                 <Box px={1}>
                   {orderList.length
-                    ? orderList.map((el) => <OrderingItem item={el} />)
+                    ? orderList.map((el) => (
+                        <OrderingItem key={el.id} item={el} />
+                      ))
                     : null}
                 </Box>
               </Box>
               <OrderDetails hideOrderBtn={true} order={orderList} />
               <Box mt='30px'>
-                <BlockLabel label='Ваш комментарий' />
-                <TextArea h={24} placeholder='Написать комментарий' />
+                <BlockLabel label={i18n.t('orderingYourComment')} />
+                <TextArea
+                  value={orderInfo.comment}
+                  onChangeText={(text) =>
+                    setOrderInfo({ ...orderInfo, comment: text })
+                  }
+                  h={24}
+                  placeholder={i18n.t('orderingWriteComment')}
+                />
               </Box>
               <ProceedOrderBtn tab={tab} setTab={setTab} />
-              <BackTabBtn label=' Вернуться к адресу' setTab={setTab} />
+              <BackTabBtn
+                label={i18n.t('orderingBackToAddressButton')}
+                setTab={setTab}
+              />
             </Box>
           )}
           {tab === 3 && (
             <Box mt='30px'>
               <Box>
-                <BlockLabel label='Способ оплаты' />
+                <BlockLabel label={i18n.t('orderingPaymentMethod')} />
                 <Box>
                   <Text fontSize={14} color={propStyles.shadowColor}>
-                    Выберите свой способ оплаты
+                    {i18n.t('orderingJoinPaymentMethod')}
                   </Text>
                 </Box>
                 <DeliveryMethodRadio
-                  value={paymentMethod}
-                  setValue={setPaymentMethod}
+                  value={orderInfo.paymentMethod}
+                  setValue={(value) =>
+                    setOrderInfo({ ...orderInfo, paymentMethod: value })
+                  }
                   radioData={radioPaymentMethodList}
                 />
               </Box>
               <TouchableOpacity style={styles.useBonusesBtn}>
                 <Box>
                   <Text fontSize={15} color={propStyles.shadowColor}>
-                    Использовать бонусы
+                    {i18n.t('orderingUseBonuses')}
                   </Text>
                 </Box>
                 <Flex direction='row' justify='flex-end' align='center'>
@@ -240,21 +326,30 @@ const OrderingPage = ({ getOrderList, orderList }) => {
               </TouchableOpacity>
               <OrderDetails hideOrderBtn={true} order={orderList} />
               <Center mt={'30px'}>
-                <TouchableOpacity style={styles.submitOrderBtn}>
-                  <Text color='#fff'>Оформить заказ</Text>
+                <TouchableOpacity
+                  onPress={submitOrder}
+                  style={styles.submitOrderBtn}
+                >
+                  <Text color='#fff'>
+                    {i18n.t('orderingSubmitOrderButton')}
+                  </Text>
                 </TouchableOpacity>
               </Center>
-              <BackTabBtn label=' Вернуться к деталям заказа' setTab={setTab} />
+              <BackTabBtn
+                label={i18n.t('orderingBackToOrderDetails')}
+                setTab={setTab}
+              />
             </Box>
           )}
         </ScrollView>
-      </Box>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </Box>
   );
 };
 
 const styles = StyleSheet.create({
   joinTimeWrapper: {
+    width: width - 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -303,7 +398,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({ order: { orderList } }) => ({ orderList });
+const mapStateToProps = ({ order: { orderList, orderAddress } }) => ({
+  orderList,
+  orderAddress,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getOrderList: () => dispatch(getOrderList()),

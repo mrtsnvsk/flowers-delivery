@@ -4,6 +4,7 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box, Modal, Flex } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
+import i18n from 'i18n-js';
 
 const SortModal = ({ open, setOpen, orderPrice, setOrderPrice }) => {
   const setOrderSort = (order) => {
@@ -17,7 +18,7 @@ const SortModal = ({ open, setOpen, orderPrice, setOrderPrice }) => {
   return (
     <Modal size='md' isOpen={open} onClose={() => setOpen(false)}>
       <Modal.Content>
-        <Box pb={0}>
+        <Box p={4} pb={0}>
           <TouchableOpacity
             onPress={() => setOrderSort(null)}
             style={styles.sortBtn}
@@ -34,7 +35,7 @@ const SortModal = ({ open, setOpen, orderPrice, setOrderPrice }) => {
                 color: checkActiveOrder(null),
               }}
             >
-              По умолчанию
+              {i18n.t('sortDefault')}
             </Box>
           </TouchableOpacity>
           <TouchableOpacity
@@ -53,7 +54,7 @@ const SortModal = ({ open, setOpen, orderPrice, setOrderPrice }) => {
                 color: checkActiveOrder('ASC'),
               }}
             >
-              Цена по возрастанию
+              {i18n.t('sortAscPrice')}
             </Box>
           </TouchableOpacity>
           <TouchableOpacity
@@ -61,14 +62,18 @@ const SortModal = ({ open, setOpen, orderPrice, setOrderPrice }) => {
             style={styles.sortBtn}
           >
             <Box w={28} mr={3}>
-              <FontAwesome5 name='sort-amount-down' size={24} color={checkActiveOrder('DESC')} />
+              <FontAwesome5
+                name='sort-amount-down'
+                size={24}
+                color={checkActiveOrder('DESC')}
+              />
             </Box>
             <Box
               _text={{
                 color: checkActiveOrder('DESC'),
               }}
             >
-              Цена по убыванию
+              {i18n.t('sortDescPrice')}
             </Box>
           </TouchableOpacity>
         </Box>

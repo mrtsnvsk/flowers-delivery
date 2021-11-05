@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 import { TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import { Box, ScrollView, Image, Text } from 'native-base';
 import propStyles from '../../../resources/propStyles';
 
-import ProductModal from '../../Modals/ProductModal';
-
 const { width } = Dimensions.get('window');
 
 const SearchItems = ({ products }) => {
-  const [isShowModal, setShowModal] = useState(false);
-  const [productId, setProductId] = useState(false);
+  const navigation = useNavigation();
 
-  const onOpenProductModal = (id) => {
-    setProductId(id);
-    setShowModal(true);
+  const openProduct = (id) => {
+    navigation.navigate('ProductPage', { id });
   };
 
   return (
@@ -25,7 +22,7 @@ const SearchItems = ({ products }) => {
             ? products.map((el, i) => (
                 <TouchableOpacity
                   key={i}
-                  onPress={() => onOpenProductModal(el.id)}
+                  onPress={() => openProduct(el.id)}
                   style={styles.productItem}
                 >
                   <Box mr='20px'>
@@ -59,7 +56,6 @@ const SearchItems = ({ products }) => {
             : null}
         </ScrollView>
       </Box>
-      <ProductModal open={isShowModal} setOpen={setShowModal} id={productId} />
     </>
   );
 };

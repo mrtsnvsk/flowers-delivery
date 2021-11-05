@@ -16,6 +16,7 @@ import {
 } from '../../store/actions/product';
 import useDebounce from '../../hooks/useDebounce';
 import SpinnerFw from '../../components/Elements/SpinnerFw';
+import i18n from 'i18n-js';
 
 const SearchPage = ({
   searchProductsList,
@@ -61,7 +62,7 @@ const SearchPage = ({
 
   useEffect(() => {
     if (searchProductsTerm) {
-      debouncedSearch(searchProductsTerm);
+      debouncedSearch(searchProductsTerm.trim().toLowerCase());
     } else {
       getSearchProductsList('');
     }
@@ -87,7 +88,7 @@ const SearchPage = ({
               w={240}
               height={300}
               source={clearSearchImg}
-              alt='Поиск товаров'
+              alt='Search Product'
             />
           </Center>
         ) : (
@@ -101,13 +102,13 @@ const SearchPage = ({
           <Actionsheet.Content alignItems='flex-start' px={'20px'} pb={'20px'}>
             <SearchFilterActionSheet
               setTermCategory={setTermCategory}
-              label={'Меню'}
+              label={i18n.t('searchMenu')}
               items={menu}
             />
             <SearchFilterActionSheet
               withFilters={true}
               setTermCategory={setTermCategory}
-              label={'Характеристики'}
+              label={i18n.t('searchCharacters')}
               items={characters}
             />
           </Actionsheet.Content>

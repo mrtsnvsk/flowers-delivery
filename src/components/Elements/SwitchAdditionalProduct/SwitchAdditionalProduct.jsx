@@ -5,35 +5,35 @@ import { Box, Flex, Image, Text } from 'native-base';
 
 const { width } = Dimensions.get('window');
 
-const SwitchAdditionalProduct = ({ value, setValue, matchItem }) => {
-  const img = 'https://aggeek.net/files/blog/apple.1140x600.jpg';
-
+const SwitchAdditionalProduct = ({ item, matchItem, setAdded }) => {
   return (
-    <Flex direction='row' justify='space-between' align='center'>
+    <Flex mb={2} direction='row' justify='space-between' align='center'>
       <Flex direction='row' align='center'>
         <Box mr={2}>
           <Image
             width={50}
             height={50}
-            source={{ uri: img }}
+            source={{ uri: item.image }}
             borderRadius={6}
-            alt='Additional product'
+            alt={item.name}
           />
         </Box>
         <Box width={width - 210}>
-          <Text fontSize={14}>Добавить в упаковку + 250 руб.</Text>
+          <Text fontSize={13}>
+            {item.name} + {item.price} руб.
+          </Text>
         </Box>
       </Flex>
       <Box mr={1}>
         <Switch
           disabled={matchItem}
-          onValueChange={() => setValue((prev) => !prev)}
-          value={value}
+          onValueChange={() => setAdded(!item.added, item.id)}
+          value={item.added}
         />
       </Box>
       <Box>
         <Text fontWeight='700' fontSize={14}>
-          +250 p.
+          {item.price} p.
         </Text>
       </Box>
     </Flex>

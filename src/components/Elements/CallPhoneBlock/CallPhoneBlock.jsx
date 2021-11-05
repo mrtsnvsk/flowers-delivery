@@ -4,6 +4,7 @@ import { TouchableOpacity, Linking } from 'react-native';
 import { Box, Flex } from 'native-base';
 import propStyles from '../../../resources/propStyles';
 import { Feather } from '@expo/vector-icons';
+import i18n from 'i18n-js';
 
 const CallPhoneBlock = () => {
   const phone = '+7 (812) 445-12-13';
@@ -27,7 +28,7 @@ const CallPhoneBlock = () => {
             mt={1}
             _text={{ color: propStyles.blueActiveColor, fontSize: 14 }}
           >
-            Позвонить
+            {i18n.t('drawerCall')}
           </Box>
         </Box>
       </Flex>

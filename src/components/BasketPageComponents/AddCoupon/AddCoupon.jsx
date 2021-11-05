@@ -7,10 +7,11 @@ import propStyles from '../../../resources/propStyles';
 import { onAlert } from '../../../resources/utils';
 
 const { width } = Dimensions.get('window');
+import i18n from 'i18n-js';
 
 const AddCoupon = ({ setCoupon, coupon }) => {
   const addNewCoupon = () => {
-    coupon ? console.log('фыв') : onAlert('Купон не может быть пустым!');
+    coupon ? console.log('фыв') : onAlert(i18n.t('couponAlert'));
   };
 
   return (
@@ -27,7 +28,7 @@ const AddCoupon = ({ setCoupon, coupon }) => {
         <Input
           onChangeText={(text) => setCoupon(text)}
           value={coupon}
-          placeholder='Код купона'
+          placeholder={i18n.t('couponCodePlaceholder')}
           height={45}
           bg='#fff'
           _focus={false}
@@ -36,7 +37,7 @@ const AddCoupon = ({ setCoupon, coupon }) => {
       </Box>
       <TouchableOpacity onPress={addNewCoupon} style={styles.submitBtn}>
         <Text fontSize={14} color='#000' fontWeight='700'>
-          Применить
+          {i18n.t('couponApplyButton')}
         </Text>
       </TouchableOpacity>
     </Flex>

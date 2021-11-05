@@ -1,5 +1,6 @@
 const propStyles = {
-  mainRedColor: '#ac2f40',
+  // mainRedColor: '#ac2f40',
+  mainRedColor: 'rgb(176, 108, 150)',
   shadowColor: 'rgba(0, 0, 0, 0.3)',
   shadowedColor: 'rgba(0, 0, 0, 0.1)',
   blueActiveColor: 'rgb(33, 150, 243)',

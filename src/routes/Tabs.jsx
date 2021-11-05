@@ -19,6 +19,7 @@ import BasketPage from '../pages/BasketPage';
 import ProfilePage from '../pages/ProfilePage';
 
 import { setOrderList, getOrderList } from '../store/actions/order';
+import i18n from 'i18n-js';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +44,7 @@ const Tabs = ({ setOrderList, orderListCount, getOrderList }) => {
         name='MainPage'
         component={MainPage}
         options={{
-          tabBarLabel: 'Главная',
+          tabBarLabel: i18n.t('mainTab'),
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Feather name='home' size={24} color={color} />
@@ -55,7 +56,7 @@ const Tabs = ({ setOrderList, orderListCount, getOrderList }) => {
         name='CategoriesPage'
         component={CategoriesPage}
         options={{
-          tabBarLabel: 'Каталог',
+          tabBarLabel: i18n.t('catalogTab'),
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
@@ -72,8 +73,8 @@ const Tabs = ({ setOrderList, orderListCount, getOrderList }) => {
         options={{
           tabBarBadge: orderListCount > 0 ? orderListCount : null,
           tabBarBadgeStyle: styles.basketBadge,
-          tabBarLabel: 'Корзина',
-          headerTitle: 'Корзина',
+          tabBarLabel: i18n.t('basketTab'),
+          headerTitle: i18n.t('basketTab'),
           headerTitleAlign: 'left',
           headerRight: () => (
             <TouchableOpacity
@@ -81,7 +82,7 @@ const Tabs = ({ setOrderList, orderListCount, getOrderList }) => {
               style={{ paddingRight: 20 }}
             >
               <Text fontSize={14} color={propStyles.blueActiveColor}>
-                Очистить корзину
+                {i18n.t('clearBasketButton')}
               </Text>
             </TouchableOpacity>
           ),
@@ -94,7 +95,7 @@ const Tabs = ({ setOrderList, orderListCount, getOrderList }) => {
         name='ProfilePage'
         component={ProfilePage}
         options={{
-          tabBarLabel: 'Профиль',
+          tabBarLabel: i18n.t('profileTab'),
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name='user' size={24} color={color} />

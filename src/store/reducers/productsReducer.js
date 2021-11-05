@@ -12,6 +12,7 @@ const initialState = {
   productsWithStocksList: [],
   productPriceFrom: 0,
   productPriceTo: 99999,
+  recommendProductsList: [],
 };
 
 const productsReducer = (state = initialState, { type, payload }) => {
@@ -66,6 +67,11 @@ const productsReducer = (state = initialState, { type, payload }) => {
         ...state,
         productPriceFrom: payload.from,
         productPriceTo: payload.to,
+      };
+    case constant.GET_RECOMMEND_PRODUCTS_LIST:
+      return {
+        ...state,
+        recommendProductsList: payload,
       };
     default:
       return state;

@@ -17,7 +17,7 @@ const { width } = Dimensions.get('window');
 const ProductItems = ({ data }) => {
   const navigation = useNavigation();
 
-  const onOpenProductModal = (id) => {
+  const pushToProductPage = (id) => {
     navigation.navigate('ProductPage', { id });
   };
 
@@ -29,7 +29,7 @@ const ProductItems = ({ data }) => {
               <TouchableOpacity
                 key={el.id}
                 activeOpacity={0.6}
-                onPress={() => onOpenProductModal(el.id)}
+                onPress={() => pushToProductPage(el.id)}
                 style={styles.productItemWrap}
               >
                 <ImageBackground

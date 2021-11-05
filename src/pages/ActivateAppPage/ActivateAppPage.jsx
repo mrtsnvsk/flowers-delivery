@@ -18,6 +18,8 @@ import {
 } from '../../store/actions/auth';
 
 import { TextInputMask } from 'react-native-masked-text';
+import { onAlert } from '../../resources/utils';
+import i18n from 'i18n-js';
 
 const ActivateAppPage = ({
   registerUser,
@@ -41,16 +43,23 @@ const ActivateAppPage = ({
   };
 
   const sendPhoneNumber = () => {
-    if (phone) {
-      registerUser(phone);
-    }
+    phone.length === 15
+      ? registerUser(phone)
+      : onAlert(i18n.t('activatePhoneWarning'));
+  };
+
+  const sendCodeAgain = () => {
+    if (!phone) return;
+
+    registerUser(phone);
+    onAlert(i18n.t('activateResendedCodeAlert'));
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Center p='14%' bgColor='#fff' h='100%'>
         <Box mb={2} _text={{ fontSize: 20, textAlign: 'center' }}>
-          Пожалуйста, активируйте приложение
+          {i18n.t('activateTitle')}
         </Box>
         <Box mb={2}>
           <Image
@@ -63,7 +72,7 @@ const ActivateAppPage = ({
           />
         </Box>
         <Box _text={{ textAlign: 'center' }}>
-          И получите подарок, если делаете это впервые
+          {i18n.t('activatePresentLabel')}
         </Box>
 
         {!!isSendedCode ? (
@@ -78,7 +87,7 @@ const ActivateAppPage = ({
                 paddingVertical: 5,
                 paddingHorizontal: 8,
               }}
-              placeholder='Код из СМС'
+              placeholder={i18n.t('activateInputCodePlaceholder')}
               keyboardType={'number-pad'}
               type='custom'
               options={{
@@ -115,7 +124,7 @@ const ActivateAppPage = ({
                 value={phone}
                 onChangeText={(text) => setPhone(text)}
                 style={{ fontSize: 18 }}
-                placeholder='Ваш номер'
+                placeholder={i18n.t('activateInputPhonePlaceholder')}
                 keyboardType={'number-pad'}
                 type='custom'
                 options={{
@@ -132,17 +141,29 @@ const ActivateAppPage = ({
               onPress={() => authUser(code)}
               style={styles.activeBtn}
             >
-              <Text style={styles.activeBtnText}>Войти</Text>
+              <Text style={styles.activeBtnText}>
+                {i18n.t('activateButtonLogin')}
+              </Text>
             </TouchableOpacity>
             <Box mt={3}>
+              <TouchableOpacity
+                style={{ marginBottom: 8 }}
+                onPress={sendCodeAgain}
+              >
+                <Text textAlign='center'>
+                  {i18n.t('activateSendCodeAgain')}
+                </Text>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => updateSmsCode(null)}>
-                <Text>Изменить номер телефона</Text>
+                <Text textAlign='center'>{i18n.t('activateChangePhone')}</Text>
               </TouchableOpacity>
             </Box>
           </>
         ) : (
           <TouchableOpacity onPress={sendPhoneNumber} style={styles.activeBtn}>
-            <Text style={styles.activeBtnText}>Активировать</Text>
+            <Text style={styles.activeBtnText}>
+              {i18n.t('activateButtonText')}
+            </Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={onPushToLink} style={{ marginTop: 20 }}>
@@ -151,7 +172,7 @@ const ActivateAppPage = ({
             fontWeight='700'
             color={propStyles.blueActiveColor}
           >
-            Пропустить этот шаг
+            {i18n.t('activateAppSkip')}
           </Text>
         </TouchableOpacity>
       </Center>

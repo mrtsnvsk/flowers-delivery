@@ -2,12 +2,13 @@ import React from 'react';
 
 import { Box, Text, Flex } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
+import i18n from 'i18n-js';
 
 const BonusesPage = () => {
   return (
     <Box flex={1} bg='#fff' p='14px'>
       <Box mt={2} mb='20px' _text={{ fontSize: 18, fontWeight: 'bold' }}>
-        Правила бонусной системы
+        {i18n.t('bonusesRules')}
       </Box>
       <Flex
         shadow={2}
@@ -19,7 +20,7 @@ const BonusesPage = () => {
         w='100%'
         h={90}
       >
-        <Text bold>У вас</Text>
+        <Text bold>{i18n.t('bonusesLabelCount1')}</Text>
         <Flex
           px={5}
           py={2}
@@ -37,35 +38,33 @@ const BonusesPage = () => {
             <MaterialIcons name='add-task' size={24} color='black' />
           </Box>
         </Flex>
-        <Text bold>бонусов</Text>
+        <Text bold>{i18n.t('bonusesLabelCount2')}</Text>
       </Flex>
       <Box mt='20px'>
         <Box mb={3}>
-          <Text>В приложении работает бонусная система.</Text>
+          <Text>{i18n.t('bonusesBillSystem')}</Text>
         </Box>
         <Box mb={3}>
-          <Text>1 бонус = 1 руб.</Text>
+          <Text>{i18n.t('bonusesEqually')}</Text>
         </Box>
         <Box mb={3}>
-          <Text bold>Мы дарим 300 бонусов за регистрацию.</Text>
+          <Text bold>{i18n.t('bonusesPresent')}</Text>
         </Box>
         <Box mb={3}>
-          <Text>
-            Начисление бонусов зависит от всех потраченных денег в приложении:
-          </Text>
+          <Text>{i18n.t('bonusesCalculation')}</Text>
         </Box>
         <Box>
           <Text>
-            <Text bold>- 1-й уровень </Text>
-            до 20 000 р. начисляются 3%
+            <Text bold>- {i18n.t('bonusesFirstLevel')} </Text>
+            {i18n.t('bonusesFirstBonus')}
           </Text>
           <Text>
-            <Text bold>- 2-й уровень </Text>
-            до 50 000 р. начисляются 5%
+            <Text bold>- {i18n.t('bonusesSecondLevel')} </Text>
+            {i18n.t('bonusesSecondBonus')}
           </Text>
           <Text>
-            <Text bold>- 3-й уровень </Text>
-            от 50 000 р. начисляются 7%
+            <Text bold>- {i18n.t('bonusesThirdLevel')} </Text>
+            {i18n.t('bonusesThirdBonus')}
           </Text>
         </Box>
       </Box>

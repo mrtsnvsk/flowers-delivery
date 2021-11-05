@@ -28,7 +28,7 @@ const BasketCountBtns = ({ count, productId, setCount }) => {
         activeOpacity={0.5}
         style={[styles.countBtn, { left: -15 }]}
       >
-        <Text fontSize={24}>-</Text>
+        <Text fontSize={21}>-</Text>
       </TouchableOpacity>
       <Box zIndex={2}>
         <Text fontWeight='500'>{count}</Text>
@@ -38,7 +38,7 @@ const BasketCountBtns = ({ count, productId, setCount }) => {
         activeOpacity={0.5}
         style={[styles.countBtn, { right: -15 }]}
       >
-        <Text fontSize={24}>+</Text>
+        <Text fontSize={21}>+</Text>
       </TouchableOpacity>
     </Flex>
   );
@@ -48,11 +48,11 @@ const styles = StyleSheet.create({
   countBtn: {
     position: 'absolute',
     zIndex: 2,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 2,
-    width: 30,
-    height: 30,
+    width: 32,
+    height: 32,
     borderRadius: 50,
     backgroundColor: '#fff',
     ...propStyles.shadowDefault,

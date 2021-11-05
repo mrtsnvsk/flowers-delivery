@@ -6,6 +6,8 @@ import { Box, Center, Image, Text } from 'native-base';
 
 import { getUserPhone } from '../../resources/utils';
 
+import i18n from 'i18n-js';
+
 const Greetingpage = ({ isAuth }) => {
   const navigation = useNavigation();
 
@@ -18,7 +20,6 @@ const Greetingpage = ({ isAuth }) => {
         setUserPhone(await getUserPhone());
       }
     })();
-    
     setTimeout(() => {
       navigation.navigate(isAuth ? 'Tabs' : 'ActivateAppPage');
     }, 3000);
@@ -42,17 +43,17 @@ const Greetingpage = ({ isAuth }) => {
         {isAuth ? (
           <Text italic>
             {curHours >= 5 && curHours <= 11
-              ? 'Доброе утро'
+              ? i18n.t('goodMorning')
               : curHours >= 12 && curHours <= 16
-              ? 'Добрый день'
+              ? i18n.t('goodDay')
               : curHours >= 17 && curHours <= 21
-              ? 'Добрый вечер'
-              : 'Доброй ночи'}
+              ? i18n.t('goodEvening')
+              : i18n.t('goodNight')}
             {`, ${userPhone}!`}
           </Text>
         ) : (
           <Text italic fontSize={18}>
-            Здравствуйте!
+            {i18n.t('hello')}
           </Text>
         )}
       </Box>

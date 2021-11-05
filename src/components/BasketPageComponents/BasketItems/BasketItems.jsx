@@ -12,8 +12,7 @@ import DottedUnderline from '../DottedUnderline';
 const { width } = Dimensions.get('window');
 import { setOrderList } from '../../../store/actions/order';
 import { getOrderFromStorage } from '../../../resources/utils';
-
-import { imgPath } from '../../../resources/variables';
+import i18n from 'i18n-js';
 
 const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
   const setProductCount = async (count, id) => {
@@ -88,24 +87,26 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
               </Box>
             </Flex>
           </Box>
-          {item?.package ? (
-            <Box width={width - 32} px='14px' mb={4}>
-              <Flex
-                pb='2px'
-                direction='row'
-                align='center'
-                justify='space-between'
-              >
-                <Box width={width - 130}>
-                  <Text fontSize={14}>{item.package.name}</Text>
+          {item?.additItems?.length
+            ? item.additItems.map((addit) => (
+                <Box key={addit.id} width={width - 32} px='14px' mb={4}>
+                  <Flex
+                    pb='2px'
+                    direction='row'
+                    align='center'
+                    justify='space-between'
+                  >
+                    <Box width={width - 130}>
+                      <Text fontSize={14}>{addit.name}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontSize={14}>x1 {addit.price} p.</Text>
+                    </Box>
+                  </Flex>
+                  <DottedUnderline />
                 </Box>
-                <Box>
-                  <Text fontSize={14}>x1 {item.package.price} p.</Text>
-                </Box>
-              </Flex>
-              <DottedUnderline />
-            </Box>
-          ) : null}
+              ))
+            : null}
           <Flex
             borderTopWidth={1}
             borderTopColor={propStyles.shadowColor}
@@ -116,7 +117,7 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
           >
             <Flex direction='row' alignItems='center'>
               <Box mr={'20px'} _text={{ fontWeight: '600' }}>
-                Всего за товар:
+                {i18n.t('productCost')}
               </Box>
               <BasketCountBtns
                 setCount={setProductCount}
@@ -124,9 +125,15 @@ const BasketItem = ({ order, setOrder, setOrderList, deleteItem }) => {
                 count={item.count}
               />
             </Flex>
-
             <Box>
-              <Text fontWeight='600'>{item.price * item.count} p.</Text>
+              <Text fontWeight='600'>
+                {item.price * item.count +
+                  item.additItems.reduce(
+                    (acc, val) => +acc + +val.price,
+                    0
+                  )}{' '}
+                p.
+              </Text>
             </Box>
           </Flex>
         </Box>

@@ -6,6 +6,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
 
 import BasketBottomLink from '../BasketBottomLink';
+import i18n from 'i18n-js';
 
 const AddToBasketFooter = ({
   price,
@@ -32,8 +33,9 @@ const AddToBasketFooter = ({
         {oldPrice && (
           <Text
             color={propStyles.orangeColor}
-            textDecoration='line-through'
             textDecorationColor={propStyles.orangeColor}
+            textDecoration='line-through'
+            textDecorationLine='line-through'
             fontSize={14}
           >
             {oldPrice} p.
@@ -47,7 +49,7 @@ const AddToBasketFooter = ({
             <SimpleLineIcons name='basket' size={24} color={'#fff'} />
           </Box>
           <Box _text={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>
-            В корзину
+            {i18n.t('addToBasketBtn')}
           </Box>
         </TouchableOpacity>
       ) : (
@@ -62,7 +64,7 @@ const AddToBasketFooter = ({
             <SimpleLineIcons name='basket' size={24} color={'#fff'} />
           </Box>
           <Box _text={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>
-            Удалить из корзины
+            {i18n.t('deleteFromBasketBtn')}
           </Box>
         </TouchableOpacity>
       )}

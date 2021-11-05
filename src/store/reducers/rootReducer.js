@@ -8,6 +8,7 @@ import modalsReducer from './modalsReducer';
 import catalogLayoutReducer from './catalogLayoutReducer';
 import categoriesReducer from './categoriesReducer';
 import productsReducer from './productsReducer';
+import localizationReducer from './localizationReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   catalogLayout: catalogLayoutReducer,
   categories: categoriesReducer,
   products: productsReducer,
+  localization: localizationReducer,
 });

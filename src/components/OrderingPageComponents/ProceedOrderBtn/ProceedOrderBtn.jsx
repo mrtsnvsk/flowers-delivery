@@ -2,6 +2,7 @@ import React from 'react';
 
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Center, Text } from 'native-base';
+import i18n from 'i18n-js';
 
 const ProceedOrderBtn = ({ tab, setTab }) => {
   return (
@@ -11,7 +12,7 @@ const ProceedOrderBtn = ({ tab, setTab }) => {
         style={styles.submitBtn}
       >
         <Text textAlign='center' color='#fff'>
-          Продолжить оформление
+          {i18n.t('orderingProceedOrderBtn')}
         </Text>
       </TouchableOpacity>
     </Center>

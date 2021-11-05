@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 
-import { TouchableOpacity, StyleSheet, Switch } from 'react-native';
+import { TouchableOpacity, Switch } from 'react-native';
 import { Box, Flex, Center, Text, ScrollView } from 'native-base';
 import propStyles from '../../resources/propStyles';
 import {
@@ -17,14 +17,19 @@ import {
 
 import CallPhoneBlock from '../../components/Elements/CallPhoneBlock';
 import ListItem from '../../components/ProfilePageComponents/ListItem';
+import LanguageActionSheet from '../../components/ProfilePageComponents/LanguageActionSheet';
 
 import { getUserPhone } from '../../resources/utils';
 import { logoutUser } from '../../store/actions/auth';
+import { switchAppLanguage } from '../../store/actions/localization';
+
+import i18n from 'i18n-js';
 
 const ProfilePage = ({ isAuth, logoutUser }) => {
   const navigation = useNavigation();
   const [isPushes, setPushes] = useState(false);
   const [userPhone, setUserPhone] = useState('');
+  const [isOpenAS, setShowAS] = useState(false);
 
   useEffect(() => {
     if (isAuth) {
@@ -50,11 +55,11 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
           <Center my={'40px'}>Florcat</Center>
           <Box mb={'20px'}>
             <Text color='#000' fontSize={22} fontWeight='400'>
-              Личный кабинет
+              {i18n.t('profilePrivateArea')}
             </Text>
           </Box>
         </Box>
-        {/*  */}
+
         <Box p='30px'>
           <CallPhoneBlock />
           {isAuth ? (
@@ -85,7 +90,7 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
                     color={propStyles.mainRedColor}
                   />
                 }
-                text={'Выйти из профиля'}
+                text={i18n.t('profileLogout')}
                 noBorder={true}
               />
             </>
@@ -106,15 +111,25 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
                   color={propStyles.mainRedColor}
                 />
               </Box>
-              <Box>Авторизация</Box>
+              <Box>{i18n.t('profileAuth')}</Box>
             </TouchableOpacity>
           )}
         </Box>
-        {/*  */}
         <Box px='30px'>
           <Box _text={{ fontSize: 20, color: '#000' }} mb={5}>
-            Общие настройки
+            {i18n.t('profileGeneralSetting')}
           </Box>
+          <ListItem
+            icon={
+              <MaterialIcons
+                name='language'
+                size={28}
+                color={propStyles.mainRedColor}
+              />
+            }
+            text={i18n.t('profileLangugage')}
+            actionFn={() => setShowAS(true)}
+          />
           <ListItem
             icon={
               <AntDesign
@@ -123,7 +138,7 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
                 color={propStyles.mainRedColor}
               />
             }
-            text={'Избранное'}
+            text={i18n.t('profileFavorites')}
             actionFn={() => onPushToLink('FavoritesPage')}
           />
           <ListItem
@@ -135,7 +150,7 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
               />
             }
             actionFn={() => setPushes((prev) => !prev)}
-            text={'Получать уведомления'}
+            text={i18n.t('profileRecieveNotifications')}
             chevron={
               <Switch
                 trackColor={{ false: '#767577', true: propStyles.mainRedColor }}
@@ -153,7 +168,7 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
               />
             }
             actionFn={() => onPushToLink('NotificationsPage')}
-            text='Уведомления'
+            text={i18n.t('profileNotifications')}
           />
 
           <ListItem
@@ -164,7 +179,7 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
                 color={propStyles.mainRedColor}
               />
             }
-            text='История заказов'
+            text={i18n.t('profileOrdersHistory')}
             actionFn={() => onPushToLink('OrderStoriesPage')}
           />
           <ListItem
@@ -176,7 +191,7 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
               />
             }
             actionFn={() => onPushToLink('BonusesPage')}
-            text='Мои бонусы'
+            text={i18n.t('profileMyBonuses')}
             chevron={
               <Flex direction='row' align='center'>
                 <Box mr={2}>0</Box>
@@ -202,10 +217,11 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
               />
             }
             actionFn={() => onPushToLink('ConfidentialityPage')}
-            text='Конфеденциальность'
+            text={i18n.t('profileConfidentiality')}
           />
         </Box>
       </ScrollView>
+      <LanguageActionSheet isOpen={isOpenAS} onClose={() => setShowAS(false)} />
     </Box>
   );
 };
@@ -216,6 +232,7 @@ const mapStateToProps = ({ auth: { isAuth } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   logoutUser: () => dispatch(logoutUser()),
+  switchAppLanguage: (lng) => dispatch(switchAppLanguage(lng)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

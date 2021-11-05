@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
 import {
   Dimensions,
@@ -22,15 +23,22 @@ import {
 } from '../../resources/utils';
 import useDebounce from '../../hooks/useDebounce';
 import { setOrderingAddressTerm } from '../../store/actions/search';
+import i18n from 'i18n-js';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const zoom = {
   longitudeDelta: 0.01,
   latitudeDelta: 0.01,
 };
+import { changeOrderAddress } from '../../store/actions/order';
 
-const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
+const MapPage = ({
+  isOrderingAddressTerm,
+  setOrderingAddressTerm,
+  changeOrderAddress,
+}) => {
   const debouncedSearch = useDebounce(onSearch, 1000);
+  const navigation = useNavigation();
 
   const [curLoc, setCurLoc] = useState();
   const [curLocName, setCurLocName] = useState('');
@@ -90,38 +98,43 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
   }
 
   const joinAddress = () => {
-    if (!curLoc || !curLocName)
-      return onAlert('Введите адрес, чтобы продолжить');
-
+    if (!curLoc || !curLocName) return onAlert(i18n.t('mapNoAddressAlert'));
     const address = {
       ...curLoc,
-      ...curLocName,
+      curLocName,
     };
+    if (address.curLocName && address.latitude && address.longitude) {
+      changeOrderAddress(address);
+      navigation.navigate('OrderingPage');
+      onAlert('Адрес успешно изменен!');
+    } else {
+      onAlert(i18n.t('mapNoAddressAlert'));
+    }
 
-    console.log('address', address);
+    // console.log('address', address);
   };
 
   return (
-    <Box>
-      <MapView
-        onPress={Keyboard.dismiss}
-        region={curLoc}
-        style={styles.map}
-        onRegionChangeComplete={(coords) => setCurLoc(coords)}
-      ></MapView>
-      <Box
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          padding: 5,
-          borderRadius: 50,
-          backgroundColor: '#000',
-          borderColor: '#f1f1f1',
-          borderWidth: 1,
-        }}
-      />
-      <Box pos='absolute' bottom={0}>
+    <Flex position='relative' direction='column' justify='space-between'>
+      <Box>
+        <MapView
+          onPress={Keyboard.dismiss}
+          region={curLoc}
+          style={styles.map}
+          onRegionChangeComplete={(coords) => setCurLoc(coords)}
+        />
+        <Box
+          style={{
+            position: 'absolute',
+            top: '49%',
+            left: '49%',
+            padding: 4,
+            borderRadius: 50,
+            backgroundColor: '#000',
+            borderColor: '#f1f1f1',
+            borderWidth: 1,
+          }}
+        />
         <TouchableOpacity
           onPress={setUserLocation}
           activeOpacity={0.5}
@@ -129,7 +142,16 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
         >
           <MaterialIcons name='my-location' size={28} color='#606161' />
         </TouchableOpacity>
-        <Box height={90} py='10px' px='20px' bg='#fff' width={width}>
+        <Box
+          bottom={0}
+          position='absolute'
+          h='98'
+          pb={1}
+          py='10px'
+          px='20px'
+          bg='#fff'
+          width={width}
+        >
           <Box mb={1}>
             <Text fontWeight='500'>{curLocName}</Text>
           </Box>
@@ -137,12 +159,12 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
             <Box>
               <Box>
                 <Text color={propStyles.grayColor} fontSize={13}>
-                  Доставка в дневное время 0 p.
+                  {i18n.t('mapDeliveryDay')}
                 </Text>
               </Box>
               <Box>
                 <Text color={propStyles.grayColor} fontSize={13}>
-                  Доставка в ночное время 250 p.
+                  {i18n.t('mapDeliveryEvening')}
                 </Text>
               </Box>
             </Box>
@@ -151,11 +173,11 @@ const MapPage = ({ isOrderingAddressTerm, setOrderingAddressTerm }) => {
             </TouchableOpacity>
           </Flex>
           <Box _text={{ color: propStyles.greenColor, fontSize: 13 }}>
-            Нажмите, чтобы выбрать это местоположение
+            {i18n.t('mapJoinLocationText')}
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Flex>
   );
 };
 
@@ -169,7 +191,7 @@ const styles = StyleSheet.create({
   curPositionBtn: {
     position: 'absolute',
     right: 0,
-    bottom: 80,
+    bottom: 84,
     right: 14,
     marginBottom: 30,
     width: 56,
@@ -188,6 +210,7 @@ const mapStateToProps = ({ search: { isOrderingAddressTerm } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setOrderingAddressTerm: (term) => dispatch(setOrderingAddressTerm(term)),
+  changeOrderAddress: (address) => dispatch(changeOrderAddress(address)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapPage);

@@ -18,3 +18,9 @@ export const getSearchProductsListReq = async (term) =>
 
 export const getProductsWithStocksReq = async () =>
   await axios.get('/products/stock');
+
+export const getRecommendationsProductsReq = async () =>
+  await axios.get('/products/recomendation');
+
+export const getAdditItemsForProductReq = async () =>
+  await axios.get('/products/additional');

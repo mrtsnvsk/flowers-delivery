@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { onDs } from './utils';
 import { onAlert } from '../../resources/utils';
+import { getAppLanguage } from './localization';
 
 export const updateSmsCode = (password, userData) => ({
   type: constant.IS_SENDED_CODE,
@@ -58,9 +59,9 @@ export const authUser = (code) => {
 
 export const checkAuthUser = () => {
   return async (dispatch) => {
+    dispatch(getAppLanguage());
     try {
       const user = await AsyncStorage.getItem('@userData');
-
       if (user) {
         dispatch(onDs(constant.IS_AUTH_USER, true));
       } else {

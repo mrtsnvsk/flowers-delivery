@@ -19,3 +19,7 @@ export const setOrderList = (orderList) => {
     dispatch(onDs(constant.SET_ORDER_LIST, orderList));
   };
 };
+
+export const changeOrderAddress = (address) => {
+  return onDs(constant.CHANGE_ORDER_ADDRESS, address);
+};

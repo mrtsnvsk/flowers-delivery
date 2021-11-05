@@ -4,6 +4,7 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box, Text, Flex, ScrollView } from 'native-base';
 import propStyles from '../../resources/propStyles';
 import { Entypo } from '@expo/vector-icons';
+import i18n from 'i18n-js';
 
 const DetailItem = ({ label, value }) => (
   <Flex mt={4} direction='row' justify='space-between' align='center'>
@@ -21,57 +22,61 @@ const OrderStoriesPage = () => {
     {
       number: '123123',
       date: '25/07/2021',
-      payment: 'Оплата онлайн',
+      payment: i18n.t('orderStoryPaymentOnline'),
       amount: '1 900.00',
     },
     {
       number: '123123',
       date: '25/07/2021',
-      payment: 'Оплата картой',
+      payment: i18n.t('orderStoryPaymentCash'),
       amount: '2 900.00',
     },
     {
       number: '123123',
       date: '25/07/2021',
-      payment: 'Оплата наличными',
+      payment: i18n.t('orderStoryPaymentCard'),
       amount: '3 900.00',
     },
   ];
 
   return (
-    <Box p='20px' flex={1} bg='#fff'>
+    <Box px='20px' flex={1} bg='#fff'>
       <ScrollView>
-        <Box>
-          <Text color={propStyles.grayColor}>
-            {orders.length}{' '}
-            {!orders?.length
-              ? '0 заказов'
-              : orders?.length === 1
-              ? 'заказ'
-              : orders?.length > 1 && orders?.length <= 4
-              ? 'заказа'
-              : 'заказов'}
-          </Text>
+        <Box py='20px'>
+          <Box>
+            <Text color={propStyles.grayColor}>
+              {i18n.t('orderStoryOrder')}: {orders?.length}
+            </Text>
+          </Box>
+          {orders.length ? (
+            orders.map((el, i) => (
+              <Box key={i} mt={5}>
+                <TouchableOpacity style={styles.detailsBtn}>
+                  <Box>
+                    <Text fontWeight='600'>#{el.number}</Text>
+                  </Box>
+                  <Box>
+                    <Entypo name='chevron-right' size={24} color='#000' />
+                  </Box>
+                </TouchableOpacity>
+                <DetailItem
+                  label={i18n.t('orderStoryOrderDate')}
+                  value={el.date}
+                />
+                <DetailItem
+                  label={i18n.t('orderStoryPaymentMethod')}
+                  value={el.payment}
+                />
+                <DetailItem
+                  label={i18n.t('orderStoryTotalPrice')}
+                  value={el.amount + ' p.'}
+                />
+              </Box>
+            ))
+          ) : (
+            <Box>213</Box>
+          )}
         </Box>
-        {orders.length ? (
-          orders.map((el, i) => (
-            <Box key={i} mt={5}>
-              <TouchableOpacity style={styles.detailsBtn}>
-                <Box>
-                  <Text fontWeight='600'>#{el.number}</Text>
-                </Box>
-                <Box>
-                  <Entypo name='chevron-right' size={24} color='#000' />
-                </Box>
-              </TouchableOpacity>
-              <DetailItem label='Дата заказа' value={el.date} />
-              <DetailItem label='Способ оплаты' value={el.payment} />
-              <DetailItem label='Всего' value={el.amount + ' p.'} />
-            </Box>
-          ))
-        ) : (
-          <Box>213</Box>
-        )}
       </ScrollView>
     </Box>
   );

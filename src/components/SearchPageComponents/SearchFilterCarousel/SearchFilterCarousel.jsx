@@ -4,6 +4,7 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Box, ScrollView, Flex, Text } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
+import i18n from 'i18n-js';
 
 const SearchFilterCarousel = ({
   openFilters,
@@ -17,7 +18,7 @@ const SearchFilterCarousel = ({
           <Box mr={3}>
             <Ionicons name='add' size={20} color={'rgba(0, 0, 0, 0.5)'} />
           </Box>
-          <Box _text={styles.filterBtnText}>Фильтр</Box>
+          <Box _text={styles.filterBtnText}>{i18n.t('searchFilterButton')}</Box>
         </TouchableOpacity>
         {termCategory ? (
           <Box style={styles.filterBtn}>

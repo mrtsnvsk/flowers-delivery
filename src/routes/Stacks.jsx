@@ -24,6 +24,7 @@ import ConfidentialityPage from '../pages/ConfidentialityPage';
 import BonusesPage from '../pages/BonusesPage';
 import NotificationsPage from '../pages/NotificationsPage';
 import ProductPage from '../pages/ProductPage';
+import PromosPage from '../pages/PromosPage';
 
 import CatalogHeader from '../components/CatalogPageComponents/CatalogHeader';
 import SearchInput from '../components/Elements/SearchInput';
@@ -36,6 +37,7 @@ import {
 } from '../store/actions/search';
 import { updateSearchProductsTerm } from '../store/actions/product';
 import { checkAuthUser } from '../store/actions/auth';
+import i18n from 'i18n-js';
 
 const Stack = createStackNavigator();
 
@@ -102,14 +104,14 @@ const Stacks = ({
           name='ContactsPage'
           component={ContactsPage}
           options={{
-            headerTitle: 'Контакты',
+            headerTitle: i18n.t('stackContacts'),
           }}
         />
         <Stack.Screen
           name='СonditionsDeliveryPage'
           component={СonditionsDeliveryPage}
           options={{
-            headerTitle: 'Доставка',
+            headerTitle: i18n.t('stackDelivery'),
           }}
         />
         <Stack.Screen
@@ -160,14 +162,14 @@ const Stacks = ({
         />
         <Stack.Screen
           options={{
-            headerTitle: 'Избранное',
+            headerTitle: i18n.t('stackFavorite'),
           }}
           name='FavoritesPage'
           component={FavoritesPage}
         />
         <Stack.Screen
           options={{
-            headerTitle: 'Фильтр',
+            headerTitle: i18n.t('stackFilter'),
             headerRight: () => <CatalogHeader navigation={navigation} />,
           }}
           name='FiltersPage'
@@ -175,14 +177,14 @@ const Stacks = ({
         />
         <Stack.Screen
           options={{
-            headerTitle: 'Оформление заказа',
+            headerTitle: i18n.t('stackRegisterOrder'),
           }}
           name='OrderingPage'
           component={OrderingPage}
         />
         <Stack.Screen
           options={{
-            headerTitle: 'История заказов',
+            headerTitle: i18n.t('stackOrdersHistory'),
           }}
           name='OrderStoriesPage'
           component={OrderStoriesPage}
@@ -202,24 +204,31 @@ const Stacks = ({
         />
         <Stack.Screen
           options={{
-            headerTitle: 'Конфиденциальность',
+            headerTitle: i18n.t('stackConfidentiality'),
           }}
           name='ConfidentialityPage'
           component={ConfidentialityPage}
         />
         <Stack.Screen
           options={{
-            headerTitle: 'Бонусы',
+            headerTitle: i18n.t('stackBonuses'),
           }}
           name='BonusesPage'
           component={BonusesPage}
         />
         <Stack.Screen
           options={{
-            headerTitle: 'Уведомления',
+            headerTitle: i18n.t('stackNotifications'),
           }}
           name='NotificationsPage'
           component={NotificationsPage}
+        />
+        <Stack.Screen
+          options={{
+            headerTitle: i18n.t('stackPromos'),
+          }}
+          name='PromosPage'
+          component={PromosPage}
         />
       </>
     </Stack.Navigator>

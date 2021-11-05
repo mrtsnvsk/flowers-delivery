@@ -21,32 +21,7 @@ const PromoPercent = ({ promo }) => {
       borderTopLeftRadius={14}
     >
       <Text>
-        {String(promo).length >= 2 ? (
-          <>
-            <Text
-              style={[
-                styles.promoText,
-                {
-                  fontSize: promo >= 10 && promo <= 20 ? 16 : 14,
-                },
-              ]}
-            >
-              {promo?.toString().slice(0, 1)}
-            </Text>
-            <Text
-              style={[
-                styles.promoText,
-                {
-                  fontSize: promo >= 10 && promo <= 20 ? 14 : 16,
-                },
-              ]}
-            >
-              {promo?.toString().slice(1)}%
-            </Text>
-          </>
-        ) : (
-          <Text style={styles.promoText}>{promo}%</Text>
-        )}
+        <Text style={styles.promoText}>{promo}%</Text>
       </Text>
     </Flex>
   );

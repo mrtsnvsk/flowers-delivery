@@ -15,18 +15,22 @@ import propStyles from '../../resources/propStyles';
 import AddToBasketFooter from '../../components/Elements/AddToBasketFooter';
 import AddToBasketTopSlide from '../../components/Elements/AddToBasketTopSlide';
 import SpinnerFw from '../../components/Elements/SpinnerFw';
+import PromoPercent from '../../components/Elements/PromoPercent';
 
 const { width } = Dimensions.get('window');
 import { setOrderList, getOrderList } from '../../store/actions/order';
 import { getOrderFromStorage, shareUrl } from '../../resources/utils';
 import SwitchAdditionalProduct from '../../components/Elements/SwitchAdditionalProduct';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAdditItemsForProductReq } from '../../api/products';
 
 import {
   addToFavoriteList,
   deleteFromFavoritesList,
 } from '../../store/actions/favorites';
 import { getProductById, updateProductById } from '../../store/actions/product';
+import BuyBtn from '../../components/Elements/BuyBtn/BuyBtn';
+import i18n from 'i18n-js';
 
 const CircleIconWrapper = ({ icon, fn }) => {
   return (
@@ -37,9 +41,6 @@ const CircleIconWrapper = ({ icon, fn }) => {
 };
 
 const ProductModal = ({
-  open,
-  setOpen,
-  // id,
   setOrderList,
   orderList,
   getOrderList,
@@ -58,20 +59,8 @@ const ProductModal = ({
   const [isOpenSlide, setOpenSlide] = useState(false);
   const [matchItem, setMatchItem] = useState(false);
   const [isFavorite, setFavorite] = useState(false);
-  const [isPackage, setPackage] = useState(false);
   const [mainImage, setMainImage] = useState(null);
-
-  const otherImgs = [
-    {
-      uri: 'https://flowers.ua/images/Flowers/2397.jpg',
-    },
-    {
-      uri: 'https://kvitka-distribution.com.ua/content/images/46/68152390812268_small11.jpg',
-    },
-    {
-      uri: 'https://st.volga.news/image/w630/413ab04d-ddc8-4c46-a697-016be62026b2.jpg',
-    },
-  ];
+  const [additItems, setAdditItems] = useState([]);
 
   useEffect(() => {
     getProductById(id);
@@ -83,6 +72,20 @@ const ProductModal = ({
       setMainImage(productById?.images[0]?.url);
     }
   }, [productById, id]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getAdditItemsForProductReq();
+
+        if (data.length) {
+          setAdditItems(data.map((el) => ({ ...el, added: false })));
+        }
+      } catch {
+        setAdditItems([]);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     getOrderList();
@@ -104,11 +107,25 @@ const ProductModal = ({
   useMemo(() => {
     const check = orderList.filter((el) => el.id === isProduct?.id);
 
-    return check.length
-      ? (() => {
-          setMatchItem(true);
-        })()
-      : setMatchItem(false);
+    if (check.length) {
+      const additionalItems = additItems;
+      const item = check[0];
+
+      const test = item.additItems.filter((el) => el.added);
+
+      if (!test.length && !additionalItems.length) return;
+
+      for (let i = 0; i <= test.length - 1; i++) {
+        for (let j = 0; j <= additionalItems.length - 1; j++) {
+          if (additionalItems[j].id === test[i].id) {
+            additionalItems[j].added = test[i].added;
+          }
+        }
+      }
+      setAdditItems(additionalItems);
+    }
+
+    return check.length ? setMatchItem(true) : setMatchItem(false);
   }, [orderList, isProduct]);
 
   useEffect(() => {
@@ -118,6 +135,10 @@ const ProductModal = ({
       setMainImage(null);
     };
   }, []);
+
+  const pushToProductPage = (id) => {
+    navigation.navigate('ProductPage', { id });
+  };
 
   const onOpenTopSlide = () => {
     setOpenSlide(true);
@@ -132,11 +153,11 @@ const ProductModal = ({
           ...isProduct,
           price: isProduct?.stock ? isProduct.stock : isProduct?.price,
           count: 1,
-          package: !isPackage
-            ? null
-            : { price: 250, name: 'Добавить в упаковку' },
+          additItems: additItems.filter((el) => el.added),
+          recomendation: null,
         },
       ];
+
     onOpenTopSlide();
     setOrderList(list);
   };
@@ -222,6 +243,7 @@ const ProductModal = ({
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {isProduct.images.map((el, i) => (
                       <TouchableOpacity
+                        style={styles.additItem}
                         activeOpacity={0.6}
                         key={i}
                         onPress={() => setMainImage(el.url)}
@@ -245,39 +267,84 @@ const ProductModal = ({
                     {isProduct?.description}
                   </Text>
                 </Box>
-                <Box mt={5}>
-                  <Box
-                    _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
-                    mb={3}
-                  >
-                    Дополнительно
-                  </Box>
-                  <SwitchAdditionalProduct
-                    matchItem={matchItem}
-                    value={isPackage}
-                    setValue={setPackage}
-                  />
-                </Box>
-
-                <Box mt={5}>
-                  <Box
-                    _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
-                    mb={3}
-                  >
-                    Похожие букеты
-                  </Box>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {otherImgs.map((el, i) => (
-                      <TouchableOpacity key={i}>
-                        <Image
-                          style={styles.carouselImg}
-                          source={{ uri: el.uri }}
-                          alt='Other photos'
-                        />
-                      </TouchableOpacity>
+                {additItems?.length ? (
+                  <Box mt={5}>
+                    <Box
+                      _text={{
+                        fontWeight: '700',
+                        fontSize: 20,
+                        color: '#000',
+                      }}
+                      mb={3}
+                    >
+                      {i18n.t('productAdditionals')}
+                    </Box>
+                    {additItems.map((addit, i) => (
+                      <SwitchAdditionalProduct
+                        key={addit.id}
+                        matchItem={matchItem}
+                        item={addit}
+                        setAdded={(val, id) => {
+                          const items = additItems.map((el) =>
+                            el.id === id ? { ...el, added: val } : el
+                          );
+                          setAdditItems(items);
+                        }}
+                      />
                     ))}
-                  </ScrollView>
-                </Box>
+                  </Box>
+                ) : null}
+                {isProduct?.recomendation?.length ? (
+                  <Box mt={5}>
+                    <Box
+                      _text={{ fontWeight: '700', fontSize: 20, color: '#000' }}
+                      mb={3}
+                    >
+                      {i18n.t('productSimilarProducts')}
+                    </Box>
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      {isProduct?.recomendation.map((el) => (
+                        <TouchableOpacity
+                          onPress={() => pushToProductPage(el.id)}
+                          style={{
+                            width: (width - 30) / 2.5,
+                            marginRight: 10,
+                          }}
+                          key={el.id}
+                        >
+                          <ImageBackground
+                            style={[
+                              styles.additItemCarouselImg,
+                              {
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-end',
+                              },
+                            ]}
+                            borderRadius={14}
+                            source={{ uri: el.image }}
+                            alt='Other photos'
+                          >
+                            <PromoPercent promo={el?.stock} />
+                          </ImageBackground>
+                          <Box m={1}>
+                            <Text
+                              numberOfLines={1}
+                              ellipsizeMode='tail'
+                              color='#000'
+                              fontSize={16}
+                            >
+                              {el.name}
+                            </Text>
+                          </Box>
+                          <BuyBtn price={el.price} />
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </Box>
+                ) : null}
               </Box>
             </ScrollView>
           </Box>
@@ -319,11 +386,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#C6C6C6',
     borderRadius: 50,
   },
+  additItem: {
+    width: (width - 30) / 3,
+    marginHorizontal: 5,
+  },
+  additItemCarouselImg: {
+    width: (width - 30) / 2.5,
+    height: (width - 30) / 2.5,
+    marginHorizontal: 5,
+  },
   carouselImg: {
     width: (width - 30) / 3,
     height: (width - 30) / 3,
     borderRadius: 6,
-    marginHorizontal: 5,
   },
   productNameText: {
     fontSize: 20,

@@ -4,6 +4,7 @@ const initialState = {
   orderList: [],
   orderListCount: 0,
   orderAddress: null,
+  orderPickupAddresses: [],
 };
 
 const orderReducer = (state = initialState, { type, payload }) => {
@@ -18,6 +19,11 @@ const orderReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         orderAddress: payload,
+      };
+    case constant.GET_ORDER_PICKUP_ADDRESSES:
+      return {
+        ...state,
+        orderPickupAddresses: payload,
       };
     default:
       return state;

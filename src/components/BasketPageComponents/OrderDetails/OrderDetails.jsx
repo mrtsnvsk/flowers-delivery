@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 
 import { TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
@@ -9,8 +10,9 @@ import DottedUnderline from '../DottedUnderline';
 import { onAlert } from '../../../resources/utils';
 const { width } = Dimensions.get('window');
 import i18n from 'i18n-js';
+import OrderDetailLine from '../../OrderingPageComponents/OrderDetailLine/OrderDetailLine';
 
-const OrderDetails = ({ order, hideOrderBtn }) => {
+const OrderDetails = ({ order, hideOrderBtn, hideTotalPrice, isAuth }) => {
   const navigation = useNavigation();
 
   const [price, setPrice] = useState(0);
@@ -36,6 +38,11 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
   };
 
   const createOrder = () => {
+    if (!isAuth) {
+      onAlert('Заказ доступен только авторизированным пользователям!');
+      return;
+    }
+
     price > 0
       ? navigation.navigate('OrderingPage')
       : onAlert(i18n.t('orderAlert'));
@@ -47,46 +54,24 @@ const OrderDetails = ({ order, hideOrderBtn }) => {
       mt='30px'
       bg={!hideOrderBtn ? propStyles.basketBlocksColor : '#fff'}
       p='14px'
+      pb='0px'
     >
-      <Box mb={3}>
-        <Flex direction='row' justify='space-between' align='center'>
-          <Box>{i18n.t('orderInfoProducts')}</Box>
-          <Flex direction='row' align='center'>
-            <Box mr={1}>
-              <Text>x{order.length}</Text>
-            </Box>
-            <Box>
-              <Text>{price} p.</Text>
-            </Box>
-          </Flex>
-        </Flex>
-        <DottedUnderline />
-      </Box>
-      <Box mb={3}>
-        <Flex direction='row' justify='space-between' align='center'>
-          <Box>{i18n.t('orderInfoAddit')}</Box>
-          <Flex direction='row' align='center'>
-            <Box mr={1}>
-              <Text>
-                x{order?.reduce((acc, val) => +acc + +val.additItems.length, 0)}
-              </Text>
-            </Box>
-            <Box>
-              <Text>{additPrice} p.</Text>
-            </Box>
-          </Flex>
-        </Flex>
-        <DottedUnderline />
-      </Box>
-      <Box>
-        <Flex direction='row' justify='space-between' align='center'>
-          <Box>{i18n.t('orderInfoTotalPrice')}</Box>
-          <Box>
-            <Text>{+price + +additPrice} p.</Text>
-          </Box>
-        </Flex>
-        <DottedUnderline />
-      </Box>
+      <OrderDetailLine
+        text={i18n.t('orderInfoProducts')}
+        count={order.length}
+        price={price}
+      />
+      <OrderDetailLine
+        text={i18n.t('orderInfoAddit')}
+        count={order?.reduce((acc, val) => +acc + +val.additItems.length, 0)}
+        price={additPrice}
+      />
+      {!hideTotalPrice && (
+        <OrderDetailLine
+          text={i18n.t('orderInfoTotalPrice')}
+          price={+price + +additPrice}
+        />
+      )}
       {!hideOrderBtn && (
         <TouchableOpacity onPress={createOrder} style={styles.orderBtn}>
           <Text color='#fff' fontWeight='600'>
@@ -113,4 +98,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderDetails;
+const mapStateToProps = ({ auth: { isAuth } }) => ({
+  isAuth,
+});
+
+export default connect(mapStateToProps)(OrderDetails);

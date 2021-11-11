@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 
 import { TouchableOpacity, Switch } from 'react-native';
-import { Box, Flex, Center, Text, ScrollView } from 'native-base';
+import { Box, Flex, Center, Text, ScrollView, Image } from 'native-base';
 import propStyles from '../../resources/propStyles';
 import {
   FontAwesome5,
@@ -24,6 +24,7 @@ import { logoutUser } from '../../store/actions/auth';
 import { switchAppLanguage } from '../../store/actions/localization';
 
 import i18n from 'i18n-js';
+import { florcatLogo } from '../../resources/images';
 
 const ProfilePage = ({ isAuth, logoutUser }) => {
   const navigation = useNavigation();
@@ -52,7 +53,14 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
     <Box flex={1} bg='#fff' safeAreaTop>
       <ScrollView>
         <Box bgColor='#F9F9F9' px={'20px'}>
-          <Center my={'40px'}>Florcat</Center>
+          <Center my={'40px'}>
+            <Image
+              width={300}
+              height={110}
+              source={florcatLogo}
+              alt='Florcat'
+            />
+          </Center>
           <Box mb={'20px'}>
             <Text color='#000' fontSize={22} fontWeight='400'>
               {i18n.t('profilePrivateArea')}

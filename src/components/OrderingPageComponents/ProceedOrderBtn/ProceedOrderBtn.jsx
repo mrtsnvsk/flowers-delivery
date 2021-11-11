@@ -3,12 +3,15 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Center, Text } from 'native-base';
 import i18n from 'i18n-js';
+import { onAlert } from '../../../resources/utils';
 
 const ProceedOrderBtn = ({ tab, setTab }) => {
   return (
     <Center mt='30px'>
       <TouchableOpacity
-        onPress={() => setTab((prevTab) => prevTab + 1)}
+        onPress={() => {
+          setTab((prevTab) => prevTab + 1);
+        }}
         style={styles.submitBtn}
       >
         <Text textAlign='center' color='#fff'>

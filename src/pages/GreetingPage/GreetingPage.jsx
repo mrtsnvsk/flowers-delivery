@@ -7,6 +7,7 @@ import { Box, Center, Image, Text } from 'native-base';
 import { getUserPhone } from '../../resources/utils';
 
 import i18n from 'i18n-js';
+import { florcatLogo } from '../../resources/images';
 
 const Greetingpage = ({ isAuth }) => {
   const navigation = useNavigation();
@@ -25,9 +26,6 @@ const Greetingpage = ({ isAuth }) => {
     }, 3000);
   }, [isAuth]);
 
-  const logo =
-    'https://florcat.ru/upload/delight.webpconverter/local/templates/florcat/images/logo.png.webp?162728356719376';
-
   return (
     <Center bg='#fff' flex={1}>
       <Box>
@@ -35,7 +33,7 @@ const Greetingpage = ({ isAuth }) => {
           resizeMode='stretch'
           width={300}
           height={200}
-          source={{ uri: logo }}
+          source={florcatLogo}
           alt='Florcat'
         />
       </Box>

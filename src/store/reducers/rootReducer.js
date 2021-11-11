@@ -9,6 +9,7 @@ import catalogLayoutReducer from './catalogLayoutReducer';
 import categoriesReducer from './categoriesReducer';
 import productsReducer from './productsReducer';
 import localizationReducer from './localizationReducer';
+import promosReducer from './promosReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   categories: categoriesReducer,
   products: productsReducer,
   localization: localizationReducer,
+  promos: promosReducer,
 });

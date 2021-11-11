@@ -16,6 +16,7 @@ import CallPhoneBlock from '../Elements/CallPhoneBlock';
 import { getCategoriesList } from '../../store/actions/categories';
 import { logoutUser } from '../../store/actions/auth';
 import i18n from 'i18n-js';
+import { florcatLogo } from '../../resources/images';
 
 const Drawer = ({
   navigation,
@@ -33,9 +34,6 @@ const Drawer = ({
   const onPushToLink = (el) => {
     navigation.navigate('CatalogPage', { name: el.name, id: el.id });
   };
-
-  const shopLogo =
-    'https://florcat.ru/upload/delight.webpconverter/local/templates/florcat/images/logo.png.webp?162728356719376';
 
   const links = [
     {
@@ -77,12 +75,7 @@ const Drawer = ({
           py={2}
           alignItems='center'
         >
-          <Image
-            width={'100%'}
-            height={120}
-            source={{ uri: shopLogo }}
-            alt='Logo'
-          />
+          <Image width={'100%'} height={120} source={florcatLogo} alt='Logo' />
         </Flex>
         <Box pl={5}>
           <Box

@@ -2,10 +2,7 @@ import React from 'react';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { Box } from 'native-base';
-
 import Stacks from './Stacks';
-import Tabs from './Tabs';
 
 import DrawerLayout from '../components/Drawer';
 

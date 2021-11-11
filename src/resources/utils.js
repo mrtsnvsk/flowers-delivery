@@ -49,3 +49,9 @@ export const shareUrl = async (id) => {
     message: url,
   });
 };
+
+export const getUserDataFromStorage = async () => {
+  const user = JSON.parse(await AsyncStorage.getItem('@userData')) || null;
+
+  return user;
+};

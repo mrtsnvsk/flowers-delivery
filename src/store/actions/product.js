@@ -26,8 +26,6 @@ export const getProductsList = (id, order) => {
       const { data } = await getProductsListReq(id, order, f, t);
 
       dispatch(onDs(constant.GET_PRODUCTS_LIST, data));
-    } catch (e) {
-      console.log('e', e);
     } finally {
       dispatch(onDs(loading, false));
     }
@@ -44,7 +42,6 @@ export const getProductById = (id) => {
 
       dispatch(onDs(constant.GET_PRODUCT_BY_ID, data));
     } catch (e) {
-      // console.log('e', e.response);
     } finally {
       dispatch(onDs(loading, false));
     }

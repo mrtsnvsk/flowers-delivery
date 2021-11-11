@@ -37,11 +37,11 @@ const MapPage = ({
   setOrderingAddressTerm,
   changeOrderAddress,
 }) => {
-  const debouncedSearch = useDebounce(onSearch, 1000);
   const navigation = useNavigation();
-
   const [curLoc, setCurLoc] = useState();
   const [curLocName, setCurLocName] = useState('');
+  const debouncedSearch = useDebounce(onSearch, 1000);
+  const debouncedCurLoc = useDebounce(setCurLoc, 1000);
 
   useEffect(() => {
     debouncedSearch(isOrderingAddressTerm);
@@ -110,8 +110,6 @@ const MapPage = ({
     } else {
       onAlert(i18n.t('mapNoAddressAlert'));
     }
-
-    // console.log('address', address);
   };
 
   return (
@@ -121,7 +119,9 @@ const MapPage = ({
           onPress={Keyboard.dismiss}
           region={curLoc}
           style={styles.map}
-          onRegionChangeComplete={(coords) => setCurLoc(coords)}
+          onRegionChangeComplete={(coords) => {
+            debouncedCurLoc(coords);
+          }}
         />
         <Box
           style={{

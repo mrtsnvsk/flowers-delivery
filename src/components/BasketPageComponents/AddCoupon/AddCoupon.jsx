@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Box, Flex, Input, Text } from 'native-base';
@@ -9,9 +9,29 @@ import { onAlert } from '../../../resources/utils';
 const { width } = Dimensions.get('window');
 import i18n from 'i18n-js';
 
-const AddCoupon = ({ setCoupon, coupon }) => {
-  const addNewCoupon = () => {
-    coupon ? console.log('фыв') : onAlert(i18n.t('couponAlert'));
+import { getCouponInfoReq } from '../../../api/order';
+
+const AddCoupon = ({ setCouponStock }) => {
+  const [coupon, setCoupon] = useState('');
+
+  const addNewCoupon = async () => {
+    if (!coupon) {
+      onAlert(i18n.t('couponAlert'));
+      return;
+    }
+    try {
+      const { data } = await getCouponInfoReq(coupon);
+      console.log('data', data);
+      if (data.length) {
+        onAlert(data[0]);
+        return;
+      }
+
+      setCouponStock(data);
+      onAlert('Купон задействован!');
+    } catch (e) {
+      onAlert('Неверный купон!');
+    }
   };
 
   return (

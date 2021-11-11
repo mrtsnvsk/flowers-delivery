@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Center, Image } from 'native-base';
@@ -6,27 +7,20 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 const { width } = Dimensions.get('window');
 
-const img =
-  'https://dicentra.ua/assets/images/sales/flower-weeks-18/729-346%D1%80%D1%83%D1%81%20(1).jpg';
+import { getPromosList } from '../../../store/actions/promos';
 
-const NewsSlider = () => {
+const NewsSlider = ({ getPromosList, promosList }) => {
   const [idx, setIdx] = useState(0);
 
-  const carouselItems = [
-    <TouchableOpacity activeOpacity={0.8}>
-      <Image source={{ uri: img }} style={styles.imgBg} alt='News' />
-    </TouchableOpacity>,
-    <TouchableOpacity activeOpacity={0.8}>
-      <Image source={{ uri: img }} style={styles.imgBg} alt='News' />
-    </TouchableOpacity>,
-    <TouchableOpacity activeOpacity={0.8}>
-      <Image source={{ uri: img }} style={styles.imgBg} alt='News' />
-    </TouchableOpacity>,
-  ];
+  useEffect(() => {
+    getPromosList();
+  }, [getPromosList]);
+
+  if (!promosList.length) return null;
 
   const pagination = (
     <Pagination
-      dotsLength={carouselItems.length}
+      dotsLength={promosList.length}
       activeDotIndex={idx}
       containerStyle={styles.paginationContainer}
       dotContainerStyle={{ marginHorizontal: 4 }}
@@ -42,10 +36,20 @@ const NewsSlider = () => {
       <Carousel
         onSnapToItem={(index) => setIdx(index)}
         layout='default'
-        data={carouselItems}
+        data={promosList}
         sliderWidth={width - 40}
         itemWidth={width - 40}
-        renderItem={({ item }) => item}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity activeOpacity={0.8}>
+              <Image
+                source={{ uri: item.image }}
+                style={styles.imgBg}
+                alt={item.name}
+              />
+            </TouchableOpacity>
+          );
+        }}
       />
       {pagination}
     </Center>
@@ -84,4 +88,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewsSlider;
+const mapStateToProps = ({ promos: { promosList } }) => ({ promosList });
+
+const mapDispatchToProps = (dispatch) => ({
+  getPromosList: () => dispatch(getPromosList()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewsSlider);

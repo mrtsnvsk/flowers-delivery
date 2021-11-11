@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import { Select, CheckIcon } from 'native-base';
 
-const SelectOrderAddress = () => {
-  let [address, setAddress] = useState('');
+import { getPickupAddresses } from '../../../store/actions/order';
+
+const SelectOrderAddress = ({
+  getPickupAddresses,
+  orderPickupAddresses,
+  address,
+  setAddress,
+}) => {
+  useEffect(() => {
+    getPickupAddresses();
+  }, []);
+
+  if (!orderPickupAddresses.length) return null;
 
   return (
     <Select
@@ -14,12 +26,19 @@ const SelectOrderAddress = () => {
         endIcon: <CheckIcon size={4} />,
       }}
     >
-      <Select.Item label='Ходакова, 10' value='10' />
-      <Select.Item label='Донбасса, 32' value='32' />
-      <Select.Item label='Криворукого, 1' value='1' />
-      <Select.Item label='Кривошеевого, 13' value='13' />
+      {orderPickupAddresses.map((el) => (
+        <Select.Item key={el.id} label={el.name} value={el.address} />
+      ))}
     </Select>
   );
 };
 
-export default SelectOrderAddress;
+const mapStateToProps = ({ order: { orderPickupAddresses } }) => ({
+  orderPickupAddresses,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getPickupAddresses: () => dispatch(getPickupAddresses()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectOrderAddress);

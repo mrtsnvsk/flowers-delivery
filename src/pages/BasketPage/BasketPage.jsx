@@ -14,7 +14,6 @@ import OrderDetails from '../../components/BasketPageComponents/OrderDetails';
 
 const BasketPage = ({ getOrderList, orderList, setOrderList }) => {
   const [order, setOrder] = useState([]);
-  const [coupon, setCoupon] = useState('');
 
   useEffect(() => {
     getOrderList();
@@ -45,7 +44,7 @@ const BasketPage = ({ getOrderList, orderList, setOrderList }) => {
           ) : null}
         </Box>
         <AdditionalyAddItemsBlock />
-        <AddCoupon coupon={coupon} setCoupon={setCoupon} />
+
         <OrderDetails order={orderList} />
       </ScrollView>
     </Box>

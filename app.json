@@ -3,13 +3,23 @@
     "scheme": "florcat",
     "name": "flowers-delivery-app",
     "slug": "flowers-delivery-app",
-    "version": "1.0.4",
+    "version": "1.0.6",
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "color": "#ffffff",
+          "mode": "production"
+        }
+      ]
+    ],
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "flowers-delivery-app"
     },
     "android": {
       "package": "com.hold_fast.flowersdeliveryapp",
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCGkZJZXBaS7sRX7qyi6s6qaAcvDJvyK7A"

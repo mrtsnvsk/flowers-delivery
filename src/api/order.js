@@ -11,3 +11,6 @@ export const getCouponInfoReq = async (coupon) =>
 
 export const getUserBonusesReq = async (user_id) =>
   await axios.post('/cart/checkBonuses', { user_id });
+
+export const sendOrderReq = async (order) =>
+  await axios.post('/cart/sendOrder', order);

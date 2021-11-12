@@ -12,26 +12,42 @@ const DatePickerModal = ({ show, setShow, date, setDate }) => {
     setDate(currentDate);
   };
 
+  if (!show) return null;
+
   return (
-    <Modal isOpen={show} onClose={() => setShow(false)}>
-      <Modal.Content width='100%' p='10px'>
+    <>
+      {Platform.OS === 'ios' ? (
+        <Modal isOpen={show} onClose={() => setShow(false)}>
+          <Modal.Content width='100%' p='10px'>
+            <DateTimePicker
+              value={date}
+              mode='date'
+              is24Hour={true}
+              display='spinner'
+              onChange={onChange}
+              locale='ru-RU'
+            />
+            <Center py='10px'>
+              <TouchableOpacity
+                style={styles.submitJoinTime}
+                onPress={() => setShow(false)}
+              >
+                <Text color='#fff'>OK</Text>
+              </TouchableOpacity>
+            </Center>
+          </Modal.Content>
+        </Modal>
+      ) : (
         <DateTimePicker
           value={date}
           mode='date'
           is24Hour={true}
           display='spinner'
           onChange={onChange}
+          locale='ru-RU'
         />
-        <Center py='10px'>
-          <TouchableOpacity
-            style={styles.submitJoinTime}
-            onPress={() => setShow(false)}
-          >
-            <Text color='#fff'>OK</Text>
-          </TouchableOpacity>
-        </Center>
-      </Modal.Content>
-    </Modal>
+      )}
+    </>
   );
 };
 

@@ -15,29 +15,29 @@ const Tinkoff = new ASDK({
 
 const ContactsPage = () => {
   const test = async () => {
-    // try {
-    //   const res = await Tinkoff.payWithCard({
-    //     orderId: (Math.random() * 100000000000).toFixed(0),
-    //     amount: 1000,
-    //     title: 'Покупка',
-    //     description: 'Описание покупки',
-    //     // for marketplace only
-    //     shops: [
-    //       {
-    //         ShopCode: '100',
-    //         Amount: 10,
-    //         Fee: 10,
-    //       },
-    //     ],
-    //   });
-    //   if (res) {
-    //     Alert.alert('Оплата', 'Успех!');
-    //   } else {
-    //     Alert.alert('Оплата', 'Отмена');
-    //   }
-    // } catch (error) {
-    //   Alert.alert('Ошибка оплаты', error.message);
-    // }
+    try {
+      const res = await Tinkoff.payWithCard({
+        orderId: (Math.random() * 100000000000).toFixed(0),
+        amount: 1000,
+        title: 'Покупка',
+        description: 'Описание покупки',
+        // for marketplace only
+        shops: [
+          {
+            ShopCode: '100',
+            Amount: 10,
+            Fee: 10,
+          },
+        ],
+      });
+      if (res) {
+        Alert.alert('Оплата', 'Успех!');
+      } else {
+        Alert.alert('Оплата', 'Отмена');
+      }
+    } catch (error) {
+      Alert.alert('Ошибка оплаты', error.message);
+    }
   };
 
   return (
@@ -50,3 +50,4 @@ const ContactsPage = () => {
 };
 
 export default ContactsPage;
+

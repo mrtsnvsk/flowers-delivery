@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
 import {
   Actionsheet,
@@ -20,6 +21,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import propStyles from '../../../resources/propStyles';
 import { onAlert } from '../../../resources/utils';
+import i18n from 'i18n-js';
 
 const BonusesActionSheet = ({
   open,
@@ -32,11 +34,11 @@ const BonusesActionSheet = ({
 
   const confirmBonuses = () => {
     if (+bonus > +bonusesData?.max_use_bonuses) {
-      onAlert('Кол-во бонусов не может быть больше максимального!');
+      onAlert(i18n.t('bonusesActionMaxAlert'));
       setBonus('0');
       return;
     } else if (+bonus > bonusesData?.user) {
-      onAlert('Кол-во бонусов не может быть больше вашего бонусного счета!');
+      onAlert(i18n.t('bonusesActionMoreAlert'));
       setBonus('0');
       return;
     }
@@ -48,12 +50,19 @@ const BonusesActionSheet = ({
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Actionsheet isOpen={open} onClose={() => setOpen(false)}>
-        <KeyboardAvoidingView behavior={open ? 'padding' : null}>
+        <KeyboardAvoidingView
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+          }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
           <Actionsheet.Content width='100%'>
             <Box px='14px'>
               <Box>
                 <Text color={propStyles.mainRedColor} fontSize={18}>
-                  Бонусный счет
+                  {i18n.t('bonusesActionBonuses')}
                 </Text>
                 <Text
                   color={propStyles.mainRedColor}
@@ -65,7 +74,7 @@ const BonusesActionSheet = ({
               </Box>
               <Center width='100%'>
                 <Text fontSize={15} my='6px' fontWeight='500'>
-                  Оплатить часть покупки бонусами
+                  {i18n.t('bonusesActionPay')}
                 </Text>
                 <Input
                   value={bonus}
@@ -101,7 +110,7 @@ const BonusesActionSheet = ({
                   onPress={() => setBonus('1')}
                   style={styles.applyBonusesValueBtn}
                 >
-                  <Text>МИНИМУМ</Text>
+                  <Text>{i18n.t('bonusesActionMin')}</Text>
                   <Text>1</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -110,7 +119,7 @@ const BonusesActionSheet = ({
                   }
                   style={styles.applyBonusesValueBtn}
                 >
-                  <Text>МАКСИМУМ</Text>
+                  <Text>{i18n.t('bonusesActionMax')}</Text>
                   <Text>{bonusesData?.max_use_bonuses}</Text>
                 </TouchableOpacity>
               </Flex>
@@ -121,7 +130,7 @@ const BonusesActionSheet = ({
                     style={styles.bonusesSubmitBtn}
                   >
                     <Text color='#fff' fontWeight='bold' fontSize={18}>
-                      Использовать бонусы
+                      {i18n.t('bonusesActionUseBtn')}
                     </Text>
                   </TouchableOpacity>
                 ) : (
@@ -130,7 +139,7 @@ const BonusesActionSheet = ({
                     style={styles.bonusesSubmitBtn}
                   >
                     <Text color='#fff' fontWeight='bold' fontSize={18}>
-                      Отмена
+                      {i18n.t('bonusesActionCancelBtn')}
                     </Text>
                   </TouchableOpacity>
                 )}

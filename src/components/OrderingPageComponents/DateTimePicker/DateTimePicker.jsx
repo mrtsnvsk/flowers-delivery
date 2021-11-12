@@ -16,7 +16,14 @@ import TimePickerModal from '../../Modals/TimePickerModal';
 
 const { width } = Dimensions.get('window');
 
-const DateTimePicker = ({ children, show, setShow, label, desc }) => {
+const DateTimePicker = ({
+  children,
+  show,
+  setShow,
+  label,
+  desc,
+  hideChevron,
+}) => {
   const [date, setDate] = useState(new Date());
 
   return (
@@ -27,14 +34,24 @@ const DateTimePicker = ({ children, show, setShow, label, desc }) => {
         onPress={() => setShow(!show)}
         style={styles.joinTimeWrapper}
       >
-        <Box width={width - 60}>
-          <Text fontSize='14' color='#000'>
-            {desc}
-          </Text>
+        <Box width={width - 70}>
+          {hideChevron ? (
+            <Text fontSize='14' color='#000'>
+              {desc}
+            </Text>
+          ) : (
+            desc
+          )}
         </Box>
-        <Box width={40}>
-          <Entypo name='chevron-right' size={24} color={propStyles.grayColor} />
-        </Box>
+        {!hideChevron && (
+          <Box width={40}>
+            <Entypo
+              name='chevron-right'
+              size={24}
+              color={propStyles.grayColor}
+            />
+          </Box>
+        )}
       </TouchableOpacity>
     </>
   );

@@ -74,6 +74,7 @@ const Stacks = ({
         name='GreetingPage'
         component={GreetingPage}
         options={{
+          gestureEnabled: true,
           headerShown: false,
         }}
       />

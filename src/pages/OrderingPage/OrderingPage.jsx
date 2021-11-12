@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import {
   Box,
   Text,
@@ -32,11 +32,26 @@ import DatePickerModal from '../../components/Modals/DatePickerModal/DatePickerM
 import BonusesActionSheet from '../../components/OrderingPageComponents/BonusesActionSheet/BonusesActionSheet';
 
 import i18n from 'i18n-js';
-import { getOrderList } from '../../store/actions/order';
-import { getDeliveryPriceReq, getUserBonusesReq } from '../../api/order';
+import { getOrderList, setOrderList } from '../../store/actions/order';
+import {
+  getDeliveryPriceReq,
+  getUserBonusesReq,
+  sendOrderReq,
+} from '../../api/order';
 import { getUserDataFromStorage, onAlert } from '../../resources/utils';
+import {
+  radioOrdetToList,
+  radioPaymentMethodList,
+  radioAddressat,
+} from '../../resources/variables';
+import SelectDeliveryExistTime from '../../components/OrderingPageComponents/SelectDeliveryExistTime';
 
-const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
+const OrderingPage = ({
+  getOrderList,
+  orderList,
+  orderAddress,
+  setOrderList,
+}) => {
   const navigation = useNavigation();
   const curDateTime = new Date();
 
@@ -61,12 +76,20 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
     floor: '',
     apartment: '',
     comment: '',
+    note: '',
     orderTo: 'delivery',
     paymentMethod: 'online',
     pickupAddress: '',
     deliveryDate: curDateTime,
-    deliveryTime: { from: curDateTime, to: curDateTime },
+    // deliveryTime: { from: curDateTime, to: curDateTime },
+    deliveryTime: curDateTime,
+    isDeliveryExactTime: true,
+    // получатель
+    recipient: 'user',
+    recipientName: '',
+    recipientPhone: '',
   });
+  const otherRecipient = orderInfo.recipient === 'other';
 
   useEffect(() => {
     getOrderList();
@@ -89,8 +112,6 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
       } catch {}
     })();
   }, []);
-
-  // console.log('couponStock', orderInfo);
 
   const orderTotalPrice = () =>
     orderList.reduce((acc, val) => acc + val.price * val.count, 0);
@@ -119,47 +140,32 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
     setDeliveryPrice(+price);
   };
 
-  const radioOrdetToList = [
-    {
-      name: i18n.t('orderingDoorToDoorDelivery'),
-      value: 'delivery',
-    },
-    {
-      name: i18n.t('orderingPickupDelivery'),
-      value: 'pickup',
-    },
-  ];
-
-  const radioPaymentMethodList = [
-    {
-      name: i18n.t('orderingPaymentOnline'),
-      value: 'online',
-    },
-    {
-      name: i18n.t('orderingCourierCash'),
-      value: 'courCash',
-    },
-    {
-      name: i18n.t('orderingCourierCard'),
-      value: 'courCard',
-    },
-  ];
-
   const onPushToLink = (link) => {
     navigation.navigate(link);
   };
 
   const existAddress = () => {
-    const { name, phone, email, city, region, floor, apartment } = orderInfo,
-      emptyOrderInfo =
-        !name ||
-        !phone ||
-        !email ||
-        !city ||
-        !region ||
-        !floor ||
-        !apartment ||
-        !orderAddress?.curLocName;
+    const {
+      name,
+      phone,
+      email,
+      city,
+      region,
+      recipient,
+      recipientName,
+      recipientPhone,
+    } = orderInfo;
+
+    const otherRecipient =
+      recipient === 'other' && (!recipientName || !recipientPhone);
+    const emptyOrderInfo =
+      !name ||
+      !phone ||
+      !email ||
+      !city ||
+      !region ||
+      !orderAddress?.curLocName ||
+      otherRecipient;
 
     return !emptyOrderInfo;
   };
@@ -184,23 +190,42 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
     return coupStock - useBonuses;
   };
 
-  const submitOrder = () => {
-    const amount =
-      orderTotalPrice() + orderAdditItemsPrice() + deliveryPrice || 0;
+  const submitOrder = async () => {
+    if (otherRecipient && orderInfo.paymentMethod !== 'online') {
+      onAlert('Выберите метод оплаты');
+      return;
+    }
 
-    console.log({
-      order: orderList,
-      address: orderAddress,
-      info: orderInfo,
-      stocks: {
-        coupon: couponStock,
-        bonuses: useBonuses,
-      },
-      amount,
-      amountWithStock: getOrderTotalPriceWithStocks(),
-      deliveryPrice,
-      userId: userData.id,
-    });
+    try {
+      const amount =
+        orderTotalPrice() + orderAdditItemsPrice() + deliveryPrice || 0;
+
+      const order = {
+        order: orderList,
+        address: orderAddress,
+        info: orderInfo,
+        stocks: {
+          coupon: couponStock,
+          bonuses: useBonuses,
+        },
+        amount,
+        amountWithStock: getOrderTotalPriceWithStocks(),
+        deliveryPrice,
+        userId: userData.id,
+      };
+      const { data, status } = await sendOrderReq(order);
+
+      if (status !== 200) {
+        throw new Error(data.messgae || i18n.t('orderingOrderSuccess'));
+      }
+
+      onAlert(data.messgae || i18n.t('orderingOrderError'));
+
+      navigation.navigate('MainPage');
+      setOrderList([]);
+    } catch (e) {
+      onAlert(e.message);
+    }
   };
 
   return (
@@ -209,7 +234,7 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
         <Tabs tabId={tab} />
         <KeyboardAvoidingView
           style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}
-          behavior='padding'
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           enabled
           keyboardVerticalOffset={80}
         >
@@ -244,7 +269,11 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
                           show={showDatePicker}
                           setShow={setShowDatePicker}
                           label='Дата доставки'
-                          desc='Нажмите здесь, чтобы указать дату доставки'
+                          desc={
+                            orderInfo.deliveryDate === curDateTime
+                              ? 'Нажмите здесь, чтобы указать дату доставки'
+                              : orderInfo.deliveryDate.toLocaleDateString()
+                          }
                           children={
                             <DatePickerModal
                               show={showDatePicker}
@@ -264,33 +293,46 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
                         show={showTimePicker}
                         setShow={setShowTimePicker}
                         label={i18n.t('orderingDeliveryTime')}
-                        desc={i18n.t('orderingJoinDeliveryTime')}
-                        children={
-                          <TimePickerModal
-                            show={showTimePicker}
-                            setShow={setShowTimePicker}
-                            timeFrom={orderInfo.deliveryTime.from}
-                            timeTo={orderInfo.deliveryTime.to}
-                            setTimeFrom={(time) =>
+                        hideChevron={true}
+                        // desc={i18n.t('orderingJoinDeliveryTime')}
+                        desc={
+                          <SelectDeliveryExistTime
+                            time={orderInfo.deliveryTime}
+                            setTime={(value) =>
                               setOrderInfo({
                                 ...orderInfo,
-                                deliveryTime: {
-                                  ...orderInfo.deliveryTime,
-                                  from: time,
-                                },
-                              })
-                            }
-                            setTimeTo={(time) =>
-                              setOrderInfo({
-                                ...orderInfo,
-                                deliveryTime: {
-                                  ...orderInfo.deliveryTime,
-                                  to: time,
-                                },
+                                deliveryTime: value,
                               })
                             }
                           />
                         }
+                        // children=
+                        // children={
+                        //   <TimePickerModal
+                        //     show={showTimePicker}
+                        //     setShow={setShowTimePicker}
+                        //     timeFrom={orderInfo.deliveryTime.from}
+                        //     timeTo={orderInfo.deliveryTime.to}
+                        //     setTimeFrom={(time) =>
+                        //       setOrderInfo({
+                        //         ...orderInfo,
+                        //         deliveryTime: {
+                        //           ...orderInfo.deliveryTime,
+                        //           from: time,
+                        //         },
+                        //       })
+                        //     }
+                        //     setTimeTo={(time) =>
+                        //       setOrderInfo({
+                        //         ...orderInfo,
+                        //         deliveryTime: {
+                        //           ...orderInfo.deliveryTime,
+                        //           to: time,
+                        //         },
+                        //       })
+                        //     }
+                        //   />
+                        // }
                       />
                     </>
                   )}
@@ -394,6 +436,42 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
                       placeholder={i18n.t('orderingApartmentInput')}
                     />
                   </Box>
+
+                  {/* addressat */}
+                  <Box mt='10px'>
+                    <BlockLabel label={'Укажите, кому будет доставлен заказ'} />
+                    <DeliveryMethodRadio
+                      radioData={radioAddressat}
+                      value={orderInfo.recipient}
+                      setValue={(value) =>
+                        setOrderInfo({ ...orderInfo, recipient: value })
+                      }
+                    />
+                  </Box>
+                  {orderInfo.recipient === 'other' && (
+                    <Box mt='30px'>
+                      <Box mb={4}>
+                        <InputUnderline
+                          value={orderInfo.recipientName}
+                          setValue={(text) =>
+                            setOrderInfo({ ...orderInfo, recipientName: text })
+                          }
+                          placeholder={'Имя получателя'}
+                        />
+                      </Box>
+                      <Box mb={4}>
+                        <InputUnderline
+                          value={orderInfo.recipientPhone}
+                          setValue={(text) =>
+                            setOrderInfo({ ...orderInfo, recipientPhone: text })
+                          }
+                          placeholder={'Номер получателя'}
+                        />
+                      </Box>
+                    </Box>
+                  )}
+
+                  {/*  */}
                 </Box>
                 <Center mt={5}>
                   <TouchableOpacity
@@ -406,7 +484,7 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
                     <TouchableOpacity
                       onPress={() => {
                         if (!orderAddress?.curLocName) {
-                          onAlert('Выберите адрес доставки!');
+                          onAlert(i18n.t('orderingJoinDeliveryAddress'));
                           return;
                         }
                         if (!existAddress()) {
@@ -438,6 +516,7 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
                   </Box>
                 </Box>
                 <OrderDetails hideOrderBtn={true} order={orderList} />
+                {/* comment */}
                 <Box mt='30px'>
                   <BlockLabel label={i18n.t('orderingYourComment')} />
                   <TextArea
@@ -449,6 +528,18 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
                     placeholder={i18n.t('orderingWriteComment')}
                   />
                 </Box>
+                {/* note */}
+                <Box mt='14px'>
+                  <BlockLabel label={i18n.t('orderingYourNote')} />
+                  <TextArea
+                    value={orderInfo.comment}
+                    onChangeText={(text) =>
+                      setOrderInfo({ ...orderInfo, note: text })
+                    }
+                    h={24}
+                    placeholder={i18n.t('orderingWriteNote')}
+                  />
+                </Box>
                 <ProceedOrderBtn tab={tab} setTab={setTab} />
                 <BackTabBtn
                   label={i18n.t('orderingBackToAddressButton')}
@@ -458,6 +549,7 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
             )}
             {tab === 3 && (
               <Box mt='30px'>
+                {/* {!orderInfo.recipient === 'other' && ( */}
                 <Box>
                   <BlockLabel label={i18n.t('orderingPaymentMethod')} />
                   <Box>
@@ -470,9 +562,16 @@ const OrderingPage = ({ getOrderList, orderList, orderAddress }) => {
                     setValue={(value) =>
                       setOrderInfo({ ...orderInfo, paymentMethod: value })
                     }
-                    radioData={radioPaymentMethodList}
+                    radioData={
+                      otherRecipient
+                        ? radioPaymentMethodList.filter(
+                            (el) => el.value === 'online'
+                          )
+                        : radioPaymentMethodList
+                    }
                   />
                 </Box>
+                {/* )} */}
                 <AddCoupon setCouponStock={setCouponStock} />
 
                 <TouchableOpacity
@@ -613,6 +712,7 @@ const mapStateToProps = ({ order: { orderList, orderAddress } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getOrderList: () => dispatch(getOrderList()),
+  setOrderList: (order) => dispatch(setOrderList(order)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderingPage);

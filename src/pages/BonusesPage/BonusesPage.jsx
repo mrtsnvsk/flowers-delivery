@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Text, Flex } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import i18n from 'i18n-js';
+import { getUserDataFromStorage } from '../../resources/utils';
+import { getUserBonusesReq } from '../../api/order';
 
 const BonusesPage = () => {
+  const [bonuses, setBonuses] = useState(0);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUserDataFromStorage();
+
+      if (!user) return;
+
+      const { data } = await getUserBonusesReq(user.id);
+
+      setBonuses(data.user);
+    })();
+  }, []);
+
   return (
     <Box flex={1} bg='#fff' p='14px'>
       <Box mt={2} mb='20px' _text={{ fontSize: 18, fontWeight: 'bold' }}>
@@ -32,7 +48,7 @@ const BonusesPage = () => {
           align='center'
         >
           <Box mr={2}>
-            <Text bold>0</Text>
+            <Text bold>{bonuses}</Text>
           </Box>
           <Box>
             <MaterialIcons name='add-task' size={24} color='black' />

@@ -49,6 +49,11 @@ export const authUser = (code) => {
       await AsyncStorage.setItem('@userData', JSON.stringify(userData));
 
       dispatch(onDs(constant.IS_AUTH_USER, true));
+
+      const pushToken =
+        JSON.parse(await AsyncStorage.getItem('@pushToken')) || null;
+
+      console.log('pushToken in auth', pushToken);
       onAlert('Вы успешно авторизовались!');
     } else {
       dispatch(logoutUser());

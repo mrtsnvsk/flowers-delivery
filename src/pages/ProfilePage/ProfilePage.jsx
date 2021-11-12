@@ -19,15 +19,17 @@ import CallPhoneBlock from '../../components/Elements/CallPhoneBlock';
 import ListItem from '../../components/ProfilePageComponents/ListItem';
 import LanguageActionSheet from '../../components/ProfilePageComponents/LanguageActionSheet';
 
-import { getUserPhone } from '../../resources/utils';
+import { getUserDataFromStorage, getUserPhone } from '../../resources/utils';
 import { logoutUser } from '../../store/actions/auth';
 import { switchAppLanguage } from '../../store/actions/localization';
+import { getUserBonusesReq } from '../../api/order';
 
 import i18n from 'i18n-js';
 import { florcatLogo } from '../../resources/images';
 
 const ProfilePage = ({ isAuth, logoutUser }) => {
   const navigation = useNavigation();
+  const [bonuses, setBonuses] = useState(0);
   const [isPushes, setPushes] = useState(false);
   const [userPhone, setUserPhone] = useState('');
   const [isOpenAS, setShowAS] = useState(false);
@@ -39,6 +41,18 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
       })();
     }
   }, [isAuth]);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUserDataFromStorage();
+
+      if (!user) return;
+
+      const { data } = await getUserBonusesReq(user.id);
+
+      setBonuses(data.user);
+    })();
+  }, []);
 
   const pushToAuth = () => {
     navigation.closeDrawer();
@@ -202,7 +216,7 @@ const ProfilePage = ({ isAuth, logoutUser }) => {
             text={i18n.t('profileMyBonuses')}
             chevron={
               <Flex direction='row' align='center'>
-                <Box mr={2}>0</Box>
+                <Box mr={2}>{bonuses}</Box>
                 <Box mr={2}>
                   <MaterialIcons name='add-task' size={24} color={'#FECC1A'} />
                 </Box>

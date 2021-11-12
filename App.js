@@ -10,12 +10,18 @@ import { NativeBaseProvider } from 'native-base';
 
 import Routes from './src/routes/Drawers';
 
-import { allowLocation } from './src/resources/utils';
+import {
+  allowLocation,
+  sheduleNotifications,
+  registerExpoPushTokens,
+} from './src/resources/utils';
 import * as ruLocale from './src/resources/ruLocale.json';
 import * as engLocal from './src/resources/enLocale.json';
 import * as Linking from 'expo-linking';
 //
 import i18n from 'i18n-js';
+
+sheduleNotifications();
 i18n.translations = {
   en: engLocal.en,
   ru: ruLocale.ru,
@@ -26,6 +32,7 @@ const prefix = Linking.createURL('/');
 const App = () => {
   useEffect(() => {
     allowLocation();
+    registerExpoPushTokens();
   }, []);
 
   const linking = {

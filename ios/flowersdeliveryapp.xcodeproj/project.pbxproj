@@ -12,23 +12,23 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		7B96CB689B2E49A886145121 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE0358B7EC4360B09753DB /* noop-file.swift */; };
 		96905EF65AED1B983A6B3ABC /* libPods-flowersdeliveryapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-flowersdeliveryapp.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		D3D502FB740F4EBA9D477444 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E4763CB0B84F9DAA6D2FB7 /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		09E4763CB0B84F9DAA6D2FB7 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "flowersdeliveryapp/noop-file.swift"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* flowersdeliveryapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flowersdeliveryapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* flowers-delivery-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "flowers-delivery-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = flowersdeliveryapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = flowersdeliveryapp/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = flowersdeliveryapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = flowersdeliveryapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = flowersdeliveryapp/main.m; sourceTree = "<group>"; };
-		51F02CBBB15A467A93AF035C /* flowersdeliveryapp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "flowersdeliveryapp-Bridging-Header.h"; path = "flowersdeliveryapp/flowersdeliveryapp-Bridging-Header.h"; sourceTree = "<group>"; };
+		23FE0358B7EC4360B09753DB /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "flowersdeliveryapp/noop-file.swift"; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-flowersdeliveryapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-flowersdeliveryapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D119D2AA07B4140A5D51E72 /* flowersdeliveryapp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "flowersdeliveryapp-Bridging-Header.h"; path = "flowersdeliveryapp/flowersdeliveryapp-Bridging-Header.h"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-flowersdeliveryapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flowersdeliveryapp.debug.xcconfig"; path = "Target Support Files/Pods-flowersdeliveryapp/Pods-flowersdeliveryapp.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-flowersdeliveryapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flowersdeliveryapp.release.xcconfig"; path = "Target Support Files/Pods-flowersdeliveryapp/Pods-flowersdeliveryapp.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = flowersdeliveryapp/SplashScreen.storyboard; sourceTree = "<group>"; };
@@ -61,8 +61,8 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				09E4763CB0B84F9DAA6D2FB7 /* noop-file.swift */,
-				51F02CBBB15A467A93AF035C /* flowersdeliveryapp-Bridging-Header.h */,
+				23FE0358B7EC4360B09753DB /* noop-file.swift */,
+				5D119D2AA07B4140A5D51E72 /* flowersdeliveryapp-Bridging-Header.h */,
 			);
 			name = flowersdeliveryapp;
 			sourceTree = "<group>";
@@ -101,7 +101,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* flowersdeliveryapp.app */,
+				13B07F961A680F5B00A75B9A /* flowers-delivery-app.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -145,7 +145,7 @@
 			);
 			name = flowersdeliveryapp;
 			productName = flowersdeliveryapp;
-			productReference = 13B07F961A680F5B00A75B9A /* flowersdeliveryapp.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* flowers-delivery-app.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -157,6 +157,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = N7RTM66358;
 						LastSwiftMigration = 1120;
 					};
 				};
@@ -301,6 +302,69 @@
 				"${PODS_ROOT}/ASDKUI/ASDKUI/Payment/PaymentViewController/EmailCell/ASDKEmailCell.xib",
 				"${PODS_ROOT}/ASDKUI/ASDKUI/Payment/PaymentViewController/InputCardCell/ASDKCardInputTableViewCell.xib",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_ROOT}/TinkoffASDKCore/TinkoffASDKCore/TinkoffASDKCore/en.lproj/Localizable.strings",
+				"${PODS_ROOT}/TinkoffASDKCore/TinkoffASDKCore/TinkoffASDKCore/ru.lproj/Localizable.strings",
+				"${PODS_ROOT}/TinkoffASDKCore/TinkoffASDKCore/TinkoffASDKCore/en.lproj",
+				"${PODS_ROOT}/TinkoffASDKCore/TinkoffASDKCore/TinkoffASDKCore/ru.lproj",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/AcquiringAlertViewController.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/AcquiringPaymentViewController.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/AddCardTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/AmountTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageQR.imageset/pageQR@2x.png",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageQR.imageset/pageQR@3x.png",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/ButtonInputAccessoryView.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/ButtonTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/CardListStatusCollectionViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/CardsViewController.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/en.lproj/Localizable.strings",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Images/Images/tinkoff_40/tinkoff_40@2x.png",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Images/Images/tinkoff_40/tinkoff_40@3x.png",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/InpuCardtRequisitesTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/LabelTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/LoadingCollectionViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/PageStatusCollectionViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/PageStatusListCollectionViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/PaymentCardCollectionViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/PaymentCardInputRequisitesCollectionViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/PaymentCardTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/PopUpViewContoller.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/PSLogoTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/QRCodeImageTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/QRCodeViewController.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/QRCodeWebTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/RandomAmounCheckingViewController.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/ResistanceSpaceTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/ru.lproj/Localizable.strings",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/SBPCollectionViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/ScrollableTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/StatusTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/TextFieldTableViewCell.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/UICollectionReusableViewEmpty.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/WebViewController.xib",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/add.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageAddCard.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageAddCardActive.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageDot.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageDotActive.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageList.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/addCardPageControl/pageQR.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/buttonIconSBP.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/cancel.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/cardRequisites/maestro_logo.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/cardRequisites/mc_logo.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/cardRequisites/mir_logo.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/cardRequisites/visa_logo.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/done.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/logo_ps.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/next.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/nexta.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/SBP/empty_banks.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/scan.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/share.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/Assets.xcassets/tick_24.imageset",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/en.lproj",
+				"${PODS_ROOT}/TinkoffASDKUI/TinkoffASDKUI/TinkoffASDKUI/ru.lproj",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -353,6 +417,61 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ASDKEmailCell.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ASDKCardInputTableViewCell.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Localizable.strings",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AcquiringAlertViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AcquiringPaymentViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AddCardTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AmountTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageQR@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageQR@3x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ButtonInputAccessoryView.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ButtonTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/CardListStatusCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/CardsViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tinkoff_40@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tinkoff_40@3x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/InpuCardtRequisitesTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LabelTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LoadingCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PageStatusCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PageStatusListCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PaymentCardCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PaymentCardInputRequisitesCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PaymentCardTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PopUpViewContoller.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PSLogoTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QRCodeImageTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QRCodeViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QRCodeWebTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RandomAmounCheckingViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ResistanceSpaceTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SBPCollectionViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ScrollableTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/StatusTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TextFieldTableViewCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UICollectionReusableViewEmpty.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WebViewController.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/add.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageAddCard.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageAddCardActive.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageDot.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageDotActive.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageList.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pageQR.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/buttonIconSBP.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/cancel.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/maestro_logo.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/mc_logo.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/mir_logo.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/visa_logo.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/done.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/logo_ps.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/next.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nexta.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/empty_banks.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/scan.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/share.imageset",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/tick_24.imageset",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -387,7 +506,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				D3D502FB740F4EBA9D477444 /* noop-file.swift in Sources */,
+				7B96CB689B2E49A886145121 /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +533,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "flowersdeliveryapp/flowers-delivery-app.entitlements";
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N7RTM66358;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -445,6 +565,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "flowersdeliveryapp/flowers-delivery-app.entitlements";
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N7RTM66358;
 				INFOPLIST_FILE = flowersdeliveryapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

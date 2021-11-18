@@ -92,3 +92,22 @@ export const registerExpoPushTokens = async () => {
     return null;
   }
 };
+
+export const getDayAndMonth = (date) => {
+  const day = date.getDate(),
+    month = date.getMonth() + 1,
+    year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+export const getHoursAndMinutes = (time) => {
+  const hours = time.getHours();
+  let minutes = String(time.getMinutes());
+
+  if (minutes.length === 1) {
+    minutes = '0' + minutes;
+  }
+
+  return `${hours}:${minutes}`;
+};

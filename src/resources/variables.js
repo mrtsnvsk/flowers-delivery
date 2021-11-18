@@ -1,40 +1,38 @@
-import i18n from 'i18n-js';
-
 export const imgPath = 'https://shop.cit-llc.ru/';
 
 export const radioOrdetToList = [
   {
-    name: i18n.t('orderingDoorToDoorDelivery'),
+    name: 'orderingDoorToDoorDelivery',
     value: 'delivery',
   },
   {
-    name: i18n.t('orderingPickupDelivery'),
+    name: 'orderingPickupDelivery',
     value: 'pickup',
   },
 ];
 
 export const radioPaymentMethodList = [
   {
-    name: i18n.t('orderingPaymentOnline'),
+    name: 'orderingPaymentOnline',
     value: 'online',
   },
   {
-    name: i18n.t('orderingCourierCash'),
+    name: 'orderingCourierCash',
     value: 'courCash',
   },
   {
-    name: i18n.t('orderingCourierCard'),
+    name: 'orderingCourierCard',
     value: 'courCard',
   },
 ];
 
 export const radioAddressat = [
   {
-    name: 'Я',
+    name: 'orderingAddressatI',
     value: 'user',
   },
   {
-    name: 'Другой человек',
+    name: 'orderingAddressatOther',
     value: 'other',
   },
 ];

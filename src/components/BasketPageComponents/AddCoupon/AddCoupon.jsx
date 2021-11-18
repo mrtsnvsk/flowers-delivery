@@ -21,7 +21,6 @@ const AddCoupon = ({ setCouponStock }) => {
     }
     try {
       const { data } = await getCouponInfoReq(coupon);
-      console.log('data', data);
       if (data.length) {
         onAlert(data[0]);
         return;

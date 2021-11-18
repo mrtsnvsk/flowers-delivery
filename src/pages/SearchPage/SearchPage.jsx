@@ -5,17 +5,17 @@ import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Box, Center, Image, Actionsheet } from 'native-base';
 
 import SearchFilterCarousel from '../../components/SearchPageComponents/SearchFilterCarousel';
-
-import { clearSearchImg } from '../../resources/images';
 import SearchFilterActionSheet from '../../components/SearchPageComponents/SearchFilterActionSheet';
 import SearchItems from '../../components/SearchPageComponents/SearchItems/SearchItems';
+import SpinnerFw from '../../components/Elements/SpinnerFw';
 
+import { clearSearchImg } from '../../resources/images';
 import {
   getSearchProductsList,
   updateSearchProductsTerm,
 } from '../../store/actions/product';
+import { getCategoriesList } from '../../store/actions/categories';
 import useDebounce from '../../hooks/useDebounce';
-import SpinnerFw from '../../components/Elements/SpinnerFw';
 import i18n from 'i18n-js';
 
 const SearchPage = ({
@@ -24,26 +24,13 @@ const SearchPage = ({
   getSearchProductsList,
   searchProductsTerm,
   updateSearchProductsTerm,
+  getCategoriesList,
+  categoriesList,
 }) => {
-  const debouncedSearch = useDebounce(getSearchProductsList, 1000);
+  const debouncedSearch = useDebounce(getSearchProductsList, 700);
 
   const [showActionsheet, setShowActionSheet] = useState(false);
   const [termCategory, setTermCategory] = useState(null);
-
-  const menu = [
-    {
-      name: 'Акции',
-    },
-    {
-      name: 'Розы',
-    },
-    {
-      name: 'Цветы',
-    },
-    {
-      name: 'Вазы',
-    },
-  ];
 
   const characters = [
     {
@@ -55,18 +42,24 @@ const SearchPage = ({
   ];
 
   useEffect(() => {
+    getCategoriesList();
+  }, [getCategoriesList]);
+
+  useEffect(() => {
     return () => {
       updateSearchProductsTerm('');
+      setTermCategory(null);
     };
   }, []);
 
   useEffect(() => {
-    if (searchProductsTerm) {
-      debouncedSearch(searchProductsTerm.trim().toLowerCase());
-    } else {
-      getSearchProductsList('');
-    }
-  }, [searchProductsTerm]);
+    const categoryId = termCategory?.id || null;
+
+    debouncedSearch(
+      searchProductsTerm?.trim()?.toLowerCase() || null,
+      categoryId
+    );
+  }, [searchProductsTerm, termCategory]);
 
   if (loadingSearchProductsList) {
     return <SpinnerFw />;
@@ -94,16 +87,15 @@ const SearchPage = ({
         ) : (
           <SearchItems products={searchProductsList} />
         )}
-
         <Actionsheet
           isOpen={showActionsheet}
           onClose={() => setShowActionSheet(false)}
         >
-          <Actionsheet.Content alignItems='flex-start' px={'20px'} pb={'20px'}>
+          <Actionsheet.Content alignItems='flex-start' p={'20px'} pt={0}>
             <SearchFilterActionSheet
               setTermCategory={setTermCategory}
               label={i18n.t('searchMenu')}
-              items={menu}
+              items={categoriesList}
             />
             <SearchFilterActionSheet
               withFilters={true}
@@ -124,15 +116,19 @@ const mapStateToProps = ({
     loadingSearchProductsList,
     searchProductsTerm,
   },
+  categories: { categoriesList },
 }) => ({
   searchProductsList,
   loadingSearchProductsList,
   searchProductsTerm,
+  categoriesList,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getSearchProductsList: (term) => dispatch(getSearchProductsList(term)),
+  getSearchProductsList: (term, category) =>
+    dispatch(getSearchProductsList(term, category)),
   updateSearchProductsTerm: (term) => dispatch(updateSearchProductsTerm(term)),
+  getCategoriesList: () => dispatch(getCategoriesList()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

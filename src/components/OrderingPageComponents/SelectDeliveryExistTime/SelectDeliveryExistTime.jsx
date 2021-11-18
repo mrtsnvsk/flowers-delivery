@@ -4,6 +4,7 @@ import { Dimensions } from 'react-native';
 import { Select, CheckIcon, Box, Text } from 'native-base';
 
 const { width } = Dimensions.get('window');
+import i18n from 'i18n-js';
 
 const SelectDeliveryExistTime = ({ time, setTime }) => {
   const times = [
@@ -25,8 +26,7 @@ const SelectDeliveryExistTime = ({ time, setTime }) => {
   return (
     <Select
       width={width - 40}
-      accessibilityLabel='Выберите интервал доставки'
-      placeholder='Выберите интервал доставки'
+      placeholder={i18n.t('selectJoinDeliveryInterval')}
       onValueChange={(itemValue) => setTime(itemValue)}
       _selectedItem={{
         endIcon: <CheckIcon size={4} />,
@@ -34,7 +34,7 @@ const SelectDeliveryExistTime = ({ time, setTime }) => {
     >
       <Box px='16px'>
         <Text fontSize={16} fontWeight='bold'>
-          Интервалы день:
+          {i18n.t('selectDayIntervals')}
         </Text>
       </Box>
       {timeIntervals.slice(0, 5).map((el) => (
@@ -42,7 +42,7 @@ const SelectDeliveryExistTime = ({ time, setTime }) => {
       ))}
       <Box p='16px'>
         <Text fontSize={16} fontWeight='bold'>
-          Интервалы ночь:
+          {i18n.t('selectNightIntervals')}
         </Text>
       </Box>
       {timeIntervals.slice(6).map((el) => (

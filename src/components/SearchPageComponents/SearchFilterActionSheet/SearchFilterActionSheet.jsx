@@ -95,10 +95,10 @@ const SearchFilterActionSheet = ({
       )}
       <ScrollView mb={5} horizontal showsHorizontalScrollIndicator={false}>
         {!withFilters
-          ? items.map((el, i) => (
+          ? items.map((el) => (
               <TouchableOpacity
-                onPress={() => setTermCategory({ name: el.name, id: i })}
-                key={i}
+                onPress={() => setTermCategory({ name: el.name, id: el.id })}
+                key={el.id}
                 style={styles.filterBtn}
               >
                 <Text style={styles.filterBtnText}>{el.name}</Text>

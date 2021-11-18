@@ -3,7 +3,7 @@
     "scheme": "florcat",
     "name": "flowers-delivery-app",
     "slug": "flowers-delivery-app",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "plugins": [
       [
         "expo-notifications",

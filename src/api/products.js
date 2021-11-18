@@ -11,10 +11,16 @@ export const getProductsListReq = async (id, order, from, to) => {
 export const getProductByIdReq = async (id) =>
   await axios.get(`/products/get?product_id=${+id}`);
 
-export const getSearchProductsListReq = async (term) =>
-  await axios.get(
-    `/products/search?search=${term ? term.toLowerCase() : null}`
-  );
+export const getSearchProductsListReq = async (term, category) => {
+  const queryURI = `/products/search?${
+    term ? 'search=' + term.toLowerCase() + '&' : ''
+  }${category ? `category_id=${category}` : ''}
+  `;
+
+  console.log(queryURI);
+
+  return await axios.get(queryURI);
+};
 
 export const getProductsWithStocksReq = async () =>
   await axios.get('/products/stock');

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Flex, Radio, Text } from 'native-base';
 import propStyles from '../../../resources/propStyles';
+import i18n from 'i18n-js';
 
 const DeliveryMethodRadio = ({ value, setValue, radioData }) => {
   return (
@@ -31,7 +32,7 @@ const DeliveryMethodRadio = ({ value, setValue, radioData }) => {
                 value={el.value}
               >
                 <Text fontSize={18} ml={5}>
-                  {el.name}
+                  {i18n.t(el.name)}
                 </Text>
               </Radio>
             </Box>

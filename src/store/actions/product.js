@@ -53,13 +53,13 @@ export const updateProductById = () => ({
   payload: null,
 });
 
-export const getSearchProductsList = (term) => {
+export const getSearchProductsList = (term, category) => {
   const loading = constant.LOADING_SEARCH_PRODUCTS_LIST;
 
   return async (dispatch) => {
     dispatch(onDs(loading, true));
     try {
-      const { data } = await getSearchProductsListReq(term);
+      const { data } = await getSearchProductsListReq(term, category);
 
       dispatch(onDs(constant.GET_SEARCH_PRODUCTS_LIST, data));
     } finally {

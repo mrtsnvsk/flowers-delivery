@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { Select, CheckIcon } from 'native-base';
 
 import { getPickupAddresses } from '../../../store/actions/order';
+import i18n from 'i18n-js';
 
-const SelectOrderAddress = ({
+const SelectOrderPickupAddress = ({
   getPickupAddresses,
   orderPickupAddresses,
   address,
@@ -19,8 +20,7 @@ const SelectOrderAddress = ({
 
   return (
     <Select
-      accessibilityLabel='Адрес самовывоза'
-      placeholder='Выберите адрес самовывоза'
+      placeholder={i18n.t('selectJoinPickupAddress')}
       onValueChange={(itemValue) => setAddress(itemValue)}
       _selectedItem={{
         endIcon: <CheckIcon size={4} />,
@@ -41,4 +41,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPickupAddresses: () => dispatch(getPickupAddresses()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectOrderAddress);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectOrderPickupAddress);

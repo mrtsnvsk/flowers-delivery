@@ -4,6 +4,7 @@
     "name": "flowers-delivery-app",
     "slug": "flowers-delivery-app",
     "version": "1.0.7",
+    "icon": "./src/assets/app-icon.png",
     "plugins": [
       [
         "expo-notifications",

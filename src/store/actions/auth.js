@@ -53,7 +53,6 @@ export const authUser = (code) => {
       const pushToken =
         JSON.parse(await AsyncStorage.getItem('@pushToken')) || null;
 
-      console.log('pushToken in auth', pushToken);
       onAlert('Вы успешно авторизовались!');
     } else {
       dispatch(logoutUser());

@@ -17,8 +17,6 @@ export const getSearchProductsListReq = async (term, category) => {
   }${category ? `category_id=${category}` : ''}
   `;
 
-  console.log(queryURI);
-
   return await axios.get(queryURI);
 };
 

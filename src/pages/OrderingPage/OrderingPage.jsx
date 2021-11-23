@@ -45,6 +45,7 @@ import {
   getHoursAndMinutes,
   getUserDataFromStorage,
   onAlert,
+  onlinePaymentTinkoff,
 } from '../../resources/utils';
 import {
   radioOrdetToList,
@@ -230,10 +231,25 @@ const OrderingPage = ({
         throw new Error(data.messgae || i18n.t('orderingOrderSuccess'));
       }
 
-      onAlert(data.messgae || i18n.t('orderingOrderError'));
+      console.log('data', data);
 
+      // if (orderInfo.paymentMethod === 'online') {
+      //   try {
+      //     const payData = {
+      //       amount: getOrderTotalPriceWithStocks(),
+      //       orderId: '',
+      //       title: '',
+      //       description: '',
+      //     };
+      //     await onlinePaymentTinkoff(payData);
+      //   } catch {
+      //     onAlert(i18n.t('orderingOrderError'));
+      //   }
+      // } else {
+      onAlert(data.messgae || i18n.t('orderingOrderError'));
       navigation.navigate('MainPage');
       setOrderList([]);
+      // }
     } catch (e) {
       onAlert(e.message);
     }

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { Alert, Platform, Share } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import ASDK from 'rn-asdk-tinkoff';
 
 export const onAlert = (text) => {
   Alert.alert('', text);
@@ -110,4 +111,27 @@ export const getHoursAndMinutes = (time) => {
   }
 
   return `${hours}:${minutes}`;
+};
+// TINKOFF
+const Tinkoff = new ASDK({
+  terminal: '1612868226749DEMO',
+  password: 'gw65jocdufobn1tj',
+  publicKey:
+    'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5yse9ka3ZQE0feuGtemYv3IqOlLck8zHUM7lTr0za6lXTszRSXfUO7jMb+L5C7e2QNFs+7sIX2OQJ6a+HG8kr+jwJ4tS3cVsWtd9NXpsU40PE4MeNr5RqiNXjcDxA+L4OsEm/BlyFOEOh2epGyYUd5/iO3OiQFRNicomT2saQYAeqIwuELPs1XpLk9HLx5qPbm8fRrQhjeUD5TLO8b+4yCnObe8vy/BMUwBfq+ieWADIjwWCMp2KTpMGLz48qnaD9kdrYJ0iyHqzb2mkDhdIzkim24A3lWoYitJCBrrB2xM05sm9+OdCI1f7nPNJbl5URHobSwR94IRGT7CJcUjvwIDAQAB',
+});
+
+export const onlinePaymentTinkoff = async ({
+  orderId,
+  amount,
+  title,
+  description,
+}) => {
+  const result = await Tinkoff.payWithCard({
+    amount,
+    orderId,
+    title,
+    description,
+  });
+
+  onAlert(JSON.stringify(result));
 };

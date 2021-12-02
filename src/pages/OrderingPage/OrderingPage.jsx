@@ -52,7 +52,7 @@ import {
   radioPaymentMethodList,
   radioAddressat,
 } from '../../resources/variables';
-import i18n from 'i18n-js';
+import i18n, { t } from 'i18n-js';
 
 const OrderingPage = ({
   getOrderList,
@@ -76,13 +76,12 @@ const OrderingPage = ({
   const [couponStock, setCouponStock] = useState(null);
   const [tab, setTab] = useState(0);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
-  const [deliveryExistTime, setDeliveryExistTime] = useState(true);
+  const [deliveryExistTime, setDeliveryExistTime] = useState(false);
   const [orderInfo, setOrderInfo] = useState({
     name: '',
     phone: '',
     email: '',
     city: '',
-    region: '',
     floor: '',
     apartment: '',
     comment: '',
@@ -162,7 +161,6 @@ const OrderingPage = ({
       phone,
       email,
       city,
-      region,
       recipient,
       recipientName,
       recipientPhone,
@@ -175,7 +173,6 @@ const OrderingPage = ({
       !phone ||
       !email ||
       !city ||
-      !region ||
       !orderAddress?.curLocName ||
       otherRecipient;
 
@@ -364,7 +361,7 @@ const OrderingPage = ({
                         colorScheme={propStyles.mainRedColor}
                         ml={1}
                         mt='24px'
-                        defaultIsChecked={true}
+                        defaultIsChecked={false}
                       >
                         {i18n.t('orderingDeliveryExistTime')}
                       </Checkbox>
@@ -418,6 +415,7 @@ const OrderingPage = ({
                     setValue={(text) =>
                       setOrderInfo({ ...orderInfo, phone: text })
                     }
+                    type='phone-pad'
                     placeholder={i18n.t('orderingPhoneInput')}
                   />
                 </Box>
@@ -428,6 +426,7 @@ const OrderingPage = ({
                       setOrderInfo({ ...orderInfo, email: text })
                     }
                     placeholder={i18n.t('orderingEmailInput')}
+                    type='email-address'
                   />
                 </Box>
                 {orderAddress?.curLocName && !isPickup && (
@@ -479,19 +478,11 @@ const OrderingPage = ({
                       </Box>
                       <Box mb={4}>
                         <InputUnderline
-                          value={orderInfo.region}
-                          setValue={(text) =>
-                            setOrderInfo({ ...orderInfo, region: text })
-                          }
-                          placeholder={i18n.t('orderingRegionInput')}
-                        />
-                      </Box>
-                      <Box mb={4}>
-                        <InputUnderline
                           value={orderInfo.floor}
                           setValue={(text) =>
                             setOrderInfo({ ...orderInfo, floor: text })
                           }
+                          type='number-pad'
                           placeholder={i18n.t('orderingFloorInput')}
                         />
                       </Box>
@@ -501,6 +492,7 @@ const OrderingPage = ({
                           setValue={(text) =>
                             setOrderInfo({ ...orderInfo, apartment: text })
                           }
+                          type='number-pad'
                           placeholder={i18n.t('orderingApartmentInput')}
                         />
                       </Box>
@@ -529,7 +521,7 @@ const OrderingPage = ({
                                   recipientName: text,
                                 })
                               }
-                              placeholder={i18n.t('orderingApartmentInput')}
+                              placeholder={i18n.t('orderingAdditNameInput')}
                             />
                           </Box>
                           <Box mb={4}>
@@ -541,7 +533,8 @@ const OrderingPage = ({
                                   recipientPhone: text,
                                 })
                               }
-                              placeholder={i18n.t('orderingAdditNameInput')}
+                              type='phone-pad'
+                              placeholder={i18n.t('orderingAdditPhoneInput')}
                             />
                           </Box>
                         </Box>

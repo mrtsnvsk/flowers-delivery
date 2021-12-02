@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Box, StatusBar } from 'native-base';
+import { Box, StatusBar, extendTheme } from 'native-base';
 
 import { Provider } from 'react-redux';
 import store from './src/store/store';
@@ -50,9 +50,26 @@ const App = () => {
     },
   };
 
+  const theme = extendTheme({
+    colors: {
+      // Add new color
+      mainRedColor: {
+        100: 'rgb(176, 108, 150)',
+        200: 'rgb(176, 108, 150)',
+        300: 'rgb(176, 108, 150)',
+        400: 'rgb(176, 108, 150)',
+        500: 'rgb(176, 108, 150)',
+        600: 'rgb(176, 108, 150)',
+        700: 'rgb(176, 108, 150)',
+        800: 'rgb(176, 108, 150)',
+        900: 'rgb(176, 108, 150)',
+      },
+    },
+  });
+
   return (
     <Provider store={store}>
-      <NativeBaseProvider>
+      <NativeBaseProvider theme={theme}>
         <NavigationContainer linking={linking}>
           <Box height='100%' safeAreaBottom>
             <StatusBar

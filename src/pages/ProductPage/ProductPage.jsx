@@ -105,24 +105,24 @@ const ProductModal = ({
   }, [isProduct]);
 
   useMemo(() => {
-    const check = orderList.filter((el) => el.id === isProduct?.id);
+    const check = orderList.filter((el) => el.id == isProduct?.id);
 
     if (check.length) {
       const additionalItems = additItems;
       const item = check[0];
 
-      const test = item.additItems.filter((el) => el.added);
+      const addedAdditsItems = item.additItems.filter((el) => el.added);
 
-      if (!test.length && !additionalItems.length) return;
-
-      for (let i = 0; i <= test.length - 1; i++) {
-        for (let j = 0; j <= additionalItems.length - 1; j++) {
-          if (additionalItems[j].id === test[i].id) {
-            additionalItems[j].added = test[i].added;
+      if (addedAdditsItems.length && additionalItems.length) {
+        for (let i = 0; i <= addedAdditsItems.length - 1; i++) {
+          for (let j = 0; j <= additionalItems.length - 1; j++) {
+            if (additionalItems[j].id === addedAdditsItems[i].id) {
+              additionalItems[j].added = addedAdditsItems[i].added;
+            }
           }
         }
+        setAdditItems(additionalItems);
       }
-      setAdditItems(additionalItems);
     }
 
     return check.length ? setMatchItem(true) : setMatchItem(false);
@@ -157,6 +157,8 @@ const ProductModal = ({
           recomendation: null,
         },
       ];
+
+    console.log('list', list);
 
     onOpenTopSlide();
     setOrderList(list);

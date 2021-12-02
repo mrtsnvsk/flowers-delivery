@@ -63,7 +63,7 @@ const FavoritesPage = ({
           <Box shadow={4} mt={'30px'}>
             <TouchableOpacity
               onPress={() => onPushToLink('CategoriesPage')}
-              style={[styles.btn, { backgroundColor: '#E51234' }]}
+              style={[styles.btn, { backgroundColor: propStyles.mainRedColor }]}
             >
               <Text color='#fff' fontSize={18} fontWeight='500'>
                 {i18n.t('favoritesStartPurchases')}

@@ -28,7 +28,7 @@ const DeliveryMethodRadio = ({ value, setValue, radioData }) => {
             <Box py={4}>
               <Radio
                 accessibilityLabel='pick an option'
-                colorScheme='secondary'
+                colorScheme={'mainRedColor'}
                 value={el.value}
               >
                 <Text fontSize={18} ml={5}>

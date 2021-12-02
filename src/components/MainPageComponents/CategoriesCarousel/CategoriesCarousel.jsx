@@ -28,8 +28,8 @@ const CategoriesCarousel = ({ getCategoriesList, categoriesList }) => {
             onPress={() => onPushToLink(el)}
             key={el.id}
             style={{
-              width: 60,
-              marginRight: 16,
+              width: 70,
+              marginRight: 10,
               justifyContent: 'flex-start',
               alignItems: 'center',
             }}
@@ -43,13 +43,13 @@ const CategoriesCarousel = ({ getCategoriesList, categoriesList }) => {
               <Image
                 source={{ uri: el.image }}
                 alt={el.name}
-                w={46}
-                h={46}
+                w={47}
+                h={47}
                 borderRadius={50}
               />
             </Flex>
             <Flex>
-              <Text textAlign='center' numberOfLines={2} fontSize={12}>
+              <Text textAlign='center' numberOfLines={2} fontSize={11}>
                 {el.name}
               </Text>
             </Flex>

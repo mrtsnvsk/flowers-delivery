@@ -6,11 +6,11 @@ import {
   Platform,
   Dimensions,
 } from 'react-native';
-import { Modal, Center, Text, Box, ScrollView } from 'native-base';
+import { Modal, Center, Text, Box } from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import propStyles from '../../../resources/propStyles';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 const TimePickerModal = ({ show, setShow, time, setTime }) => {
   const isAndroid = Platform.OS === 'android',
